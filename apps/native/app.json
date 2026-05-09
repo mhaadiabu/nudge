@@ -1,0 +1,17 @@
+{
+  "expo": {
+    "scheme": "nudge",
+    "userInterfaceStyle": "automatic",
+    "orientation": "default",
+    "web": {
+      "bundler": "metro"
+    },
+    "name": "nudge",
+    "slug": "nudge",
+    "plugins": ["expo-font"],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "name": "nudge",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "type": "module",
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "check-types": "turbo check-types",
+    "dev:native": "turbo -F native dev",
+    "dev:server": "turbo -F @nudge/backend dev",
+    "dev:setup": "turbo -F @nudge/backend dev:setup",
+    "check": "oxlint && oxfmt --write"
+  },
+  "dependencies": {
+    "@nudge/env": "workspace:*",
+    "dotenv": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@nudge/config": "workspace:*",
+    "oxfmt": "^0.46.0",
+    "oxlint": "^1.61.0",
+    "turbo": "^2.8.12",
+    "typescript": "^6"
+  },
+  "packageManager": "pnpm@10.33.0"
+}

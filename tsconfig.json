@@ -1,0 +1,3 @@
+{
+  "extends": "@nudge/config/tsconfig.base.json"
+}

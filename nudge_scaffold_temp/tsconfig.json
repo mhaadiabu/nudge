@@ -1,0 +1,3 @@
+{
+  "extends": "@nudge_scaffold_temp/config/tsconfig.base.json"
+}
