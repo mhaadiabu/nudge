@@ -21,9 +21,8 @@ const convex = new ConvexReactClient(env.EXPO_PUBLIC_CONVEX_URL, {
 
 function StackLayout() {
   return (
-    <Stack screenOptions={{}}>
-      <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
-      <Stack.Screen name="modal" options={{ title: "Modal", presentation: "modal" }} />
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="(drawer)" />
     </Stack>
   );
 }
