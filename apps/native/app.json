@@ -8,10 +8,15 @@
     },
     "name": "nudge",
     "slug": "nudge",
-    "plugins": ["expo-font"],
+    "plugins": [
+      "expo-font"
+    ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "android": {
+      "package": "com.mhaadiabu.nudge"
     }
   }
 }
