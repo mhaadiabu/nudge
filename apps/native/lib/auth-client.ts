@@ -6,6 +6,11 @@ import Constants from "expo-constants";
 import * as SecureStore from "expo-secure-store";
 import { Platform } from "react-native";
 
+const configuredScheme = Constants.expoConfig?.scheme;
+const appScheme = Array.isArray(configuredScheme)
+  ? configuredScheme[0] ?? "nudge"
+  : configuredScheme ?? "nudge";
+
 export const authClient = createAuthClient({
   baseURL: env.EXPO_PUBLIC_CONVEX_SITE_URL,
   plugins: [
@@ -13,8 +18,8 @@ export const authClient = createAuthClient({
     Platform.OS === "web"
       ? crossDomainClient()
       : expoClient({
-          scheme: Constants.expoConfig?.scheme as string,
-          storagePrefix: Constants.expoConfig?.scheme as string,
+          scheme: appScheme,
+          storagePrefix: appScheme,
           storage: SecureStore,
         }),
   ],
