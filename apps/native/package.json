@@ -19,7 +19,7 @@
     "@gorhom/bottom-sheet": "^5.2.10",
     "@nudge/backend": "workspace:*",
     "@nudge/env": "workspace:*",
-    "@react-navigation/drawer": "^7.9.4",
+    "@react-navigation/drawer": "^7.5.0",
     "@react-navigation/elements": "^2.9.14",
     "@tanstack/react-form": "^1.28.0",
     "better-auth": "catalog:",
