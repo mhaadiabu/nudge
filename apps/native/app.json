@@ -9,11 +9,19 @@
     "name": "nudge",
     "slug": "nudge",
     "plugins": [
-      "expo-font"
+      "expo-font",
+      "expo-router",
+      "expo-secure-store",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "2aa02266-9470-4779-9cef-1b0db9f65ea1"
+      }
     },
     "android": {
       "package": "com.mhaadiabu.nudge"
