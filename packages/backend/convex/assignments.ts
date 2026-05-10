@@ -36,7 +36,9 @@ async function getStudentAssignmentRows(ctx: QueryCtx, studentProfileId: Id<"pro
       const submission = await ctx.db
         .query("submissions")
         .withIndex("by_assignment_student", (query) =>
-          query.eq("assignmentId", recipient.assignmentId).eq("studentProfileId", recipient.studentProfileId),
+          query
+            .eq("assignmentId", recipient.assignmentId)
+            .eq("studentProfileId", recipient.studentProfileId),
         )
         .first();
 
@@ -406,7 +408,9 @@ export const createForCourse = mutation({
       .query("courseEnrollments")
       .withIndex("by_course", (query) => query.eq("courseId", course._id))
       .collect();
-    const studentEnrollments = enrollments.filter((enrollment) => enrollment.roleInCourse === "student");
+    const studentEnrollments = enrollments.filter(
+      (enrollment) => enrollment.roleInCourse === "student",
+    );
 
     for (const enrollment of studentEnrollments) {
       await ctx.db.insert("assignmentRecipients", {

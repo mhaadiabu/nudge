@@ -206,7 +206,12 @@ export const createExperiment = mutation({
 export const setExperimentStatus = mutation({
   args: {
     experimentId: v.id("experiments"),
-    status: v.union(v.literal("draft"), v.literal("running"), v.literal("paused"), v.literal("completed")),
+    status: v.union(
+      v.literal("draft"),
+      v.literal("running"),
+      v.literal("paused"),
+      v.literal("completed"),
+    ),
   },
   handler: async (ctx, args) => {
     await ensureManagementAccess(ctx);

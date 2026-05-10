@@ -138,7 +138,10 @@ export default function SettingsScreen() {
       <SectionCard title="Notification controls">
         <View className="gap-3">
           {preferenceEntries.map(([key, label]) => (
-            <View key={key} className="flex-row items-center justify-between rounded-2xl bg-background/50 p-3">
+            <View
+              key={key}
+              className="flex-row items-center justify-between rounded-2xl bg-background/50 p-3"
+            >
               <Text className="text-sm text-foreground">{label}</Text>
               <Switch
                 value={preferences[key]}
@@ -180,7 +183,10 @@ export default function SettingsScreen() {
       </SectionCard>
 
       {liveSurvey ? (
-        <SectionCard title={liveSurvey.title} description={liveSurvey.description ?? "Live pilot survey"}>
+        <SectionCard
+          title={liveSurvey.title}
+          description={liveSurvey.description ?? "Live pilot survey"}
+        >
           <View className="gap-3">
             {liveSurvey.questions.map((question) => (
               <View key={question.id} className="gap-2 rounded-2xl bg-background/50 p-3">
@@ -190,9 +196,14 @@ export default function SettingsScreen() {
                     <Button
                       key={score}
                       size="sm"
-                      variant={surveyAnswers[question.id] === String(score) ? "primary" : "secondary"}
+                      variant={
+                        surveyAnswers[question.id] === String(score) ? "primary" : "secondary"
+                      }
                       onPress={() => {
-                        setSurveyAnswers((current) => ({ ...current, [question.id]: String(score) }));
+                        setSurveyAnswers((current) => ({
+                          ...current,
+                          [question.id]: String(score),
+                        }));
                       }}
                     >
                       <Button.Label>{String(score)}</Button.Label>

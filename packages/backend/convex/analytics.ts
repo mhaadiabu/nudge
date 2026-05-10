@@ -155,7 +155,13 @@ export const getBehaviorTimeline = query({
 
     const bucket = new Map<
       string,
-      { submissions: number; onTime: number; missed: number; nudgesSent: number; nudgesOpened: number }
+      {
+        submissions: number;
+        onTime: number;
+        missed: number;
+        nudgesSent: number;
+        nudgesOpened: number;
+      }
     >();
 
     for (const submission of submissions) {

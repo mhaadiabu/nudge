@@ -38,7 +38,9 @@ function DrawerLayout() {
   }
 
   if (viewer === undefined || viewer === null) {
-    return <LoadingScreen title="Preparing your dashboard" message="Creating your UPSA profile..." />;
+    return (
+      <LoadingScreen title="Preparing your dashboard" message="Creating your UPSA profile..." />
+    );
   }
 
   return (

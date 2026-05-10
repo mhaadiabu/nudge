@@ -16,7 +16,10 @@ export default function DashboardScreen() {
     api.portal.getStudentDashboard,
     viewer?.role === "student" ? {} : "skip",
   );
-  const progress = useQuery(api.assignments.getViewerProgress, viewer?.role === "student" ? {} : "skip");
+  const progress = useQuery(
+    api.assignments.getViewerProgress,
+    viewer?.role === "student" ? {} : "skip",
+  );
   const nudgeSummary = useQuery(
     api.nudges.getViewerNudgeSummary,
     viewer?.role === "student" ? {} : "skip",
@@ -119,7 +122,8 @@ export default function DashboardScreen() {
               <View key={assignment.assignmentId} className="rounded-2xl bg-background/50 p-3">
                 <Text className="text-base font-medium text-foreground">{assignment.title}</Text>
                 <Text className="mt-1 text-sm text-muted">
-                  {assignment.courseCode} • {formatShortDate(assignment.dueAt)} • {assignment.status}
+                  {assignment.courseCode} • {formatShortDate(assignment.dueAt)} •{" "}
+                  {assignment.status}
                 </Text>
                 {assignment.linkUrl ? (
                   <Button
@@ -144,14 +148,18 @@ export default function DashboardScreen() {
               <View key={event._id} className="rounded-2xl bg-background/50 p-3">
                 <Text className="text-base font-medium text-foreground">{event.title}</Text>
                 <Text className="mt-1 text-sm text-muted">
-                  {formatDayLabel(event.startsAt)} • {event.venue ?? "Venue update pending"} • {event.kind}
+                  {formatDayLabel(event.startsAt)} • {event.venue ?? "Venue update pending"} •{" "}
+                  {event.kind}
                 </Text>
               </View>
             ))}
           </View>
         </SectionCard>
 
-        <SectionCard title="Announcements" description="Reschedules, support notices, and course updates.">
+        <SectionCard
+          title="Announcements"
+          description="Reschedules, support notices, and course updates."
+        >
           <View className="gap-3">
             {studentDashboard.announcements.map((announcement) => (
               <View key={announcement._id} className="rounded-2xl bg-background/50 p-3">
@@ -203,7 +211,10 @@ export default function DashboardScreen() {
         />
       </View>
 
-      <SectionCard title="Demo workspace" description="Seed the proposal-backed academic pilot data if the workspace is still empty.">
+      <SectionCard
+        title="Demo workspace"
+        description="Seed the proposal-backed academic pilot data if the workspace is still empty."
+      >
         <Button
           onPress={async () => {
             const result = await seedDemoData({});
@@ -217,8 +228,8 @@ export default function DashboardScreen() {
         </Button>
       </SectionCard>
 
-        <SectionCard title="Latest announcements" description="What learners and staff see first.">
-          <View className="gap-3">
+      <SectionCard title="Latest announcements" description="What learners and staff see first.">
+        <View className="gap-3">
           {managerSnapshot.latestAnnouncements.map((announcement) => (
             <View key={announcement._id} className="rounded-2xl bg-background/50 p-3">
               <Text className="text-base font-medium text-foreground">{announcement.title}</Text>
@@ -230,7 +241,10 @@ export default function DashboardScreen() {
         </View>
       </SectionCard>
 
-      <SectionCard title="Upcoming academic events" description="Near-term timetable items and reschedules.">
+      <SectionCard
+        title="Upcoming academic events"
+        description="Near-term timetable items and reschedules."
+      >
         <View className="gap-3">
           {managerSnapshot.upcomingEvents.map((event) => (
             <View key={event._id} className="rounded-2xl bg-background/50 p-3">

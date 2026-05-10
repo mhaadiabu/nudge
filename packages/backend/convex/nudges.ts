@@ -17,8 +17,14 @@ function formatDueLabel(dueAt: number) {
   });
 }
 
-function interpolateTemplateBody(templateBody: string, assignmentTitle: string, dueAtLabel: string) {
-  return templateBody.replaceAll("{{assignment}}", assignmentTitle).replaceAll("{{dueAt}}", dueAtLabel);
+function interpolateTemplateBody(
+  templateBody: string,
+  assignmentTitle: string,
+  dueAtLabel: string,
+) {
+  return templateBody
+    .replaceAll("{{assignment}}", assignmentTitle)
+    .replaceAll("{{dueAt}}", dueAtLabel);
 }
 
 async function resolveExperimentContext(ctx: MutationCtx, studentProfileId: Id<"profiles">) {
@@ -94,7 +100,9 @@ export const getViewerNudgeSummary = query({
       .withIndex("by_student_scheduled", (query) => query.eq("studentProfileId", viewer._id))
       .collect();
 
-    const sent = events.filter((event) => event.deliveryStatus === "sent" || event.deliveryStatus === "opened");
+    const sent = events.filter(
+      (event) => event.deliveryStatus === "sent" || event.deliveryStatus === "opened",
+    );
     const opened = events.filter((event) => event.deliveryStatus === "opened");
     const pending = events.filter((event) => event.deliveryStatus === "scheduled");
 
@@ -209,7 +217,8 @@ export const generateForViewer = mutation({
     const signals = deriveBehaviorSignals(
       submissions,
       existingEvents,
-      (settings?.socialNormsEnabled ?? false) || experimentContext?.groupName?.toLowerCase().includes("social") === true,
+      (settings?.socialNormsEnabled ?? false) ||
+        experimentContext?.groupName?.toLowerCase().includes("social") === true,
     );
     const activeStrategies = await ctx.db
       .query("nudgeStrategies")
@@ -225,7 +234,7 @@ export const generateForViewer = mutation({
       const plan = chooseNudgePlan(hoursUntilDue, signals);
       const strategy = experimentContext?.strategyId
         ? await ctx.db.get(experimentContext.strategyId)
-        : activeStrategies.find((item) => item.type === plan.type) ?? activeStrategies[0];
+        : (activeStrategies.find((item) => item.type === plan.type) ?? activeStrategies[0]);
 
       if (!strategy) continue;
 

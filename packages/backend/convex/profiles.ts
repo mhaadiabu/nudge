@@ -59,7 +59,8 @@ export const ensureViewer = mutation({
       email,
       fullName,
       role,
-      studentId: role === "student" ? `UPSA-${identity.subject.slice(-6).toUpperCase()}` : undefined,
+      studentId:
+        role === "student" ? `UPSA-${identity.subject.slice(-6).toUpperCase()}` : undefined,
       programme: role === "student" ? "BSc Information Technology" : undefined,
       level: role === "student" ? "Level 300" : undefined,
       consentStatus: "pending",
@@ -141,7 +142,9 @@ export const listPeople = query({
     await ensureManagementAccess(ctx);
     const people = await ctx.db.query("profiles").collect();
     return people
-      .sort((a, b) => (a.role === b.role ? a.email.localeCompare(b.email) : a.role.localeCompare(b.role)))
+      .sort((a, b) =>
+        a.role === b.role ? a.email.localeCompare(b.email) : a.role.localeCompare(b.role),
+      )
       .map((person) => ({
         _id: person._id,
         fullName: person.fullName,
@@ -305,7 +308,13 @@ export const setRole = mutation({
     };
 
     if (args.role === "student" && !target.studentId) {
-      patch.studentId = `UPSA-${target.email.split("@")[0]?.replace(/[^a-z0-9]/gi, "").slice(0, 6).toUpperCase() ?? "000000"}`;
+      patch.studentId = `UPSA-${
+        target.email
+          .split("@")[0]
+          ?.replace(/[^a-z0-9]/gi, "")
+          .slice(0, 6)
+          .toUpperCase() ?? "000000"
+      }`;
     }
 
     await ctx.db.patch(target._id, patch);

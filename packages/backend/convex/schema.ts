@@ -78,7 +78,11 @@ const activityEventType = v.union(
 
 const ingestionStatus = v.union(v.literal("running"), v.literal("succeeded"), v.literal("failed"));
 
-const sourceType = v.union(v.literal("assignment"), v.literal("submission"), v.literal("timetable"));
+const sourceType = v.union(
+  v.literal("assignment"),
+  v.literal("submission"),
+  v.literal("timetable"),
+);
 
 const accessMethod = v.union(v.literal("api"), v.literal("database"), v.literal("import"));
 

@@ -15,10 +15,7 @@ export default function CalendarScreen() {
   }
 
   return (
-    <ScreenShell
-      title="Calendar"
-      description="Classes, reschedules, and due dates in one place."
-    >
+    <ScreenShell title="Calendar" description="Classes, reschedules, and due dates in one place.">
       <View className="gap-3">
         {items.map((item) => (
           <SectionCard

@@ -40,7 +40,8 @@ export default function PlannerScreen() {
             {formatPercent(progress.metrics.onTimeRate)}
           </Text>
           <Text className="text-sm text-muted">
-            {progress.assignmentStateCounts.dueSoon} due soon • {progress.assignmentStateCounts.overdue} overdue
+            {progress.assignmentStateCounts.dueSoon} due soon •{" "}
+            {progress.assignmentStateCounts.overdue} overdue
           </Text>
         </SectionCard>
       </View>

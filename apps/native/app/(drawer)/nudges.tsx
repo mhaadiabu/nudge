@@ -39,7 +39,10 @@ export default function NudgesScreen() {
             className="flex-1"
             onPress={async () => {
               const result = await generate({ force: false });
-              toast.show({ variant: "success", label: `Generated ${result.generatedCount} nudges` });
+              toast.show({
+                variant: "success",
+                label: `Generated ${result.generatedCount} nudges`,
+              });
             }}
           >
             <Button.Label>Generate</Button.Label>

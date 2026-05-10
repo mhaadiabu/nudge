@@ -304,7 +304,8 @@ export const seedDemoData = mutation({
       await ctx.db.insert("timetableEvents", {
         courseId,
         title: event.title,
-        description: event.kind === "reschedule" ? "Venue moved after faculty directive." : undefined,
+        description:
+          event.kind === "reschedule" ? "Venue moved after faculty directive." : undefined,
         startsAt: event.startsAt,
         endsAt: event.endsAt,
         venue: event.venue,
@@ -437,7 +438,11 @@ export const seedDemoData = mutation({
         createdAt: now - 5 * DAY_MS,
         updatedAt: now,
       });
-      assignmentRows.push({ id: assignmentId, dueAt: assignment.dueAt, courseCode: assignment.courseCode });
+      assignmentRows.push({
+        id: assignmentId,
+        dueAt: assignment.dueAt,
+        courseCode: assignment.courseCode,
+      });
     }
 
     for (let studentIndex = 0; studentIndex < studentProfileIds.length; studentIndex += 1) {
@@ -502,7 +507,8 @@ export const seedDemoData = mutation({
       attendanceSessionIds.push(attendanceSessionId);
 
       for (let studentIndex = 0; studentIndex < studentProfileIds.length; studentIndex += 1) {
-        const status = studentIndex % 5 === 0 ? "late" : studentIndex % 4 === 0 ? "absent" : "present";
+        const status =
+          studentIndex % 5 === 0 ? "late" : studentIndex % 4 === 0 ? "absent" : "present";
         await ctx.db.insert("attendanceRecords", {
           attendanceSessionId,
           studentProfileId: studentProfileIds[studentIndex],
@@ -644,7 +650,12 @@ export const seedDemoData = mutation({
       const profileId = studentProfileIds[index];
       const assignment = assignmentRows[index % assignmentRows.length];
       const groupId = groups[index % groups.length];
-      const strategyId = groupId === controlGroupId ? strategyIds.deadline : groupId === adaptiveGroupId ? strategyIds.adaptive : strategyIds.social;
+      const strategyId =
+        groupId === controlGroupId
+          ? strategyIds.deadline
+          : groupId === adaptiveGroupId
+            ? strategyIds.adaptive
+            : strategyIds.social;
       if (!assignment) continue;
 
       await ctx.db.insert("nudgeEvents", {
@@ -654,7 +665,12 @@ export const seedDemoData = mutation({
         templateId: undefined,
         experimentId,
         groupId,
-        type: strategyId === strategyIds.social ? "social-norm" : strategyId === strategyIds.adaptive ? "personalized-timing" : "deadline-reminder",
+        type:
+          strategyId === strategyIds.social
+            ? "social-norm"
+            : strategyId === strategyIds.adaptive
+              ? "personalized-timing"
+              : "deadline-reminder",
         channel: strategyId === strategyIds.adaptive ? "push" : "in-app",
         title: strategyId === strategyIds.social ? "Your cohort is moving" : "Upcoming deadline",
         message:
@@ -679,9 +695,24 @@ export const seedDemoData = mutation({
       audienceRoles: ["student"],
       status: "live",
       questions: [
-        { id: "clarity", prompt: "How clear are your priorities this week?", scaleMin: 1, scaleMax: 5 },
-        { id: "confidence", prompt: "How confident are you about meeting deadlines?", scaleMin: 1, scaleMax: 5 },
-        { id: "usefulness", prompt: "How useful are the reminders you receive?", scaleMin: 1, scaleMax: 5 },
+        {
+          id: "clarity",
+          prompt: "How clear are your priorities this week?",
+          scaleMin: 1,
+          scaleMax: 5,
+        },
+        {
+          id: "confidence",
+          prompt: "How confident are you about meeting deadlines?",
+          scaleMin: 1,
+          scaleMax: 5,
+        },
+        {
+          id: "usefulness",
+          prompt: "How useful are the reminders you receive?",
+          scaleMin: 1,
+          scaleMax: 5,
+        },
       ],
       createdByProfileId: researcherId,
       createdAt: now,

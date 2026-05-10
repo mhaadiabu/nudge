@@ -13,10 +13,7 @@ function matchesAudience(audienceRoles: string[], role: string) {
   return audienceRoles.includes(role);
 }
 
-async function getViewerCourseIds(
-  ctx: QueryCtx,
-  viewerId: Id<"profiles">,
-) {
+async function getViewerCourseIds(ctx: QueryCtx, viewerId: Id<"profiles">) {
   const enrollments = await ctx.db
     .query("courseEnrollments")
     .withIndex("by_profile", (query) => query.eq("profileId", viewerId))
@@ -34,9 +31,9 @@ export const getStudentDashboard = query({
       .unique();
     const courseIds = await getViewerCourseIds(ctx, viewer._id);
 
-    const courses = (
-      await Promise.all(courseIds.map((courseId) => ctx.db.get(courseId)))
-    ).filter((course) => course !== null);
+    const courses = (await Promise.all(courseIds.map((courseId) => ctx.db.get(courseId)))).filter(
+      (course) => course !== null,
+    );
 
     const recipients = await ctx.db
       .query("assignmentRecipients")
@@ -64,21 +61,21 @@ export const getStudentDashboard = query({
       .filter((assignment) => assignment !== null)
       .sort((a, b) => a.dueAt - b.dueAt);
 
-    const timetable = (
-      await ctx.db.query("timetableEvents").withIndex("by_start").collect()
-    )
-      .filter((event) => event.endsAt >= Date.now() && matchesAudience(event.audienceRoles, viewer.role))
+    const timetable = (await ctx.db.query("timetableEvents").withIndex("by_start").collect())
+      .filter(
+        (event) => event.endsAt >= Date.now() && matchesAudience(event.audienceRoles, viewer.role),
+      )
       .filter((event) => (event.courseId ? courseIds.includes(event.courseId) : true))
       .slice(0, 8);
 
     const announcements = sortByPublished(await ctx.db.query("announcements").collect())
       .filter((announcement) => matchesAudience(announcement.audienceRoles, viewer.role))
-      .filter((announcement) => (announcement.courseId ? courseIds.includes(announcement.courseId) : true))
+      .filter((announcement) =>
+        announcement.courseId ? courseIds.includes(announcement.courseId) : true,
+      )
       .slice(0, 5);
 
-    const resources = (
-      await ctx.db.query("resources").withIndex("by_createdAt").collect()
-    )
+    const resources = (await ctx.db.query("resources").withIndex("by_createdAt").collect())
       .filter((resource) => matchesAudience(resource.audienceRoles, viewer.role))
       .filter((resource) => (resource.courseId ? courseIds.includes(resource.courseId) : true))
       .sort((a, b) => Number(b.isPinned) - Number(a.isPinned) || b.createdAt - a.createdAt)
@@ -91,19 +88,24 @@ export const getStudentDashboard = query({
     const presentCount = attendanceRecords.filter((record) => record.status === "present").length;
     const lateCount = attendanceRecords.filter((record) => record.status === "late").length;
     const attendanceRate =
-      attendanceRecords.length === 0 ? 0 : (presentCount + lateCount * 0.5) / attendanceRecords.length;
+      attendanceRecords.length === 0
+        ? 0
+        : (presentCount + lateCount * 0.5) / attendanceRecords.length;
 
     const liveSurveys = await ctx.db
       .query("surveyTemplates")
       .withIndex("by_status", (query) => query.eq("status", "live"))
       .collect();
-    const survey = liveSurveys.find((item) => matchesAudience(item.audienceRoles, viewer.role)) ?? null;
+    const survey =
+      liveSurveys.find((item) => matchesAudience(item.audienceRoles, viewer.role)) ?? null;
 
     const experimentAssignments = await ctx.db
       .query("experimentAssignments")
       .withIndex("by_student", (query) => query.eq("studentProfileId", viewer._id))
       .collect();
-    const latestExperimentAssignment = [...experimentAssignments].sort((a, b) => b.assignedAt - a.assignedAt)[0];
+    const latestExperimentAssignment = [...experimentAssignments].sort(
+      (a, b) => b.assignedAt - a.assignedAt,
+    )[0];
     const latestGroup = latestExperimentAssignment
       ? await ctx.db.get(latestExperimentAssignment.groupId)
       : null;
@@ -162,23 +164,25 @@ export const listCalendarFeed = query({
           detail: event.venue ?? event.description ?? "",
           status: event.kind,
         })),
-      ...(await Promise.all(
-        assignments.map(async (recipient) => {
-          const assignment = await ctx.db.get(recipient.assignmentId);
-          if (!assignment) {
-            return null;
-          }
-          return {
-            id: recipient._id,
-            kind: "assignment" as const,
-            title: assignment.title,
-            startsAt: assignment.dueAt,
-            endsAt: assignment.dueAt,
-            detail: assignment.courseCode,
-            status: recipient.status,
-          };
-        }),
-      )).filter((item) => item !== null),
+      ...(
+        await Promise.all(
+          assignments.map(async (recipient) => {
+            const assignment = await ctx.db.get(recipient.assignmentId);
+            if (!assignment) {
+              return null;
+            }
+            return {
+              id: recipient._id,
+              kind: "assignment" as const,
+              title: assignment.title,
+              startsAt: assignment.dueAt,
+              endsAt: assignment.dueAt,
+              detail: assignment.courseCode,
+              status: recipient.status,
+            };
+          }),
+        )
+      ).filter((item) => item !== null),
     ];
 
     return items.sort((a, b) => a.startsAt - b.startsAt);
@@ -202,7 +206,9 @@ export const listResources = query({
         })),
     );
 
-    return rows.sort((a, b) => Number(b.isPinned) - Number(a.isPinned) || b.createdAt - a.createdAt);
+    return rows.sort(
+      (a, b) => Number(b.isPinned) - Number(a.isPinned) || b.createdAt - a.createdAt,
+    );
   },
 });
 
@@ -216,7 +222,9 @@ export const listAnnouncements = query({
     const rows = await Promise.all(
       announcements
         .filter((announcement) => matchesAudience(announcement.audienceRoles, viewer.role))
-        .filter((announcement) => (announcement.courseId ? courseIds.includes(announcement.courseId) : true))
+        .filter((announcement) =>
+          announcement.courseId ? courseIds.includes(announcement.courseId) : true,
+        )
         .map(async (announcement) => ({
           ...announcement,
           course: announcement.courseId ? await ctx.db.get(announcement.courseId) : null,
@@ -235,18 +243,21 @@ export const getManagerOverview = query({
       throw new Error("Manager overview is not available for student accounts.");
     }
 
-    const [profiles, courses, announcements, resources, timetableEvents, surveys] = await Promise.all([
-      ctx.db.query("profiles").collect(),
-      ctx.db.query("courses").collect(),
-      ctx.db.query("announcements").collect(),
-      ctx.db.query("resources").collect(),
-      ctx.db.query("timetableEvents").collect(),
-      ctx.db.query("surveyTemplates").collect(),
-    ]);
+    const [profiles, courses, announcements, resources, timetableEvents, surveys] =
+      await Promise.all([
+        ctx.db.query("profiles").collect(),
+        ctx.db.query("courses").collect(),
+        ctx.db.query("announcements").collect(),
+        ctx.db.query("resources").collect(),
+        ctx.db.query("timetableEvents").collect(),
+        ctx.db.query("surveyTemplates").collect(),
+      ]);
 
     const students = profiles.filter((profile) => profile.role === "student");
     const managers = profiles.filter((profile) => profile.role !== "student");
-    const upcomingEvents = timetableEvents.filter((event) => event.startsAt >= Date.now()).slice(0, 5);
+    const upcomingEvents = timetableEvents
+      .filter((event) => event.startsAt >= Date.now())
+      .slice(0, 5);
 
     return {
       viewer,
@@ -470,9 +481,7 @@ export const getLiveSurvey = query({
       .withIndex("by_status", (query) => query.eq("status", "live"))
       .collect();
 
-    return (
-      surveys.find((survey) => matchesAudience(survey.audienceRoles, viewer.role)) ?? null
-    );
+    return surveys.find((survey) => matchesAudience(survey.audienceRoles, viewer.role)) ?? null;
   },
 });
 

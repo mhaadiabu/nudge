@@ -40,8 +40,9 @@ export function AuthGate() {
           <View className="gap-2">
             <Text className="text-base font-medium text-foreground">What&apos;s inside</Text>
             <Text className="text-sm text-muted">
-              Academic dashboard, calendar, resources, assignments, attendance insight, announcements,
-              behavior-aware nudges, research tracking, and management publishing tools.
+              Academic dashboard, calendar, resources, assignments, attendance insight,
+              announcements, behavior-aware nudges, research tracking, and management publishing
+              tools.
             </Text>
           </View>
         </Surface>

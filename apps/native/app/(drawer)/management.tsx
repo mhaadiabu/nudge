@@ -10,18 +10,42 @@ import { ScreenShell } from "@/components/screen-shell";
 import { SectionCard } from "@/components/section-card";
 import { formatPercent, formatRole, formatShortDate } from "@/lib/format";
 
-const sharedAudience = ["student", "lecturer", "classRep", "departmentAdmin", "researcher"] as const;
+const sharedAudience = [
+  "student",
+  "lecturer",
+  "classRep",
+  "departmentAdmin",
+  "researcher",
+] as const;
 
 export default function ManagementScreen() {
   const { toast } = useToast();
   const viewer = useQuery(api.profiles.getViewer);
-  const overview = useQuery(api.portal.getManagerOverview, viewer?.role !== "student" ? {} : "skip");
-  const readiness = useQuery(api.sources.getPhaseZeroReadiness, viewer?.role !== "student" ? {} : "skip");
-  const summary = useQuery(api.analytics.getDashboardSummary, viewer?.role !== "student" ? {} : "skip");
-  const activityLog = useQuery(api.analytics.listActivityLog, viewer?.role !== "student" ? { limit: 10 } : "skip");
+  const overview = useQuery(
+    api.portal.getManagerOverview,
+    viewer?.role !== "student" ? {} : "skip",
+  );
+  const readiness = useQuery(
+    api.sources.getPhaseZeroReadiness,
+    viewer?.role !== "student" ? {} : "skip",
+  );
+  const summary = useQuery(
+    api.analytics.getDashboardSummary,
+    viewer?.role !== "student" ? {} : "skip",
+  );
+  const activityLog = useQuery(
+    api.analytics.listActivityLog,
+    viewer?.role !== "student" ? { limit: 10 } : "skip",
+  );
   const people = useQuery(api.profiles.listPeople, viewer?.role !== "student" ? {} : "skip");
-  const experiments = useQuery(api.experiments.listExperiments, viewer?.role !== "student" ? {} : "skip");
-  const strategies = useQuery(api.experiments.listStrategies, viewer?.role !== "student" ? {} : "skip");
+  const experiments = useQuery(
+    api.experiments.listExperiments,
+    viewer?.role !== "student" ? {} : "skip",
+  );
+  const strategies = useQuery(
+    api.experiments.listStrategies,
+    viewer?.role !== "student" ? {} : "skip",
+  );
 
   const seedDemoData = useMutation(api.seed.seedDemoData);
   const createAnnouncement = useMutation(api.portal.createAnnouncement);
@@ -55,14 +79,23 @@ export default function ManagementScreen() {
       >
         <SectionCard title="Access required">
           <Text className="text-sm text-muted">
-            Sign in with a manager account such as department.admin@upsa.edu.gh after seeding the demo workspace.
+            Sign in with a manager account such as department.admin@upsa.edu.gh after seeding the
+            demo workspace.
           </Text>
         </SectionCard>
       </ScreenShell>
     );
   }
 
-  if (!overview || !readiness || !summary || !activityLog || !people || !experiments || !strategies) {
+  if (
+    !overview ||
+    !readiness ||
+    !summary ||
+    !activityLog ||
+    !people ||
+    !experiments ||
+    !strategies
+  ) {
     return <LoadingScreen message="Loading management tools..." />;
   }
 
@@ -78,16 +111,26 @@ export default function ManagementScreen() {
       <View className="flex-row flex-wrap gap-3">
         <MetricCard label="Students" value={String(managerOverview.counts.students)} />
         <MetricCard label="Managers" value={String(managerOverview.counts.managers)} />
-        <MetricCard label="On-time rate" value={formatPercent(analyticsSummary.submissionMetrics.onTimeRate)} />
-        <MetricCard label="Nudge open rate" value={formatPercent(analyticsSummary.nudgeMetrics.openRate)} />
+        <MetricCard
+          label="On-time rate"
+          value={formatPercent(analyticsSummary.submissionMetrics.onTimeRate)}
+        />
+        <MetricCard
+          label="Nudge open rate"
+          value={formatPercent(analyticsSummary.nudgeMetrics.openRate)}
+        />
       </View>
 
       <SectionCard title="Pilot readiness">
         <Text className="text-sm text-foreground">
-          {readinessOverview.isReady ? "All core data feeds confirmed." : "Some data feeds still need confirmation."}
+          {readinessOverview.isReady
+            ? "All core data feeds confirmed."
+            : "Some data feeds still need confirmation."}
         </Text>
         <Text className="text-sm text-muted">
-          Assignments: {String(readinessOverview.hasAssignmentSource)} • Submissions: {String(readinessOverview.hasSubmissionSource)} • Timetable: {String(readinessOverview.hasTimetableSource)}
+          Assignments: {String(readinessOverview.hasAssignmentSource)} • Submissions:{" "}
+          {String(readinessOverview.hasSubmissionSource)} • Timetable:{" "}
+          {String(readinessOverview.hasTimetableSource)}
         </Text>
         <Button
           onPress={async () => {
