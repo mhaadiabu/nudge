@@ -73,10 +73,7 @@ export default function SettingsScreen() {
   }
 
   return (
-    <ScreenShell
-      title="Settings"
-      description="Control consent, notification behavior, onboarding details, and pilot survey participation."
-    >
+    <ScreenShell title="Settings">
       <SectionCard title="Profile">
         <Text className="text-sm text-muted">{settingsBundle.profile.email}</Text>
         <TextInput
@@ -183,10 +180,7 @@ export default function SettingsScreen() {
       </SectionCard>
 
       {liveSurvey ? (
-        <SectionCard
-          title={liveSurvey.title}
-          description={liveSurvey.description ?? "Live pilot survey"}
-        >
+        <SectionCard title={liveSurvey.title}>
           <View className="gap-3">
             {liveSurvey.questions.map((question) => (
               <View key={question.id} className="gap-2 rounded-2xl bg-background/50 p-3">

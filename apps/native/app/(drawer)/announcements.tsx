@@ -16,10 +16,7 @@ export default function AnnouncementsScreen() {
   }
 
   return (
-    <ScreenShell
-      title="Announcements"
-      description="Stay ahead of timetable changes, assessments, events, and support notices."
-    >
+    <ScreenShell title="Announcements">
       <View className="gap-3">
         {announcements.map((announcement) => (
           <SectionCard

@@ -52,35 +52,27 @@ export default function DashboardScreen() {
     return (
       <ScreenShell
         title={`Hi, ${viewer.fullName?.split(" ")[0] ?? "Student"}`}
-        description="Your unified academic snapshot for assignments, timetable changes, resources, and momentum."
       >
         <View className="flex-row flex-wrap gap-3">
           <MetricCard
             label="Assignments due soon"
             value={String(progress.assignmentStateCounts.dueSoon)}
-            detail={`${progress.assignmentStateCounts.overdue} overdue`}
           />
           <MetricCard
             label="On-time rate"
             value={formatPercent(progress.metrics.onTimeRate)}
-            detail={`${progress.metrics.avgLeadHours.toFixed(1)} average lead hours`}
           />
           <MetricCard
             label="Attendance"
             value={formatPercent(studentDashboard.attendanceSummary.attendanceRate)}
-            detail={`${studentDashboard.attendanceSummary.totalSessions} tracked sessions`}
           />
           <MetricCard
             label="Nudges opened"
             value={formatPercent(nudgeSummary.openRate)}
-            detail={`${nudgeSummary.openedCount}/${nudgeSummary.sentCount} opened`}
           />
         </View>
 
-        <SectionCard
-          title="Behavioral nudges"
-          description="Generate the next reminder plan or dispatch nudges that are already due."
-        >
+        <SectionCard title="Behavioral nudges">
           <View className="flex-row gap-3">
             <Button
               className="flex-1"
@@ -116,7 +108,7 @@ export default function DashboardScreen() {
           </Text>
         </SectionCard>
 
-        <SectionCard title="Upcoming assignments" description="Next work that needs attention.">
+        <SectionCard title="Upcoming assignments">
           <View className="gap-3">
             {studentDashboard.upcomingAssignments.map((assignment) => (
               <View key={assignment.assignmentId} className="rounded-2xl bg-background/50 p-3">
@@ -142,7 +134,7 @@ export default function DashboardScreen() {
           </View>
         </SectionCard>
 
-        <SectionCard title="Today and next" description="Timetable sessions and reschedules.">
+        <SectionCard title="Today and next">
           <View className="gap-3">
             {studentDashboard.timetable.map((event) => (
               <View key={event._id} className="rounded-2xl bg-background/50 p-3">
@@ -156,10 +148,7 @@ export default function DashboardScreen() {
           </View>
         </SectionCard>
 
-        <SectionCard
-          title="Announcements"
-          description="Reschedules, support notices, and course updates."
-        >
+        <SectionCard title="Announcements">
           <View className="gap-3">
             {studentDashboard.announcements.map((announcement) => (
               <View key={announcement._id} className="rounded-2xl bg-background/50 p-3">
@@ -173,7 +162,7 @@ export default function DashboardScreen() {
           </View>
         </SectionCard>
 
-        <SectionCard title="Pinned resources" description="Course materials and direct links.">
+        <SectionCard title="Pinned resources">
           <View className="gap-3">
             {studentDashboard.resources.map((resource) => (
               <View key={resource._id} className="rounded-2xl bg-background/50 p-3">
@@ -194,7 +183,6 @@ export default function DashboardScreen() {
   return (
     <ScreenShell
       title={`Welcome back, ${viewer.fullName?.split(" ")[0] ?? "Manager"}`}
-      description={`Role: ${formatRole(viewer.role)}. Publish content, monitor the pilot, and keep the academic flow accurate.`}
     >
       <View className="flex-row flex-wrap gap-3">
         <MetricCard label="Students" value={String(managerSnapshot.counts.students)} />
@@ -202,19 +190,14 @@ export default function DashboardScreen() {
         <MetricCard
           label="On-time rate"
           value={formatPercent(analyticsSnapshot.submissionMetrics.onTimeRate)}
-          detail={`${analyticsSnapshot.studentCount} learners in sample`}
         />
         <MetricCard
           label="Nudge open rate"
           value={formatPercent(analyticsSnapshot.nudgeMetrics.openRate)}
-          detail={`${analyticsSnapshot.nudgeMetrics.sentCount} sent`}
         />
       </View>
 
-      <SectionCard
-        title="Demo workspace"
-        description="Seed the proposal-backed academic pilot data if the workspace is still empty."
-      >
+      <SectionCard title="Demo workspace">
         <Button
           onPress={async () => {
             const result = await seedDemoData({});
@@ -228,7 +211,7 @@ export default function DashboardScreen() {
         </Button>
       </SectionCard>
 
-      <SectionCard title="Latest announcements" description="What learners and staff see first.">
+      <SectionCard title="Latest announcements">
         <View className="gap-3">
           {managerSnapshot.latestAnnouncements.map((announcement) => (
             <View key={announcement._id} className="rounded-2xl bg-background/50 p-3">
@@ -241,10 +224,7 @@ export default function DashboardScreen() {
         </View>
       </SectionCard>
 
-      <SectionCard
-        title="Upcoming academic events"
-        description="Near-term timetable items and reschedules."
-      >
+      <SectionCard title="Upcoming academic events">
         <View className="gap-3">
           {managerSnapshot.upcomingEvents.map((event) => (
             <View key={event._id} className="rounded-2xl bg-background/50 p-3">

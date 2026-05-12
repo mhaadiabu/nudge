@@ -16,10 +16,7 @@ export default function ResourcesScreen() {
   }
 
   return (
-    <ScreenShell
-      title="Resources"
-      description="Lecture notes, templates, recordings, and LMS link-outs."
-    >
+    <ScreenShell title="Resources">
       <View className="gap-3">
         {resources.map((resource) => (
           <SectionCard

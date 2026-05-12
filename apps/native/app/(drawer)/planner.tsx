@@ -30,10 +30,7 @@ export default function PlannerScreen() {
   }
 
   return (
-    <ScreenShell
-      title="Planner"
-      description="Track coursework, record submissions, and keep deadline pressure visible."
-    >
+    <ScreenShell title="Planner">
       <View className="flex-row flex-wrap gap-3">
         <SectionCard title="Submission performance">
           <Text className="text-2xl font-semibold text-foreground">

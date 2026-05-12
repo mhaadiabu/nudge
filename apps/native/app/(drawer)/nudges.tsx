@@ -22,10 +22,7 @@ export default function NudgesScreen() {
   }
 
   return (
-    <ScreenShell
-      title="Nudges"
-      description="See reminders, social cues, motivational prompts, and commitment nudges in one stream."
-    >
+    <ScreenShell title="Nudges">
       <View className="flex-row flex-wrap gap-3">
         <MetricCard label="Scheduled" value={String(summary.scheduledCount)} />
         <MetricCard label="Sent" value={String(summary.sentCount)} />
@@ -33,7 +30,7 @@ export default function NudgesScreen() {
         <MetricCard label="Open rate" value={formatPercent(summary.openRate)} />
       </View>
 
-      <SectionCard title="Controls" description="Run the deterministic nudge engine on demand.">
+      <SectionCard title="Controls">
         <View className="flex-row gap-3">
           <Button
             className="flex-1"

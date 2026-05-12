@@ -73,10 +73,7 @@ export default function ManagementScreen() {
 
   if (viewer.role === "student") {
     return (
-      <ScreenShell
-        title="Management"
-        description="This workspace is available to lecturers, class reps, administrators, and research leads."
-      >
+      <ScreenShell title="Management">
         <SectionCard title="Access required">
           <Text className="text-sm text-muted">
             Sign in with a manager account such as department.admin@upsa.edu.gh after seeding the
@@ -104,10 +101,7 @@ export default function ManagementScreen() {
   const analyticsSummary = summary;
 
   return (
-    <ScreenShell
-      title="Management"
-      description="Publish content, seed the workspace, and monitor academic + behavioral pilot outcomes."
-    >
+    <ScreenShell title="Management">
       <View className="flex-row flex-wrap gap-3">
         <MetricCard label="Students" value={String(managerOverview.counts.students)} />
         <MetricCard label="Managers" value={String(managerOverview.counts.managers)} />
@@ -330,7 +324,7 @@ export default function ManagementScreen() {
         </Button>
       </SectionCard>
 
-      <SectionCard title="People" description="Current seeded and live app identities.">
+      <SectionCard title="People">
         <View className="gap-2">
           {people.slice(0, 8).map((person) => (
             <View key={person._id} className="rounded-2xl bg-background/50 p-3">
