@@ -1,6 +1,6 @@
 import { api } from "@nudge/backend/convex/_generated/api";
 import { useMutation, useQuery } from "convex/react";
-import { Button, Spinner, useToast } from "heroui-native";
+import { Button, useToast } from "heroui-native";
 import { Linking, Text, View } from "react-native";
 
 import { LoadingScreen } from "@/components/loading-screen";
