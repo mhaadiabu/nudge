@@ -1,5 +1,7 @@
 # nudge
 
+A modern platform for student engagement and academic success through personalized nudges.
+
 This project was created with [Better-T-Stack](https://github.com/AmanVarshney01/create-better-t-stack), a modern TypeScript stack that combines React Native, Expo, Convex, and more.
 
 ## Features
@@ -12,6 +14,7 @@ This project was created with [Better-T-Stack](https://github.com/AmanVarshney01
 - **Authentication** - Better-Auth
 - **Turborepo** - Optimized monorepo build system
 - **Oxlint** - Oxlint + Oxfmt (linting & formatting)
+- **ERD** - [Entity Relationship Diagram](./ERD.md)
 
 ## Getting Started
 
