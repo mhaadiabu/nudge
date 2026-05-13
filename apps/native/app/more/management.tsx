@@ -23,28 +23,28 @@ export default function ManagementScreen() {
   const viewer = useQuery(api.profiles.getViewer);
   const overview = useQuery(
     api.portal.getManagerOverview,
-    viewer?.role !== "student" ? {} : "skip",
+    viewer?.primaryRole !== "student" ? {} : "skip",
   );
   const readiness = useQuery(
     api.sources.getPhaseZeroReadiness,
-    viewer?.role !== "student" ? {} : "skip",
+    viewer?.primaryRole !== "student" ? {} : "skip",
   );
   const summary = useQuery(
     api.analytics.getDashboardSummary,
-    viewer?.role !== "student" ? {} : "skip",
+    viewer?.primaryRole !== "student" ? {} : "skip",
   );
   const activityLog = useQuery(
     api.analytics.listActivityLog,
-    viewer?.role !== "student" ? { limit: 10 } : "skip",
+    viewer?.primaryRole !== "student" ? { limit: 10 } : "skip",
   );
-  const people = useQuery(api.profiles.listPeople, viewer?.role !== "student" ? {} : "skip");
+  const people = useQuery(api.profiles.listPeople, viewer?.primaryRole !== "student" ? {} : "skip");
   const experiments = useQuery(
     api.experiments.listExperiments,
-    viewer?.role !== "student" ? {} : "skip",
+    viewer?.primaryRole !== "student" ? {} : "skip",
   );
   const strategies = useQuery(
     api.experiments.listStrategies,
-    viewer?.role !== "student" ? {} : "skip",
+    viewer?.primaryRole !== "student" ? {} : "skip",
   );
 
   const seedDemoData = useMutation(api.seed.seedDemoData);
@@ -71,7 +71,7 @@ export default function ManagementScreen() {
     return <LoadingScreen />;
   }
 
-  if (viewer.role === "student") {
+  if (viewer.primaryRole === "student") {
     return (
       <ScreenShell title="Management">
         <SectionCard title="Access required">

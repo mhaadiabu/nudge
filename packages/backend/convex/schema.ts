@@ -132,7 +132,9 @@ export default defineSchema({
     authSubject: v.optional(v.string()),
     email: v.string(),
     fullName: v.optional(v.string()),
-    role: appRole,
+    avatarUrl: v.optional(v.string()),
+    roles: v.array(appRole),
+    primaryRole: appRole,
     studentId: v.optional(v.string()),
     programme: v.optional(v.string()),
     level: v.optional(v.string()),
@@ -147,7 +149,7 @@ export default defineSchema({
   })
     .index("by_authSubject", ["authSubject"])
     .index("by_email", ["email"])
-    .index("by_role", ["role"])
+    .index("by_role", ["primaryRole"])
     .index("by_studentId", ["studentId"]),
 
   notificationSettings: defineTable({

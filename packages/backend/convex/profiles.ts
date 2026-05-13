@@ -1,6 +1,6 @@
 import { v } from "convex/values";
 
-import { authComponent } from "./auth";
+import { authComponent, extractStudentIdFromEmail, inferRoleFromEmail } from "./auth";
 import type { Doc } from "./_generated/dataModel";
 import type { MutationCtx } from "./_generated/server";
 import { mutation, query } from "./_generated/server";
@@ -10,11 +10,8 @@ import {
   getIdentityName,
   getIdentityOrThrow,
   getViewerProfile,
-  inferRoleFromEmail,
   isPrivilegedRole,
 } from "./lib/auth";
-
-type ProfileRole = Doc<"profiles">["role"];
 
 export const ensureViewer = mutation({
   args: {},
@@ -24,12 +21,14 @@ export const ensureViewer = mutation({
     const now = Date.now();
     const email = authUser?.email ?? getIdentityEmail(identity);
     const fullName = authUser?.name ?? getIdentityName(identity);
+    const avatarUrl = authUser?.image ?? undefined;
 
     const existingBySubject = await getViewerProfile(ctx);
     if (existingBySubject) {
       await ctx.db.patch(existingBySubject._id, {
         email,
         fullName: fullName || existingBySubject.fullName,
+        avatarUrl: avatarUrl || existingBySubject.avatarUrl,
         lastActiveAt: now,
         updatedAt: now,
       });
@@ -46,6 +45,7 @@ export const ensureViewer = mutation({
       await ctx.db.patch(existingByEmail._id, {
         authSubject: identity.subject,
         fullName: fullName || existingByEmail.fullName,
+        avatarUrl: avatarUrl || existingByEmail.avatarUrl,
         lastActiveAt: now,
         updatedAt: now,
       });
@@ -53,16 +53,19 @@ export const ensureViewer = mutation({
       return await ctx.db.get(existingByEmail._id);
     }
 
-    const role = inferRoleFromEmail(email);
+    const roles = inferRoleFromEmail(email);
+    const primaryRole = roles[0];
+    const studentId = extractStudentIdFromEmail(email);
     const id = await ctx.db.insert("profiles", {
       authSubject: identity.subject,
       email,
       fullName,
-      role,
-      studentId:
-        role === "student" ? `UPSA-${identity.subject.slice(-6).toUpperCase()}` : undefined,
-      programme: role === "student" ? "BSc Information Technology" : undefined,
-      level: role === "student" ? "Level 300" : undefined,
+      avatarUrl,
+      roles,
+      primaryRole,
+      studentId,
+      programme: undefined,
+      level: undefined,
       consentStatus: "pending",
       preferredReminderHour: 18,
       timezone: "Africa/Accra",
@@ -143,13 +146,14 @@ export const listPeople = query({
     const people = await ctx.db.query("profiles").collect();
     return people
       .sort((a, b) =>
-        a.role === b.role ? a.email.localeCompare(b.email) : a.role.localeCompare(b.role),
+        a.primaryRole === b.primaryRole ? a.email.localeCompare(b.email) : a.primaryRole.localeCompare(b.primaryRole),
       )
       .map((person) => ({
         _id: person._id,
         fullName: person.fullName,
         email: person.email,
-        role: person.role,
+        roles: person.roles,
+        primaryRole: person.primaryRole,
         studentId: person.studentId,
         programme: person.programme,
         level: person.level,
@@ -281,6 +285,7 @@ export const setRole = mutation({
       v.literal("departmentAdmin"),
       v.literal("researcher"),
     ),
+    asPrimary: v.optional(v.boolean()),
   },
   handler: async (ctx, args) => {
     const actor = await ensureManagementAccess(ctx);
@@ -289,32 +294,41 @@ export const setRole = mutation({
       throw new Error("Profile not found.");
     }
 
-    if (actor.role === "lecturer" && args.role !== "student") {
+    const isActorLecturer = actor.roles.includes("lecturer") && actor.roles.length === 1;
+    if (isActorLecturer && args.role !== "student") {
       throw new Error("Lecturers can only demote or restore student roles.");
     }
 
-    if (!isPrivilegedRole(actor.role) && args.role !== "student") {
+    const isActorPrivileged = isPrivilegedRole(actor);
+    if (!isActorPrivileged && args.role !== "student") {
       throw new Error("Insufficient permission to assign elevated roles.");
     }
 
     const now = Date.now();
+    const newRoles = args.asPrimary
+      ? [args.role, ...target.roles.filter((r) => r !== args.role)].slice(0, 2)
+      : target.roles.includes(args.role)
+      ? target.roles
+      : [...target.roles, args.role].slice(0, 2);
+
+    const newPrimaryRole = args.asPrimary ? args.role : target.primaryRole;
     const patch: {
-      role: ProfileRole;
+      roles: typeof newRoles;
+      primaryRole: typeof newPrimaryRole;
       studentId?: string;
       updatedAt: number;
     } = {
-      role: args.role,
+      roles: newRoles,
+      primaryRole: newPrimaryRole,
       updatedAt: now,
     };
 
     if (args.role === "student" && !target.studentId) {
-      patch.studentId = `UPSA-${
-        target.email
-          .split("@")[0]
-          ?.replace(/[^a-z0-9]/gi, "")
-          .slice(0, 6)
-          .toUpperCase() ?? "000000"
-      }`;
+      const localPart = target.email.split("@")[0] ?? "";
+      const cleanPart = localPart.replace(/[^a-z0-9]/gi, "");
+      if (/^\d{8}$/.test(cleanPart)) {
+        patch.studentId = `UPSA-${cleanPart}`;
+      }
     }
 
     await ctx.db.patch(target._id, patch);

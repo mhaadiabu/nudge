@@ -19,8 +19,13 @@ export function formatPercent(value: number) {
   return `${Math.round(value * 100)}%`;
 }
 
-export function formatRole(role: string) {
-  if (role === "classRep") return "Class Rep";
-  if (role === "departmentAdmin") return "Department Admin";
-  return role.charAt(0).toUpperCase() + role.slice(1);
+export function formatRole(role: string | readonly string[]) {
+  const roles = Array.isArray(role) ? role : [role];
+  return roles
+    .map((r) => {
+      if (r === "classRep") return "Class Rep";
+      if (r === "departmentAdmin") return "Department Admin";
+      return r.charAt(0).toUpperCase() + r.slice(1);
+    })
+    .join(", ");
 }

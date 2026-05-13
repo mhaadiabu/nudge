@@ -24,18 +24,33 @@ async function upsertProfileByEmail(
 
   if (existing) {
     await ctx.db.patch(existing._id, {
-      ...values,
+      fullName: values.fullName,
+      roles: existing.roles.includes(values.role) ? existing.roles : [...existing.roles, values.role].slice(0, 2),
+      primaryRole: values.role,
+      studentId: values.studentId ?? existing.studentId,
+      programme: values.programme ?? existing.programme,
+      level: values.level ?? existing.level,
       updatedAt: now,
     });
     return existing._id;
   }
 
+  const localPart = email.split("@")[0] ?? "";
+  const cleanPart = localPart.replace(/[^a-z0-9]/gi, "");
+  const isNumericStudent = /^\d{8}$/.test(cleanPart);
+  const generatedStudentId =
+    values.role === "student" && isNumericStudent
+      ? `UPSA-${cleanPart}`
+      : values.studentId;
+
   return ctx.db.insert("profiles", {
     authSubject: undefined,
     email,
     fullName: values.fullName,
-    role: values.role,
-    studentId: values.studentId,
+    avatarUrl: undefined,
+    roles: [values.role],
+    primaryRole: values.role,
+    studentId: generatedStudentId,
     programme: values.programme,
     level: values.level,
     consentStatus: values.consentStatus ?? "granted",
@@ -57,7 +72,7 @@ export const seedDemoData = mutation({
 
     const currentStudentCount = await ctx.db
       .query("profiles")
-      .withIndex("by_role", (query) => query.eq("role", "student"))
+      .collect();
       .collect();
 
     if (currentStudentCount.length > 0) {

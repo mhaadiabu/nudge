@@ -14,23 +14,23 @@ export default function DashboardScreen() {
   const viewer = useQuery(api.profiles.getViewer);
   const studentDashboard = useQuery(
     api.portal.getStudentDashboard,
-    viewer?.role === "student" ? {} : "skip",
+    viewer?.primaryRole === "student" ? {} : "skip",
   );
   const progress = useQuery(
     api.assignments.getViewerProgress,
-    viewer?.role === "student" ? {} : "skip",
+    viewer?.primaryRole === "student" ? {} : "skip",
   );
   const nudgeSummary = useQuery(
     api.nudges.getViewerNudgeSummary,
-    viewer?.role === "student" ? {} : "skip",
+    viewer?.primaryRole === "student" ? {} : "skip",
   );
   const managerOverview = useQuery(
     api.portal.getManagerOverview,
-    viewer && viewer.role !== "student" ? {} : "skip",
+    viewer && viewer.primaryRole !== "student" ? {} : "skip",
   );
   const dashboardSummary = useQuery(
     api.analytics.getDashboardSummary,
-    viewer && viewer.role !== "student" ? {} : "skip",
+    viewer && viewer.primaryRole !== "student" ? {} : "skip",
   );
   const seedDemoData = useMutation(api.seed.seedDemoData);
   const generateNudges = useMutation(api.nudges.generateForViewer);
@@ -40,15 +40,15 @@ export default function DashboardScreen() {
     return <LoadingScreen />;
   }
 
-  if (viewer.role === "student" && (!studentDashboard || !progress || !nudgeSummary)) {
+  if (viewer.primaryRole === "student" && (!studentDashboard || !progress || !nudgeSummary)) {
     return <LoadingScreen message="Gathering assignments, classes, and nudges..." />;
   }
 
-  if (viewer.role !== "student" && (!managerOverview || !dashboardSummary)) {
+  if (viewer.primaryRole !== "student" && (!managerOverview || !dashboardSummary)) {
     return <LoadingScreen message="Loading management intelligence..." />;
   }
 
-  if (viewer.role === "student" && studentDashboard && progress && nudgeSummary) {
+  if (viewer.primaryRole === "student" && studentDashboard && progress && nudgeSummary) {
     return (
       <ScreenShell
         title={`Hi, ${viewer.fullName?.split(" ")[0] ?? "Student"}`}

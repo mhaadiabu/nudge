@@ -3,23 +3,6 @@ import type { Doc } from "../_generated/dataModel";
 
 type AuthDbCtx = Pick<QueryCtx, "auth" | "db"> | Pick<MutationCtx, "auth" | "db">;
 
-export function inferRoleFromEmail(email: string): Doc<"profiles">["role"] {
-  const lowered = email.toLowerCase();
-  if (lowered.includes("research")) {
-    return "researcher";
-  }
-  if (lowered.includes("department") || lowered.includes("admin")) {
-    return "departmentAdmin";
-  }
-  if (lowered.includes("lecturer")) {
-    return "lecturer";
-  }
-  if (lowered.includes("classrep") || lowered.includes("class.rep") || lowered.includes("rep")) {
-    return "classRep";
-  }
-  return "student";
-}
-
 export async function getIdentityOrThrow(ctx: AuthDbCtx) {
   const identity = await ctx.auth.getUserIdentity();
   if (!identity) {
@@ -75,13 +58,13 @@ export async function getViewerProfileOrThrow(ctx: AuthDbCtx) {
   return profile;
 }
 
-export function isPrivilegedRole(role: Doc<"profiles">["role"]) {
-  return role !== "student";
+export function isPrivilegedRole(profile: Doc<"profiles">) {
+  return profile.roles.some((role) => role !== "student");
 }
 
 export async function ensureManagementAccess(ctx: AuthDbCtx) {
   const profile = await getViewerProfileOrThrow(ctx);
-  if (!isPrivilegedRole(profile.role)) {
+  if (!isPrivilegedRole(profile)) {
     throw new Error("This action is restricted to academic managers and research leads.");
   }
   return profile;

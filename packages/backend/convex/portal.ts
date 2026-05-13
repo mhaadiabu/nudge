@@ -9,8 +9,8 @@ function sortByPublished<T extends { publishedAt: number }>(rows: T[]) {
   return [...rows].sort((a, b) => b.publishedAt - a.publishedAt);
 }
 
-function matchesAudience(audienceRoles: string[], role: string) {
-  return audienceRoles.includes(role);
+function matchesAudience(audienceRoles: string[], viewerRoles: string[]) {
+  return audienceRoles.some((role) => viewerRoles.includes(role));
 }
 
 async function getViewerCourseIds(ctx: QueryCtx, viewerId: Id<"profiles">) {
@@ -63,20 +63,20 @@ export const getStudentDashboard = query({
 
     const timetable = (await ctx.db.query("timetableEvents").withIndex("by_start").collect())
       .filter(
-        (event) => event.endsAt >= Date.now() && matchesAudience(event.audienceRoles, viewer.role),
+        (event) => event.endsAt >= Date.now() && matchesAudience(event.audienceRoles, viewer.roles),
       )
       .filter((event) => (event.courseId ? courseIds.includes(event.courseId) : true))
       .slice(0, 8);
 
     const announcements = sortByPublished(await ctx.db.query("announcements").collect())
-      .filter((announcement) => matchesAudience(announcement.audienceRoles, viewer.role))
+      .filter((announcement) => matchesAudience(announcement.audienceRoles, viewer.roles))
       .filter((announcement) =>
         announcement.courseId ? courseIds.includes(announcement.courseId) : true,
       )
       .slice(0, 5);
 
     const resources = (await ctx.db.query("resources").withIndex("by_createdAt").collect())
-      .filter((resource) => matchesAudience(resource.audienceRoles, viewer.role))
+      .filter((resource) => matchesAudience(resource.audienceRoles, viewer.roles))
       .filter((resource) => (resource.courseId ? courseIds.includes(resource.courseId) : true))
       .sort((a, b) => Number(b.isPinned) - Number(a.isPinned) || b.createdAt - a.createdAt)
       .slice(0, 6);
@@ -97,7 +97,7 @@ export const getStudentDashboard = query({
       .withIndex("by_status", (query) => query.eq("status", "live"))
       .collect();
     const survey =
-      liveSurveys.find((item) => matchesAudience(item.audienceRoles, viewer.role)) ?? null;
+      liveSurveys.find((item) => matchesAudience(item.audienceRoles, viewer.roles)) ?? null;
 
     const experimentAssignments = await ctx.db
       .query("experimentAssignments")
@@ -153,7 +153,7 @@ export const listCalendarFeed = query({
 
     const items = [
       ...timetable
-        .filter((event) => matchesAudience(event.audienceRoles, viewer.role))
+        .filter((event) => matchesAudience(event.audienceRoles, viewer.roles))
         .filter((event) => (event.courseId ? courseIds.includes(event.courseId) : true))
         .map((event) => ({
           id: event._id,
@@ -198,7 +198,7 @@ export const listResources = query({
 
     const rows = await Promise.all(
       resources
-        .filter((resource) => matchesAudience(resource.audienceRoles, viewer.role))
+        .filter((resource) => matchesAudience(resource.audienceRoles, viewer.roles))
         .filter((resource) => (resource.courseId ? courseIds.includes(resource.courseId) : true))
         .map(async (resource) => ({
           ...resource,
@@ -221,7 +221,7 @@ export const listAnnouncements = query({
 
     const rows = await Promise.all(
       announcements
-        .filter((announcement) => matchesAudience(announcement.audienceRoles, viewer.role))
+        .filter((announcement) => matchesAudience(announcement.audienceRoles, viewer.roles))
         .filter((announcement) =>
           announcement.courseId ? courseIds.includes(announcement.courseId) : true,
         )
@@ -239,7 +239,7 @@ export const getManagerOverview = query({
   args: {},
   handler: async (ctx) => {
     const viewer = await getViewerProfileOrThrow(ctx);
-    if (!isPrivilegedRole(viewer.role)) {
+    if (!isPrivilegedRole(viewer.roles)) {
       throw new Error("Manager overview is not available for student accounts.");
     }
 
@@ -253,8 +253,8 @@ export const getManagerOverview = query({
         ctx.db.query("surveyTemplates").collect(),
       ]);
 
-    const students = profiles.filter((profile) => profile.role === "student");
-    const managers = profiles.filter((profile) => profile.role !== "student");
+    const students = profiles.filter((profile) => profile.roles.includes("student"));
+    const managers = profiles.filter((profile) => profile.roles.some((role) => role !== "student"));
     const upcomingEvents = timetableEvents
       .filter((event) => event.startsAt >= Date.now())
       .slice(0, 5);
@@ -481,7 +481,7 @@ export const getLiveSurvey = query({
       .withIndex("by_status", (query) => query.eq("status", "live"))
       .collect();
 
-    return surveys.find((survey) => matchesAudience(survey.audienceRoles, viewer.role)) ?? null;
+    return surveys.find((survey) => matchesAudience(survey.audienceRoles, viewer.roles)) ?? null;
   },
 });
 

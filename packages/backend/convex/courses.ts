@@ -8,7 +8,7 @@ export const listForViewer = query({
   handler: async (ctx) => {
     const viewer = await getViewerProfileOrThrow(ctx);
 
-    const enrollments = isPrivilegedRole(viewer.role)
+    const enrollments = isPrivilegedRole(viewer)
       ? await ctx.db.query("courseEnrollments").collect()
       : await ctx.db
           .query("courseEnrollments")
@@ -70,7 +70,7 @@ export const createCourse = mutation({
       semester: args.semester,
       creditHours: args.creditHours,
       description: args.description,
-      lecturerProfileId: actor.role === "lecturer" ? actor._id : undefined,
+      lecturerProfileId: actor.roles.includes("lecturer") ? actor._id : undefined,
       classRepProfileId: undefined,
       lmsUrl: args.lmsUrl,
       createdAt: now,
