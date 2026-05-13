@@ -8,7 +8,12 @@
     },
     "name": "nudge",
     "slug": "nudge",
-    "plugins": ["expo-font", "expo-router", "expo-secure-store", "expo-web-browser"],
+    "plugins": [
+      "expo-font",
+      "expo-router",
+      "expo-secure-store",
+      "expo-web-browser"
+    ],
     "experiments": {
       "reactCompiler": true,
       "typedRoutes": true
@@ -20,6 +25,13 @@
     },
     "android": {
       "package": "com.mhaadiabu.nudge"
-    }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/2aa02266-9470-4779-9cef-1b0db9f65ea1"
+    },
+    "ios": {}
   }
 }
