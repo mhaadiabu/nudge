@@ -1,5 +1,7 @@
-import { Button, Surface } from "heroui-native";
+import { Ionicons } from "@expo/vector-icons";
+import { Button, Surface, useToast } from "heroui-native";
 import { Text, View } from "react-native";
+import { withUniwind } from "uniwind";
 
 import { Container } from "@/components/container";
 import { authClient } from "@/lib/auth-client";
@@ -10,7 +12,11 @@ const demoAccounts = [
   "ama.ofori@upsa.edu.gh",
 ];
 
+const StyledIonicons = withUniwind(Ionicons);
+
 export function AuthGate() {
+  const { toast } = useToast();
+
   return (
     <Container className="px-4 py-8">
       <View className="gap-5">
@@ -27,11 +33,24 @@ export function AuthGate() {
           <Button
             className="w-full"
             variant="primary"
-            onPress={() => {
-              authClient.signIn.social("google");
+            onPress={async () => {
+              await authClient.signIn.social(
+                { provider: "google" },
+                {
+                  onError(error) {
+                    toast.show({
+                      variant: "danger",
+                      label: error.error?.message || "Google sign-in failed",
+                    });
+                  },
+                },
+              );
             }}
           >
-            <Button.Label>Sign in with Google</Button.Label>
+            <View className="flex-row items-center justify-center gap-2">
+              <StyledIonicons name="logo-google" size={18} className="text-primary-foreground" />
+              <Button.Label>Sign in with Google</Button.Label>
+            </View>
           </Button>
           <Text className="text-center text-xs text-muted mt-2">
             Only @upsamail.edu.gh accounts are allowed.
