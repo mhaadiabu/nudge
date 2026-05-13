@@ -73,7 +73,6 @@ export const seedDemoData = mutation({
     const currentStudentCount = await ctx.db
       .query("profiles")
       .collect();
-      .collect();
 
     if (currentStudentCount.length > 0) {
       return { seeded: false, message: "Demo data already exists. Skipping reseed." };
