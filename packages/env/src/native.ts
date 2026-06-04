@@ -19,6 +19,4 @@ export const env = parsedEnv.success ? parsedEnv.data : fallbackEnv;
 
 export const envValidationError = parsedEnv.success
   ? null
-  : parsedEnv.error.issues
-      .map((issue) => `${issue.path.join(".")}: ${issue.message}`)
-      .join("; ");
+  : parsedEnv.error.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`).join("; ");
