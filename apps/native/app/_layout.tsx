@@ -30,25 +30,18 @@ function StartupErrorScreen() {
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
-        paddingHorizontal: 20,
+        paddingHorizontal: 24,
         backgroundColor: "#09090B",
       }}
     >
-      <View
-        style={{
-          width: "100%",
-          maxWidth: 420,
-          borderRadius: 16,
-          padding: 16,
-          backgroundColor: "#18181B",
-          gap: 8,
-        }}
-      >
-        <Text style={{ fontSize: 20, fontWeight: "600", color: "#FAFAFA" }}>Nudge startup blocked</Text>
+      <View style={{ width: "100%", maxWidth: 420, gap: 8 }}>
+        <Text style={{ fontSize: 22, fontWeight: "600", color: "#FAFAFA" }}>
+          Nudge startup blocked
+        </Text>
         <Text style={{ fontSize: 14, color: "#A1A1AA" }}>
           Invalid or missing public Convex environment values were detected.
         </Text>
-        <Text style={{ fontSize: 12, color: "#F87171" }}>{envValidationError}</Text>
+        <Text style={{ fontSize: 12, color: "#F87171", marginTop: 4 }}>{envValidationError}</Text>
       </View>
     </View>
   );
@@ -111,7 +104,9 @@ function AppTabs() {
         options={{
           headerTitle: "Dashboard",
           tabBarLabel: "Dashboard",
-          tabBarIcon: ({ color, size }) => <Ionicons name="grid-outline" size={size} color={color} />,
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="grid-outline" size={size} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
@@ -119,7 +114,9 @@ function AppTabs() {
         options={{
           headerTitle: "Planner",
           tabBarLabel: "Planner",
-          tabBarIcon: ({ color, size }) => <Ionicons name="checkbox-outline" size={size} color={color} />,
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="checkbox-outline" size={size} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
@@ -127,7 +124,9 @@ function AppTabs() {
         options={{
           headerTitle: "Calendar",
           tabBarLabel: "Calendar",
-          tabBarIcon: ({ color, size }) => <Ionicons name="calendar-outline" size={size} color={color} />,
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="calendar-outline" size={size} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
@@ -135,7 +134,9 @@ function AppTabs() {
         options={{
           headerTitle: "Nudges",
           tabBarLabel: "Nudges",
-          tabBarIcon: ({ color, size }) => <Ionicons name="notifications-outline" size={size} color={color} />,
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="notifications-outline" size={size} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
@@ -143,7 +144,9 @@ function AppTabs() {
         options={{
           headerTitle: "More",
           tabBarLabel: "More",
-          tabBarIcon: ({ color, size }) => <Ionicons name="menu-outline" size={size} color={color} />,
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="menu-outline" size={size} color={color} />
+          ),
         }}
       />
     </Tabs>

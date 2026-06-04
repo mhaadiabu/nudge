@@ -16,14 +16,14 @@ export default function CalendarScreen() {
 
   return (
     <ScreenShell title="Calendar">
-      <View className="gap-3">
+      <View className="gap-10">
         {items.map((item) => (
           <SectionCard
             key={`${item.kind}-${item.id}`}
             title={item.title}
             description={`${formatDayLabel(item.startsAt)} • ${item.kind}`}
           >
-            <Text className="text-sm text-foreground">{item.detail}</Text>
+            <Text className="text-sm leading-5 text-foreground">{item.detail}</Text>
             <Text className="text-sm text-muted">
               {formatShortDate(item.startsAt)}
               {item.endsAt !== item.startsAt ? ` - ${formatShortDate(item.endsAt)}` : ""}

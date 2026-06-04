@@ -23,7 +23,7 @@ export default function NudgesScreen() {
 
   return (
     <ScreenShell title="Nudges">
-      <View className="flex-row flex-wrap gap-3">
+      <View className="flex-row flex-wrap gap-x-8 gap-y-6">
         <MetricCard label="Scheduled" value={String(summary.scheduledCount)} />
         <MetricCard label="Sent" value={String(summary.sentCount)} />
         <MetricCard label="Opened" value={String(summary.openedCount)} />
@@ -57,14 +57,14 @@ export default function NudgesScreen() {
         </View>
       </SectionCard>
 
-      <View className="gap-3">
+      <View className="gap-10">
         {nudges.map((nudge) => (
           <SectionCard
             key={nudge._id}
             title={nudge.title}
             description={`${nudge.type} • ${nudge.channel} • ${nudge.deliveryStatus}`}
           >
-            <Text className="text-sm text-foreground">{nudge.message}</Text>
+            <Text className="text-sm leading-5 text-foreground">{nudge.message}</Text>
             <Text className="text-sm text-muted">
               Scheduled {formatShortDate(nudge.scheduledFor)}
               {nudge.openedAt ? ` • Opened ${formatShortDate(nudge.openedAt)}` : ""}
@@ -74,7 +74,7 @@ export default function NudgesScreen() {
               <Button
                 size="sm"
                 variant="secondary"
-                className="self-start"
+                className="mt-2 self-start"
                 onPress={async () => {
                   await markOpened({ nudgeEventId: nudge._id });
                   toast.show({ variant: "success", label: "Nudge marked opened" });

@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import { Button, Surface, useToast } from "heroui-native";
+import { Button, useToast } from "heroui-native";
 import { Text, View } from "react-native";
 import { withUniwind } from "uniwind";
 
@@ -18,18 +18,16 @@ export function AuthGate() {
   const { toast } = useToast();
 
   return (
-    <Container className="px-4 py-8">
-      <View className="gap-5">
-        <Surface variant="secondary" className="rounded-3xl p-6">
-          <View className="gap-3">
-            <Text className="text-3xl font-semibold text-foreground">Nudge</Text>
-            <Text className="text-base text-muted">
-              Sign in with your UPSA account to access assignments, timetable, resources, and nudges.
-            </Text>
-          </View>
-        </Surface>
+    <Container className="px-6 py-12">
+      <View className="flex-1 justify-center gap-10">
+        <View className="gap-3">
+          <Text className="text-4xl font-semibold tracking-tight text-foreground">Nudge</Text>
+          <Text className="text-base leading-6 text-muted">
+            Sign in with your UPSA account to access assignments, timetable, resources, and nudges.
+          </Text>
+        </View>
 
-        <Surface variant="secondary" className="rounded-3xl p-5">
+        <View className="gap-3">
           <Button
             className="w-full"
             variant="primary"
@@ -38,9 +36,13 @@ export function AuthGate() {
                 { provider: "google", callbackURL: "/" },
                 {
                   onError(error) {
+                    const message = error.error?.message || "Google sign-in failed";
+                    const hint = message.toLowerCase().includes("invalid")
+                      ? " Check that the OAuth redirect URI is registered in Google Cloud Console."
+                      : "";
                     toast.show({
                       variant: "danger",
-                      label: error.error?.message || "Google sign-in failed",
+                      label: `${message}${hint}`,
                     });
                   },
                 },
@@ -52,17 +54,17 @@ export function AuthGate() {
               <Button.Label>Sign in with Google</Button.Label>
             </View>
           </Button>
-          <Text className="text-center text-xs text-muted mt-2">
+          <Text className="text-center text-xs text-muted">
             Only @upsamail.edu.gh accounts are allowed.
           </Text>
-        </Surface>
+        </View>
 
-        <Surface variant="secondary" className="rounded-3xl p-5">
-          <View className="gap-2">
-            <Text className="text-sm font-medium text-foreground">Demo accounts (after seeding)</Text>
-            <Text className="text-sm text-muted">{demoAccounts.join("  •  ")}</Text>
-          </View>
-        </Surface>
+        <View className="gap-1.5">
+          <Text className="text-xs font-medium uppercase tracking-wider text-muted">
+            Demo accounts
+          </Text>
+          <Text className="text-sm leading-5 text-muted">{demoAccounts.join("  •  ")}</Text>
+        </View>
       </View>
     </Container>
   );

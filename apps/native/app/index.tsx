@@ -7,7 +7,7 @@ import { LoadingScreen } from "@/components/loading-screen";
 import { MetricCard } from "@/components/metric-card";
 import { ScreenShell } from "@/components/screen-shell";
 import { SectionCard } from "@/components/section-card";
-import { formatDayLabel, formatPercent, formatRole, formatShortDate } from "@/lib/format";
+import { formatDayLabel, formatPercent, formatShortDate } from "@/lib/format";
 
 export default function DashboardScreen() {
   const { toast } = useToast();
@@ -50,26 +50,23 @@ export default function DashboardScreen() {
 
   if (viewer.primaryRole === "student" && studentDashboard && progress && nudgeSummary) {
     return (
-      <ScreenShell
-        title={`Hi, ${viewer.fullName?.split(" ")[0] ?? "Student"}`}
-      >
-        <View className="flex-row flex-wrap gap-3">
+      <ScreenShell title={`Hi, ${viewer.fullName?.split(" ")[0] ?? "Student"}`}>
+        <View className="flex-row flex-wrap gap-x-8 gap-y-6">
           <MetricCard
-            label="Assignments due soon"
+            label="Due soon"
             value={String(progress.assignmentStateCounts.dueSoon)}
+            detail="Assignments"
           />
           <MetricCard
-            label="On-time rate"
+            label="On-time"
             value={formatPercent(progress.metrics.onTimeRate)}
+            detail="Submissions"
           />
           <MetricCard
             label="Attendance"
             value={formatPercent(studentDashboard.attendanceSummary.attendanceRate)}
           />
-          <MetricCard
-            label="Nudges opened"
-            value={formatPercent(nudgeSummary.openRate)}
-          />
+          <MetricCard label="Nudge open" value={formatPercent(nudgeSummary.openRate)} />
         </View>
 
         <SectionCard title="Behavioral nudges">
@@ -109,11 +106,11 @@ export default function DashboardScreen() {
         </SectionCard>
 
         <SectionCard title="Upcoming assignments">
-          <View className="gap-3">
+          <View className="gap-6">
             {studentDashboard.upcomingAssignments.map((assignment) => (
-              <View key={assignment.assignmentId} className="rounded-2xl bg-background/50 p-3">
+              <View key={assignment.assignmentId} className="gap-1.5">
                 <Text className="text-base font-medium text-foreground">{assignment.title}</Text>
-                <Text className="mt-1 text-sm text-muted">
+                <Text className="text-sm text-muted">
                   {assignment.courseCode} • {formatShortDate(assignment.dueAt)} •{" "}
                   {assignment.status}
                 </Text>
@@ -121,7 +118,7 @@ export default function DashboardScreen() {
                   <Button
                     size="sm"
                     variant="secondary"
-                    className="mt-3 self-start"
+                    className="mt-2 self-start"
                     onPress={() => {
                       void Linking.openURL(assignment.linkUrl!);
                     }}
@@ -135,11 +132,11 @@ export default function DashboardScreen() {
         </SectionCard>
 
         <SectionCard title="Today and next">
-          <View className="gap-3">
+          <View className="gap-6">
             {studentDashboard.timetable.map((event) => (
-              <View key={event._id} className="rounded-2xl bg-background/50 p-3">
+              <View key={event._id} className="gap-1">
                 <Text className="text-base font-medium text-foreground">{event.title}</Text>
-                <Text className="mt-1 text-sm text-muted">
+                <Text className="text-sm text-muted">
                   {formatDayLabel(event.startsAt)} • {event.venue ?? "Venue update pending"} •{" "}
                   {event.kind}
                 </Text>
@@ -149,26 +146,26 @@ export default function DashboardScreen() {
         </SectionCard>
 
         <SectionCard title="Announcements">
-          <View className="gap-3">
+          <View className="gap-6">
             {studentDashboard.announcements.map((announcement) => (
-              <View key={announcement._id} className="rounded-2xl bg-background/50 p-3">
+              <View key={announcement._id} className="gap-1.5">
                 <Text className="text-base font-medium text-foreground">{announcement.title}</Text>
-                <Text className="mt-1 text-sm text-muted">
+                <Text className="text-sm text-muted">
                   {announcement.category} • {formatShortDate(announcement.publishedAt)}
                 </Text>
-                <Text className="mt-2 text-sm text-foreground">{announcement.body}</Text>
+                <Text className="text-sm leading-5 text-foreground">{announcement.body}</Text>
               </View>
             ))}
           </View>
         </SectionCard>
 
         <SectionCard title="Pinned resources">
-          <View className="gap-3">
+          <View className="gap-6">
             {studentDashboard.resources.map((resource) => (
-              <View key={resource._id} className="rounded-2xl bg-background/50 p-3">
+              <View key={resource._id} className="gap-1.5">
                 <Text className="text-base font-medium text-foreground">{resource.title}</Text>
-                <Text className="mt-1 text-sm text-muted">{resource.kind}</Text>
-                <Text className="mt-2 text-sm text-foreground">{resource.description}</Text>
+                <Text className="text-sm text-muted">{resource.kind}</Text>
+                <Text className="text-sm leading-5 text-foreground">{resource.description}</Text>
               </View>
             ))}
           </View>
@@ -181,24 +178,24 @@ export default function DashboardScreen() {
   const analyticsSnapshot = dashboardSummary!;
 
   return (
-    <ScreenShell
-      title={`Welcome back, ${viewer.fullName?.split(" ")[0] ?? "Manager"}`}
-    >
-      <View className="flex-row flex-wrap gap-3">
+    <ScreenShell title={`Welcome back, ${viewer.fullName?.split(" ")[0] ?? "Manager"}`}>
+      <View className="flex-row flex-wrap gap-x-8 gap-y-6">
         <MetricCard label="Students" value={String(managerSnapshot.counts.students)} />
         <MetricCard label="Courses" value={String(managerSnapshot.counts.courses)} />
         <MetricCard
-          label="On-time rate"
+          label="On-time"
           value={formatPercent(analyticsSnapshot.submissionMetrics.onTimeRate)}
+          detail="Submissions"
         />
         <MetricCard
-          label="Nudge open rate"
+          label="Nudge open"
           value={formatPercent(analyticsSnapshot.nudgeMetrics.openRate)}
         />
       </View>
 
       <SectionCard title="Demo workspace">
         <Button
+          className="self-start"
           onPress={async () => {
             const result = await seedDemoData({});
             toast.show({
@@ -212,11 +209,11 @@ export default function DashboardScreen() {
       </SectionCard>
 
       <SectionCard title="Latest announcements">
-        <View className="gap-3">
+        <View className="gap-6">
           {managerSnapshot.latestAnnouncements.map((announcement) => (
-            <View key={announcement._id} className="rounded-2xl bg-background/50 p-3">
+            <View key={announcement._id} className="gap-1">
               <Text className="text-base font-medium text-foreground">{announcement.title}</Text>
-              <Text className="mt-1 text-sm text-muted">
+              <Text className="text-sm text-muted">
                 {announcement.category} • {formatShortDate(announcement.publishedAt)}
               </Text>
             </View>
@@ -225,11 +222,11 @@ export default function DashboardScreen() {
       </SectionCard>
 
       <SectionCard title="Upcoming academic events">
-        <View className="gap-3">
+        <View className="gap-6">
           {managerSnapshot.upcomingEvents.map((event) => (
-            <View key={event._id} className="rounded-2xl bg-background/50 p-3">
+            <View key={event._id} className="gap-1">
               <Text className="text-base font-medium text-foreground">{event.title}</Text>
-              <Text className="mt-1 text-sm text-muted">
+              <Text className="text-sm text-muted">
                 {formatShortDate(event.startsAt)} • {event.kind}
               </Text>
             </View>

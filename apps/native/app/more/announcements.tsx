@@ -17,14 +17,14 @@ export default function AnnouncementsScreen() {
 
   return (
     <ScreenShell title="Announcements">
-      <View className="gap-3">
+      <View className="gap-10">
         {announcements.map((announcement) => (
           <SectionCard
             key={announcement._id}
             title={announcement.title}
             description={`${announcement.course?.code ?? "Faculty"} • ${announcement.category}`}
           >
-            <Text className="text-sm text-foreground">{announcement.body}</Text>
+            <Text className="text-sm leading-5 text-foreground">{announcement.body}</Text>
             <Text className="text-sm text-muted">
               Published {formatShortDate(announcement.publishedAt)}
             </Text>
@@ -32,7 +32,7 @@ export default function AnnouncementsScreen() {
               <Button
                 size="sm"
                 variant="secondary"
-                className="self-start"
+                className="mt-2 self-start"
                 onPress={() => {
                   void Linking.openURL(announcement.linkUrl!);
                 }}

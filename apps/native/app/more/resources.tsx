@@ -17,7 +17,7 @@ export default function ResourcesScreen() {
 
   return (
     <ScreenShell title="Resources">
-      <View className="gap-3">
+      <View className="gap-10">
         {resources.map((resource) => (
           <SectionCard
             key={resource._id}
@@ -25,12 +25,12 @@ export default function ResourcesScreen() {
             description={`${resource.course?.code ?? "General"} • ${resource.kind}`}
           >
             {resource.description ? (
-              <Text className="text-sm text-foreground">{resource.description}</Text>
+              <Text className="text-sm leading-5 text-foreground">{resource.description}</Text>
             ) : null}
             <Text className="text-sm text-muted">Added {formatShortDate(resource.createdAt)}</Text>
             <Button
               size="sm"
-              className="self-start"
+              className="mt-2 self-start"
               onPress={() => {
                 void Linking.openURL(resource.url);
               }}

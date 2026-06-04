@@ -31,17 +31,14 @@ export default function PlannerScreen() {
 
   return (
     <ScreenShell title="Planner">
-      <View className="flex-row flex-wrap gap-3">
-        <SectionCard title="Submission performance">
-          <Text className="text-2xl font-semibold text-foreground">
-            {formatPercent(progress.metrics.onTimeRate)}
-          </Text>
-          <Text className="text-sm text-muted">
-            {progress.assignmentStateCounts.dueSoon} due soon •{" "}
-            {progress.assignmentStateCounts.overdue} overdue
-          </Text>
-        </SectionCard>
-      </View>
+      <SectionCard
+        title="Submission performance"
+        description={`${progress.assignmentStateCounts.dueSoon} due soon • ${progress.assignmentStateCounts.overdue} overdue`}
+      >
+        <Text className="text-3xl font-semibold tracking-tight text-foreground">
+          {formatPercent(progress.metrics.onTimeRate)}
+        </Text>
+      </SectionCard>
 
       <SectionCard title="Find work">
         <TextInput
@@ -49,7 +46,7 @@ export default function PlannerScreen() {
           onChangeText={setSearch}
           placeholder="Search by title or course code"
           placeholderTextColor="#8b8b95"
-          className="rounded-2xl bg-background px-4 py-3 text-foreground"
+          className="rounded-xl border border-border bg-background px-4 py-3 text-foreground"
         />
         <View className="flex-row flex-wrap gap-2">
           {filters.map((item) => (
@@ -67,7 +64,7 @@ export default function PlannerScreen() {
         </View>
       </SectionCard>
 
-      <View className="gap-3">
+      <View className="gap-10">
         {assignments.map((assignment) => (
           <SectionCard
             key={assignment.assignmentRecipientId}
@@ -75,7 +72,7 @@ export default function PlannerScreen() {
             description={`${assignment.courseCode} • ${formatShortDate(assignment.dueAt)} • ${assignment.status}`}
           >
             {assignment.description ? (
-              <Text className="text-sm text-foreground">{assignment.description}</Text>
+              <Text className="text-sm leading-5 text-foreground">{assignment.description}</Text>
             ) : null}
             <Text className="text-sm text-muted">
               {assignment.submittedAt

@@ -75,7 +75,7 @@ export default function ManagementScreen() {
     return (
       <ScreenShell title="Management">
         <SectionCard title="Access required">
-          <Text className="text-sm text-muted">
+          <Text className="text-sm leading-5 text-muted">
             Sign in with a manager account such as department.admin@upsa.edu.gh after seeding the
             demo workspace.
           </Text>
@@ -102,31 +102,35 @@ export default function ManagementScreen() {
 
   return (
     <ScreenShell title="Management">
-      <View className="flex-row flex-wrap gap-3">
+      <View className="flex-row flex-wrap gap-x-8 gap-y-6">
         <MetricCard label="Students" value={String(managerOverview.counts.students)} />
         <MetricCard label="Managers" value={String(managerOverview.counts.managers)} />
         <MetricCard
-          label="On-time rate"
+          label="On-time"
           value={formatPercent(analyticsSummary.submissionMetrics.onTimeRate)}
+          detail="Submissions"
         />
         <MetricCard
-          label="Nudge open rate"
+          label="Nudge open"
           value={formatPercent(analyticsSummary.nudgeMetrics.openRate)}
         />
       </View>
 
-      <SectionCard title="Pilot readiness">
-        <Text className="text-sm text-foreground">
-          {readinessOverview.isReady
+      <SectionCard
+        title="Pilot readiness"
+        description={
+          readinessOverview.isReady
             ? "All core data feeds confirmed."
-            : "Some data feeds still need confirmation."}
-        </Text>
+            : "Some data feeds still need confirmation."
+        }
+      >
         <Text className="text-sm text-muted">
           Assignments: {String(readinessOverview.hasAssignmentSource)} • Submissions:{" "}
           {String(readinessOverview.hasSubmissionSource)} • Timetable:{" "}
           {String(readinessOverview.hasTimetableSource)}
         </Text>
         <Button
+          className="self-start"
           onPress={async () => {
             const result = await seedDemoData({});
             toast.show({
@@ -145,14 +149,14 @@ export default function ManagementScreen() {
           onChangeText={setAnnouncementTitle}
           placeholder="Announcement title"
           placeholderTextColor="#8b8b95"
-          className="rounded-2xl bg-background px-4 py-3 text-foreground"
+          className="rounded-xl border border-border bg-background px-4 py-3 text-foreground"
         />
         <TextInput
           value={announcementCourseCode}
           onChangeText={setAnnouncementCourseCode}
           placeholder="Course code (optional)"
           placeholderTextColor="#8b8b95"
-          className="rounded-2xl bg-background px-4 py-3 text-foreground"
+          className="rounded-xl border border-border bg-background px-4 py-3 text-foreground"
         />
         <TextInput
           value={announcementBody}
@@ -160,9 +164,10 @@ export default function ManagementScreen() {
           placeholder="Announcement body"
           placeholderTextColor="#8b8b95"
           multiline
-          className="min-h-24 rounded-2xl bg-background px-4 py-3 text-foreground"
+          className="min-h-24 rounded-xl border border-border bg-background px-4 py-3 text-foreground"
         />
         <Button
+          className="self-start"
           onPress={async () => {
             await createAnnouncement({
               courseCode: announcementCourseCode || undefined,
@@ -188,23 +193,24 @@ export default function ManagementScreen() {
           onChangeText={setResourceTitle}
           placeholder="Resource title"
           placeholderTextColor="#8b8b95"
-          className="rounded-2xl bg-background px-4 py-3 text-foreground"
+          className="rounded-xl border border-border bg-background px-4 py-3 text-foreground"
         />
         <TextInput
           value={resourceCourseCode}
           onChangeText={setResourceCourseCode}
           placeholder="Course code (optional)"
           placeholderTextColor="#8b8b95"
-          className="rounded-2xl bg-background px-4 py-3 text-foreground"
+          className="rounded-xl border border-border bg-background px-4 py-3 text-foreground"
         />
         <TextInput
           value={resourceUrl}
           onChangeText={setResourceUrl}
           placeholder="https://..."
           placeholderTextColor="#8b8b95"
-          className="rounded-2xl bg-background px-4 py-3 text-foreground"
+          className="rounded-xl border border-border bg-background px-4 py-3 text-foreground"
         />
         <Button
+          className="self-start"
           onPress={async () => {
             await createResource({
               courseCode: resourceCourseCode || undefined,
@@ -231,21 +237,21 @@ export default function ManagementScreen() {
           onChangeText={setEventTitle}
           placeholder="Event title"
           placeholderTextColor="#8b8b95"
-          className="rounded-2xl bg-background px-4 py-3 text-foreground"
+          className="rounded-xl border border-border bg-background px-4 py-3 text-foreground"
         />
         <TextInput
           value={eventCourseCode}
           onChangeText={setEventCourseCode}
           placeholder="Course code (optional)"
           placeholderTextColor="#8b8b95"
-          className="rounded-2xl bg-background px-4 py-3 text-foreground"
+          className="rounded-xl border border-border bg-background px-4 py-3 text-foreground"
         />
         <TextInput
           value={eventVenue}
           onChangeText={setEventVenue}
           placeholder="Venue"
           placeholderTextColor="#8b8b95"
-          className="rounded-2xl bg-background px-4 py-3 text-foreground"
+          className="rounded-xl border border-border bg-background px-4 py-3 text-foreground"
         />
         <TextInput
           value={eventHoursFromNow}
@@ -253,9 +259,10 @@ export default function ManagementScreen() {
           placeholder="Hours from now"
           placeholderTextColor="#8b8b95"
           keyboardType="numeric"
-          className="rounded-2xl bg-background px-4 py-3 text-foreground"
+          className="rounded-xl border border-border bg-background px-4 py-3 text-foreground"
         />
         <Button
+          className="self-start"
           onPress={async () => {
             const startsAt = Date.now() + Number(eventHoursFromNow || "24") * 60 * 60 * 1000;
             await createTimetableEvent({
@@ -287,14 +294,14 @@ export default function ManagementScreen() {
           onChangeText={setAssignmentTitle}
           placeholder="Assignment title"
           placeholderTextColor="#8b8b95"
-          className="rounded-2xl bg-background px-4 py-3 text-foreground"
+          className="rounded-xl border border-border bg-background px-4 py-3 text-foreground"
         />
         <TextInput
           value={assignmentCourseCode}
           onChangeText={setAssignmentCourseCode}
           placeholder="Course code"
           placeholderTextColor="#8b8b95"
-          className="rounded-2xl bg-background px-4 py-3 text-foreground"
+          className="rounded-xl border border-border bg-background px-4 py-3 text-foreground"
         />
         <TextInput
           value={assignmentDueHours}
@@ -302,9 +309,10 @@ export default function ManagementScreen() {
           placeholder="Hours until due"
           placeholderTextColor="#8b8b95"
           keyboardType="numeric"
-          className="rounded-2xl bg-background px-4 py-3 text-foreground"
+          className="rounded-xl border border-border bg-background px-4 py-3 text-foreground"
         />
         <Button
+          className="self-start"
           onPress={async () => {
             await createAssignment({
               courseCode: assignmentCourseCode,
@@ -324,28 +332,29 @@ export default function ManagementScreen() {
         </Button>
       </SectionCard>
 
-      <SectionCard title="People">
-        <View className="gap-2">
+      <SectionCard title="People" description={`${people.length} in this workspace`}>
+        <View className="gap-6">
           {people.slice(0, 8).map((person) => (
-            <View key={person._id} className="rounded-2xl bg-background/50 p-3">
+            <View key={person._id} className="gap-0.5">
               <Text className="text-sm font-medium text-foreground">
                 {person.fullName ?? person.email}
               </Text>
               <Text className="text-sm text-muted">
-                {formatRole(person.role)} • {person.studentId ?? person.email}
+                {formatRole(person.roles ?? person.primaryRole)} •{" "}
+                {person.studentId ?? person.email}
               </Text>
             </View>
           ))}
         </View>
       </SectionCard>
 
-      <SectionCard title="Experiments and strategies">
-        <Text className="text-sm text-muted">
-          {experiments.length} experiments • {strategies.length} strategies
-        </Text>
-        <View className="gap-2">
+      <SectionCard
+        title="Experiments and strategies"
+        description={`${experiments.length} experiments • ${strategies.length} strategies`}
+      >
+        <View className="gap-6">
           {experiments.slice(0, 4).map((experiment) => (
-            <View key={experiment._id} className="rounded-2xl bg-background/50 p-3">
+            <View key={experiment._id} className="gap-0.5">
               <Text className="text-sm font-medium text-foreground">{experiment.name}</Text>
               <Text className="text-sm text-muted">
                 {experiment.status} • {experiment.participantCount} participants
@@ -356,9 +365,9 @@ export default function ManagementScreen() {
       </SectionCard>
 
       <SectionCard title="Recent activity">
-        <View className="gap-2">
+        <View className="gap-6">
           {activityLog.map((event) => (
-            <View key={event._id} className="rounded-2xl bg-background/50 p-3">
+            <View key={event._id} className="gap-0.5">
               <Text className="text-sm font-medium text-foreground">{event.eventType}</Text>
               <Text className="text-sm text-muted">{formatShortDate(event.eventAt)}</Text>
             </View>

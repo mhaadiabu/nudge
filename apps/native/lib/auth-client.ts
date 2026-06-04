@@ -8,8 +8,8 @@ import { Platform } from "react-native";
 
 const configuredScheme = Constants.expoConfig?.scheme;
 const appScheme = Array.isArray(configuredScheme)
-  ? configuredScheme[0] ?? "nudge"
-  : configuredScheme ?? "nudge";
+  ? (configuredScheme[0] ?? "nudge")
+  : (configuredScheme ?? "nudge");
 
 export const authClient = createAuthClient({
   baseURL: env.EXPO_PUBLIC_CONVEX_SITE_URL,

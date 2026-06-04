@@ -1,7 +1,6 @@
 import { api } from "@nudge/backend/convex/_generated/api";
 import { useQuery } from "convex/react";
 import { Ionicons } from "@expo/vector-icons";
-import { Surface } from "heroui-native";
 import { useRouter } from "expo-router";
 import { Pressable, Text, View } from "react-native";
 
@@ -42,35 +41,28 @@ export default function MoreScreen() {
 
   return (
     <ScreenShell title="More">
-      <View className="gap-3">
-        {moreItems.map((item) => {
+      <View>
+        {moreItems.map((item, index) => {
           if (item.managerOnly && !isManager) {
             return null;
           }
           return (
-            <Surface
-              key={item.route}
-              variant="secondary"
-              className="rounded-2xl"
-            >
+            <View key={item.route}>
+              {index > 0 ? <View className="h-px bg-border" /> : <View className="h-2" />}
               <Pressable
                 onPress={() => {
                   router.push(item.route as any);
                 }}
-                className="flex-row items-center gap-4 p-4"
+                className="flex-row items-center gap-4 py-4"
               >
-                <Ionicons
-                  name={item.icon as any}
-                  size={24}
-                  className="text-foreground"
-                />
-                <View className="flex-1">
+                <Ionicons name={item.icon as any} size={20} className="text-foreground" />
+                <View className="flex-1 gap-0.5">
                   <Text className="text-base font-medium text-foreground">{item.label}</Text>
                   <Text className="text-sm text-muted">{item.description}</Text>
                 </View>
-                <Ionicons name="chevron-forward" size={20} className="text-muted" />
+                <Ionicons name="chevron-forward" size={18} className="text-muted" />
               </Pressable>
-            </Surface>
+            </View>
           );
         })}
       </View>

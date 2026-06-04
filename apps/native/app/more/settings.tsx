@@ -74,23 +74,23 @@ export default function SettingsScreen() {
 
   return (
     <ScreenShell title="Settings">
-      <SectionCard title="Profile">
-        <Text className="text-sm text-muted">{settingsBundle.profile.email}</Text>
+      <SectionCard title="Profile" description={settingsBundle.profile.email}>
         <TextInput
           value={programme}
           onChangeText={setProgramme}
           placeholder="Programme"
           placeholderTextColor="#8b8b95"
-          className="rounded-2xl bg-background px-4 py-3 text-foreground"
+          className="rounded-xl border border-border bg-background px-4 py-3 text-foreground"
         />
         <TextInput
           value={level}
           onChangeText={setLevel}
           placeholder="Level"
           placeholderTextColor="#8b8b95"
-          className="rounded-2xl bg-background px-4 py-3 text-foreground"
+          className="rounded-xl border border-border bg-background px-4 py-3 text-foreground"
         />
         <Button
+          className="self-start"
           onPress={async () => {
             await completeOnboarding({
               programme,
@@ -105,10 +105,10 @@ export default function SettingsScreen() {
         </Button>
       </SectionCard>
 
-      <SectionCard title="Consent">
-        <Text className="text-sm text-muted">
-          Current status: {settingsBundle.profile.consentStatus}
-        </Text>
+      <SectionCard
+        title="Consent"
+        description={`Current status: ${settingsBundle.profile.consentStatus}`}
+      >
         <View className="flex-row gap-3">
           <Button
             className="flex-1"
@@ -133,39 +133,40 @@ export default function SettingsScreen() {
       </SectionCard>
 
       <SectionCard title="Notification controls">
-        <View className="gap-3">
-          {preferenceEntries.map(([key, label]) => (
-            <View
-              key={key}
-              className="flex-row items-center justify-between rounded-2xl bg-background/50 p-3"
-            >
-              <Text className="text-sm text-foreground">{label}</Text>
-              <Switch
-                value={preferences[key]}
-                onValueChange={(value) => {
-                  setPreferences((current) => ({ ...current, [key]: value }));
-                }}
-              />
+        <View>
+          {preferenceEntries.map(([key, label], index) => (
+            <View key={key}>
+              {index > 0 ? <View className="h-px bg-border" /> : null}
+              <View className="flex-row items-center justify-between py-3.5">
+                <Text className="text-sm text-foreground">{label}</Text>
+                <Switch
+                  value={preferences[key]}
+                  onValueChange={(value) => {
+                    setPreferences((current) => ({ ...current, [key]: value }));
+                  }}
+                />
+              </View>
             </View>
           ))}
         </View>
-        <View className="flex-row gap-3">
+        <View className="mt-2 flex-row gap-3">
           <TextInput
             value={quietStart}
             onChangeText={setQuietStart}
             placeholder="Quiet start"
             placeholderTextColor="#8b8b95"
-            className="flex-1 rounded-2xl bg-background px-4 py-3 text-foreground"
+            className="flex-1 rounded-xl border border-border bg-background px-4 py-3 text-foreground"
           />
           <TextInput
             value={quietEnd}
             onChangeText={setQuietEnd}
             placeholder="Quiet end"
             placeholderTextColor="#8b8b95"
-            className="flex-1 rounded-2xl bg-background px-4 py-3 text-foreground"
+            className="flex-1 rounded-xl border border-border bg-background px-4 py-3 text-foreground"
           />
         </View>
         <Button
+          className="self-start"
           onPress={async () => {
             await updateSettings({
               ...preferences,
@@ -181,9 +182,9 @@ export default function SettingsScreen() {
 
       {liveSurvey ? (
         <SectionCard title={liveSurvey.title}>
-          <View className="gap-3">
+          <View className="gap-6">
             {liveSurvey.questions.map((question) => (
-              <View key={question.id} className="gap-2 rounded-2xl bg-background/50 p-3">
+              <View key={question.id} className="gap-2">
                 <Text className="text-sm text-foreground">{question.prompt}</Text>
                 <View className="flex-row gap-2">
                   {[1, 2, 3, 4, 5].map((score) => (
@@ -208,6 +209,7 @@ export default function SettingsScreen() {
             ))}
           </View>
           <Button
+            className="self-start"
             onPress={async () => {
               await submitSurveyResponse({
                 surveyTemplateId: liveSurvey._id,

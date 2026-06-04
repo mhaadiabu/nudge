@@ -1,14 +1,5 @@
 import { useForm } from "@tanstack/react-form";
-import {
-  Button,
-  FieldError,
-  Input,
-  Label,
-  Spinner,
-  Surface,
-  TextField,
-  useToast,
-} from "heroui-native";
+import { Button, FieldError, Input, Label, Spinner, TextField, useToast } from "heroui-native";
 import { useRef } from "react";
 import { Text, TextInput, View } from "react-native";
 import z from "zod";
@@ -89,8 +80,10 @@ export function SignUp() {
   });
 
   return (
-    <Surface variant="secondary" className="p-4 rounded-lg">
-      <Text className="text-foreground font-medium mb-4">Create Account</Text>
+    <View className="gap-5">
+      <Text className="text-xs font-medium uppercase tracking-wider text-muted">
+        Create Account
+      </Text>
 
       <form.Subscribe
         selector={(state) => ({
@@ -102,10 +95,8 @@ export function SignUp() {
           const formError = validationError;
 
           return (
-            <>
-              <FieldError isInvalid={!!formError} className="mb-3">
-                {formError}
-              </FieldError>
+            <View className="gap-4">
+              <FieldError isInvalid={!!formError}>{formError}</FieldError>
 
               <View className="gap-3">
                 <form.Field name="name">
@@ -172,19 +163,19 @@ export function SignUp() {
                     </TextField>
                   )}
                 </form.Field>
-
-                <Button onPress={form.handleSubmit} isDisabled={isSubmitting} className="mt-1">
-                  {isSubmitting ? (
-                    <Spinner size="sm" color="default" />
-                  ) : (
-                    <Button.Label>Create Account</Button.Label>
-                  )}
-                </Button>
               </View>
-            </>
+
+              <Button onPress={form.handleSubmit} isDisabled={isSubmitting}>
+                {isSubmitting ? (
+                  <Spinner size="sm" color="default" />
+                ) : (
+                  <Button.Label>Create Account</Button.Label>
+                )}
+              </Button>
+            </View>
           );
         }}
       </form.Subscribe>
-    </Surface>
+    </View>
   );
 }
