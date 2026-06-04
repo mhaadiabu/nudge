@@ -35,7 +35,7 @@ export function AuthGate() {
             variant="primary"
             onPress={async () => {
               await authClient.signIn.social(
-                { provider: "google" },
+                { provider: "google", callbackURL: "/" },
                 {
                   onError(error) {
                     toast.show({
