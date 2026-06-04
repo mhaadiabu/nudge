@@ -37,13 +37,7 @@ export function extractStudentIdFromEmail(email: string): string | undefined {
 
 function createAuth(ctx: GenericCtx<DataModel>) {
   return betterAuth({
-    trustedOrigins: [
-      siteUrl,
-      nativeAppUrl,
-      ...(process.env.NODE_ENV === "development"
-        ? ["exp://", "exp://**", "exp://192.168.*.*:*/**"]
-        : []),
-    ],
+    trustedOrigins: [siteUrl, nativeAppUrl, "exp://", "exp://**"],
     database: authComponent.adapter(ctx),
     socialProviders: {
       google: {

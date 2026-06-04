@@ -25,7 +25,9 @@ async function upsertProfileByEmail(
   if (existing) {
     await ctx.db.patch(existing._id, {
       fullName: values.fullName,
-      roles: existing.roles.includes(values.role) ? existing.roles : [...existing.roles, values.role].slice(0, 2),
+      roles: existing.roles.includes(values.role)
+        ? existing.roles
+        : [...existing.roles, values.role].slice(0, 2),
       primaryRole: values.role,
       studentId: values.studentId ?? existing.studentId,
       programme: values.programme ?? existing.programme,
@@ -39,9 +41,7 @@ async function upsertProfileByEmail(
   const cleanPart = localPart.replace(/[^a-z0-9]/gi, "");
   const isNumericStudent = /^\d{8}$/.test(cleanPart);
   const generatedStudentId =
-    values.role === "student" && isNumericStudent
-      ? `UPSA-${cleanPart}`
-      : values.studentId;
+    values.role === "student" && isNumericStudent ? `UPSA-${cleanPart}` : values.studentId;
 
   return ctx.db.insert("profiles", {
     authSubject: undefined,
@@ -70,9 +70,7 @@ export const seedDemoData = mutation({
     const actor = await ensureManagementAccess(ctx);
     const now = Date.now();
 
-    const currentStudentCount = await ctx.db
-      .query("profiles")
-      .collect();
+    const currentStudentCount = await ctx.db.query("profiles").collect();
 
     if (currentStudentCount.length > 0) {
       return { seeded: false, message: "Demo data already exists. Skipping reseed." };

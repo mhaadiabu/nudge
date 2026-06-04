@@ -146,7 +146,9 @@ export const listPeople = query({
     const people = await ctx.db.query("profiles").collect();
     return people
       .sort((a, b) =>
-        a.primaryRole === b.primaryRole ? a.email.localeCompare(b.email) : a.primaryRole.localeCompare(b.primaryRole),
+        a.primaryRole === b.primaryRole
+          ? a.email.localeCompare(b.email)
+          : a.primaryRole.localeCompare(b.primaryRole),
       )
       .map((person) => ({
         _id: person._id,
@@ -308,8 +310,8 @@ export const setRole = mutation({
     const newRoles = args.asPrimary
       ? [args.role, ...target.roles.filter((r) => r !== args.role)].slice(0, 2)
       : target.roles.includes(args.role)
-      ? target.roles
-      : [...target.roles, args.role].slice(0, 2);
+        ? target.roles
+        : [...target.roles, args.role].slice(0, 2);
 
     const newPrimaryRole = args.asPrimary ? args.role : target.primaryRole;
     const patch: {
