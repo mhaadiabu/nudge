@@ -1,3 +1,4 @@
+import { expo } from "@better-auth/expo";
 import { createClient, type GenericCtx } from "@convex-dev/better-auth";
 import { convex, crossDomain } from "@convex-dev/better-auth/plugins";
 import { betterAuth } from "better-auth/minimal";
@@ -51,6 +52,7 @@ function createAuth(ctx: GenericCtx<DataModel>) {
       },
     },
     plugins: [
+      expo(),
       crossDomain({ siteUrl }),
       convex({
         authConfig,

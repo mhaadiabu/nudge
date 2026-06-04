@@ -1,6 +1,8 @@
 packages:
   - apps/*
   - packages/*
+allowBuilds:
+  esbuild: false
 catalog:
   dotenv: ^17.2.2
   zod: ^4.1.13
