@@ -35,7 +35,7 @@ async function resolveStudentIds(ctx: QueryCtx, args: DashboardArgs) {
 
   const students = await ctx.db
     .query("profiles")
-    .withIndex("by_role", (query) => query.eq("role", "student"))
+    .withIndex("by_role", (query) => query.eq("primaryRole", "student"))
     .collect();
   return students.map((student) => student._id);
 }
