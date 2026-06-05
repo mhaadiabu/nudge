@@ -14,16 +14,24 @@ const ALLOWED_DOMAIN = "upsamail.edu.gh";
 
 export const authComponent = createClient<DataModel>(components.betterAuth);
 
-export function inferRoleFromEmail(email: string): Array<"student" | "lecturer" | "classRep" | "departmentAdmin" | "researcher"> {
+export function inferRoleFromEmail(
+  email: string,
+): Array<"student" | "lecturer" | "classRep" | "departmentAdmin" | "researcher"> {
   const localPart = email.toLowerCase().split("@")[0] ?? "";
   const isNumericStudent = /^\d{8}$/.test(localPart);
   if (isNumericStudent) {
     return ["student"];
   }
   if (localPart.includes("researcher") || localPart.includes("research")) return ["researcher"];
-  if (localPart.includes("department") || localPart.includes("dept") || localPart.includes("admin")) return ["departmentAdmin"];
+  if (localPart.includes("department") || localPart.includes("dept") || localPart.includes("admin"))
+    return ["departmentAdmin"];
   if (localPart.includes("lecturer") || localPart.includes("tutor")) return ["lecturer"];
-  if (localPart.includes("classrep") || localPart.includes("class.rep") || localPart.includes("rep")) return ["classRep", "student"];
+  if (
+    localPart.includes("classrep") ||
+    localPart.includes("class.rep") ||
+    localPart.includes("rep")
+  )
+    return ["classRep", "student"];
   return ["student"];
 }
 
