@@ -239,7 +239,7 @@ export const getManagerOverview = query({
   args: {},
   handler: async (ctx) => {
     const viewer = await getViewerProfileOrThrow(ctx);
-    if (!isPrivilegedRole(viewer.roles)) {
+    if (!isPrivilegedRole(viewer)) {
       throw new Error("Manager overview is not available for student accounts.");
     }
 
