@@ -3,3 +3,120 @@
 @import "heroui-native/styles";
 
 @source './node_modules/heroui-native/lib';
+
+/*
+ * Override HeroUI's default neutral-blue accent with our warm coral.
+ * All values are real hex/rgba (no oklch / color-mix) so React Native's
+ * style processor can resolve them at runtime.
+ */
+@theme inline static {
+  /* Brand */
+  --color-accent: #e5463a;
+  --color-accent-foreground: #ffffff;
+  --color-accent-soft: rgba(229, 70, 58, 0.12);
+  --color-accent-soft-foreground: #e5463a;
+  --color-accent-soft-hover: rgba(229, 70, 58, 0.2);
+  --color-accent-hover: #d23b30;
+  --color-accent-deep: #8e2a23;
+  --color-accent-glow: #f0a39a;
+
+  /* Positive / warning / info */
+  --color-success: #2faa6c;
+  --color-success-foreground: #ffffff;
+  --color-success-soft: rgba(47, 170, 108, 0.14);
+  --color-success-soft-foreground: #1f8a55;
+
+  --color-warning: #d4a017;
+  --color-warning-foreground: #1f1a0a;
+  --color-warning-soft: rgba(212, 160, 23, 0.16);
+  --color-warning-soft-foreground: #8a6611;
+
+  --color-info: #3490b5;
+  --color-info-foreground: #ffffff;
+  --color-info-soft: rgba(52, 144, 181, 0.14);
+  --color-info-soft-foreground: #226b8a;
+
+  --shadow-accent-glow:
+    0 10px 28px -6px rgba(229, 70, 58, 0.32), 0 2px 6px -1px rgba(229, 70, 58, 0.18);
+  --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.04), 0 2px 8px -2px rgba(0, 0, 0, 0.06);
+  --shadow-elevated:
+    0 6px 14px -4px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.04),
+    0 0 0 1px rgba(0, 0, 0, 0.04);
+}
+
+@layer theme {
+  :root {
+    @variant dark {
+      /* Push the canvas darker and lift surfaces so cards read as cards.
+         Hex values are used (not oklch) so RN's style processor can
+         resolve them at runtime. */
+      --background: #0a0a0c;
+      --surface: #232328;
+      --surface-secondary: #33333a;
+      --surface-tertiary: #3f3f47;
+      --overlay: #232328;
+
+      /* Brighter secondary text + hairlines for legibility on dark */
+      --muted: #d4d4d8;
+      --border: #52525b;
+      --separator: #71717a;
+
+      /* Give the canvas a tiny tint so it doesn't read as pure black */
+      --backdrop: rgba(0, 0, 0, 0.35);
+    }
+  }
+}
+
+@layer utilities {
+  /* Brand surfaces */
+  .accent-gradient {
+    background-image: linear-gradient(135deg, #8e2a23 0%, #e5463a 55%, #f0a39a 100%);
+  }
+
+  .accent-radial {
+    background-image: linear-gradient(180deg, #e5463a 0%, #8e2a23 60%, #3d1815 100%);
+  }
+
+  .accent-text-gradient {
+    background-image: linear-gradient(135deg, #e5463a 0%, #f0a39a 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  /*
+   * Soft mesh used as the hero card backdrop. A diagonal warm gradient
+   * does the heavy lifting; the radial orb above is a separate overlay.
+   * We avoid multi-stop radial gradients + color-mix() because uniwind
+   * cannot safely tokenize them, which triggers RN color-parser warnings.
+   */
+  .accent-mesh {
+    background-color: #8e2a23;
+    background-image: linear-gradient(135deg, #8e2a23 0%, #e5463a 60%, #8e2a23 100%);
+  }
+
+  .accent-mesh-orb {
+    background-color: #f0a39a;
+    background-image: linear-gradient(220deg, #f0a39a 0%, rgba(240, 163, 154, 0) 60%);
+    opacity: 0.45;
+  }
+
+  .surface-glass {
+    background-color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /*
+   * In dark mode, brand SVGs that use currentColor need their parent
+   * text color flipped so the artwork reads correctly on a dark canvas.
+   */
+  .dark\:invert-0 svg {
+    filter: none;
+  }
+}
