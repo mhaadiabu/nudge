@@ -2,6 +2,13 @@ export function formatShortDate(value: number) {
   return new Intl.DateTimeFormat("en-US", {
     month: "short",
     day: "numeric",
+  }).format(new Date(value));
+}
+
+export function formatDateTime(value: number) {
+  return new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
     hour: "numeric",
     minute: "2-digit",
   }).format(new Date(value));
