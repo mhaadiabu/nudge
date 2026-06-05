@@ -1,5 +1,7 @@
 import { useForm } from "@tanstack/react-form";
-import { Button, FieldError, Input, Label, Spinner, TextField, useToast } from "heroui-native";
+import { Button, FieldError, Input, Label, TextField, useToast } from "heroui-native";
+
+import { Spinner } from "@/components/spinner";
 import { useRef } from "react";
 import { Text, TextInput, View } from "react-native";
 import z from "zod";
@@ -165,7 +167,7 @@ export function SignUp() {
                 </form.Field>
               </View>
 
-              <Button onPress={form.handleSubmit} isDisabled={isSubmitting}>
+              <Button onPress={form.handleSubmit} isDisabled={isSubmitting} className="h-[44px]">
                 {isSubmitting ? (
                   <Spinner size="sm" color="default" />
                 ) : (
