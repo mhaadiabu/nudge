@@ -2,21 +2,18 @@ import "@/global.css";
 import { ConvexBetterAuthProvider } from "@convex-dev/better-auth/react";
 import { env, envValidationError } from "@nudge/env/native";
 import { ConvexReactClient } from "convex/react";
-import { Tabs } from "expo-router";
+import { Stack } from "expo-router";
 import { HeroUINativeProvider } from "heroui-native";
-import { Ionicons } from "@expo/vector-icons";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { Pressable, Text, View } from "react-native";
-import { useThemeColor } from "heroui-native";
+import { Text, View } from "react-native";
 import { useEffect, useRef } from "react";
+import { useConvexAuth, useMutation, useQuery } from "convex/react";
 
 import { AppThemeProvider } from "@/contexts/app-theme-context";
 import { authClient } from "@/lib/auth-client";
 import { api } from "@nudge/backend/convex/_generated/api";
-import { useConvexAuth, useMutation, useQuery } from "convex/react";
 import { AuthGate } from "@/components/auth-gate";
 import { LoadingScreen } from "@/components/loading-screen";
-import { ThemeToggle } from "@/components/theme-toggle";
 
 const convex = new ConvexReactClient(env.EXPO_PUBLIC_CONVEX_URL, {
   expectAuth: true,
@@ -47,13 +44,10 @@ function StartupErrorScreen() {
   );
 }
 
-function AppTabs() {
+function AppNavigator() {
   const { isAuthenticated, isLoading } = useConvexAuth();
   const ensureViewer = useMutation(api.profiles.ensureViewer);
   const viewer = useQuery(api.profiles.getViewer, isAuthenticated ? {} : "skip");
-  const themeColorForeground = useThemeColor("foreground");
-  const themeColorBackground = useThemeColor("background");
-  const themeColorBorder = useThemeColor("border");
   const hasBootstrapped = useRef(false);
 
   useEffect(() => {
@@ -77,79 +71,9 @@ function AppTabs() {
   }
 
   return (
-    <Tabs
-      screenOptions={{
-        headerStyle: { backgroundColor: themeColorBackground },
-        headerTitleStyle: { fontWeight: "600", color: themeColorForeground },
-        headerRight: () => (
-          <View className="mr-3 flex-row items-center gap-2">
-            <ThemeToggle />
-            <Pressable
-              onPress={() => {
-                authClient.signOut();
-              }}
-              className="rounded-full px-2 py-1"
-            >
-              <Text className="text-sm text-foreground">Sign out</Text>
-            </Pressable>
-          </View>
-        ),
-        tabBarStyle: { backgroundColor: themeColorBackground, borderTopColor: themeColorBorder },
-        tabBarActiveTintColor: themeColorForeground,
-        tabBarInactiveTintColor: themeColorForeground,
-      }}
-    >
-      <Tabs.Screen
-        name="index"
-        options={{
-          headerTitle: "Dashboard",
-          tabBarLabel: "Dashboard",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="grid-outline" size={size} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="planner"
-        options={{
-          headerTitle: "Planner",
-          tabBarLabel: "Planner",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="checkbox-outline" size={size} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="calendar"
-        options={{
-          headerTitle: "Calendar",
-          tabBarLabel: "Calendar",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="calendar-outline" size={size} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="nudges"
-        options={{
-          headerTitle: "Nudges",
-          tabBarLabel: "Nudges",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="notifications-outline" size={size} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="more"
-        options={{
-          headerTitle: "More",
-          tabBarLabel: "More",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="menu-outline" size={size} color={color} />
-          ),
-        }}
-      />
-    </Tabs>
+    <Stack screenOptions={{ headerShown: false, animation: "fade" }}>
+      <Stack.Screen name="(tabs)" />
+    </Stack>
   );
 }
 
@@ -163,7 +87,7 @@ export default function Layout() {
       <GestureHandlerRootView style={{ flex: 1 }}>
         <AppThemeProvider>
           <HeroUINativeProvider>
-            <AppTabs />
+            <AppNavigator />
           </HeroUINativeProvider>
         </AppThemeProvider>
       </GestureHandlerRootView>

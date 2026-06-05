@@ -1,10 +1,21 @@
-import { Ionicons } from "@expo/vector-icons";
 import { Button, useToast } from "heroui-native";
-import { Text, View } from "react-native";
-import { withUniwind } from "uniwind";
+import * as Haptics from "expo-haptics";
+import * as WebBrowser from "expo-web-browser";
+import { useRef, useState } from "react";
+import { SvgXml } from "react-native-svg";
+import { Text, View, type ViewStyle } from "react-native";
 
 import { Container } from "@/components/container";
+import { Icon } from "@/components/icon";
+import { googleLogoSvg } from "@/assets/google-logo";
 import { authClient } from "@/lib/auth-client";
+import { shadows } from "@/lib/theme";
+import {
+  BookOpen01Icon,
+  Calendar01Icon,
+  CheckListIcon,
+  SparklesIcon,
+} from "@hugeicons/core-free-icons";
 
 const demoAccounts = [
   "department.admin@upsa.edu.gh",
@@ -12,60 +23,180 @@ const demoAccounts = [
   "ama.ofori@upsa.edu.gh",
 ];
 
-const StyledIonicons = withUniwind(Ionicons);
+const highlights = [
+  {
+    icon: CheckListIcon,
+    title: "Plan your work",
+    description: "Assignments and deadlines, surfaced in one place.",
+  },
+  {
+    icon: Calendar01Icon,
+    title: "Stay on schedule",
+    description: "Live timetable with timely reminders before each class.",
+  },
+  {
+    icon: BookOpen01Icon,
+    title: "Find your notes",
+    description: "Pinned resources and course material, always within reach.",
+  },
+  {
+    icon: SparklesIcon,
+    title: "Nudges that adapt",
+    description: "Behaviourally informed prompts tailored to your week.",
+  },
+];
 
 export function AuthGate() {
   const { toast } = useToast();
+  const [isSigningIn, setIsSigningIn] = useState(false);
+  const inFlightRef = useRef(false);
+
+  const handleSignIn = async () => {
+    if (inFlightRef.current || isSigningIn) {
+      return;
+    }
+    inFlightRef.current = true;
+    setIsSigningIn(true);
+
+    try {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+
+      try {
+        await WebBrowser.dismissAuthSession();
+      } catch {}
+
+      await authClient.signIn.social(
+        { provider: "google", callbackURL: "/" },
+        {
+          onError(error) {
+            const message = error.error?.message || "Google sign-in failed";
+            const hint = message.toLowerCase().includes("invalid")
+              ? " Check that the OAuth redirect URI is registered in Google Cloud Console."
+              : "";
+            toast.show({
+              variant: "danger",
+              label: `${message}${hint}`,
+            });
+          },
+          onSuccess() {
+            toast.show({
+              variant: "success",
+              label: "Signed in successfully",
+            });
+          },
+        },
+      );
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Sign-in failed unexpectedly";
+      toast.show({
+        variant: "danger",
+        label: message,
+      });
+    } finally {
+      try {
+        await WebBrowser.dismissAuthSession();
+      } catch {}
+      inFlightRef.current = false;
+      setIsSigningIn(false);
+    }
+  };
 
   return (
-    <Container className="px-6 py-12">
-      <View className="flex-1 justify-center gap-10">
-        <View className="gap-3">
-          <Text className="text-4xl font-semibold tracking-tight text-foreground">Nudge</Text>
-          <Text className="text-base leading-6 text-muted">
-            Sign in with your UPSA account to access assignments, timetable, resources, and nudges.
-          </Text>
-        </View>
-
-        <View className="gap-3">
-          <Button
-            className="w-full"
-            variant="primary"
-            onPress={async () => {
-              await authClient.signIn.social(
-                { provider: "google", callbackURL: "/" },
-                {
-                  onError(error) {
-                    const message = error.error?.message || "Google sign-in failed";
-                    const hint = message.toLowerCase().includes("invalid")
-                      ? " Check that the OAuth redirect URI is registered in Google Cloud Console."
-                      : "";
-                    toast.show({
-                      variant: "danger",
-                      label: `${message}${hint}`,
-                    });
-                  },
-                },
-              );
-            }}
+    <View className="flex-1 bg-background">
+      <View className="accent-mesh overflow-hidden px-6 pb-14 pt-16">
+        <View className="flex-row items-center gap-3">
+          <View
+            className="h-12 w-12 items-center justify-center rounded-2xl"
+            style={{ backgroundColor: "rgba(255,255,255,0.18)", borderCurve: "continuous" }}
           >
-            <View className="flex-row items-center justify-center gap-2">
-              <StyledIonicons name="logo-google" size={18} className="text-primary-foreground" />
-              <Button.Label>Sign in with Google</Button.Label>
-            </View>
-          </Button>
-          <Text className="text-center text-xs text-muted">
-            Only @upsamail.edu.gh accounts are allowed.
-          </Text>
+            <Text className="text-2xl font-bold text-white">N</Text>
+          </View>
+          <Text className="text-3xl font-semibold tracking-tight text-white">Nudge</Text>
         </View>
-
-        <View className="gap-1.5">
-          <Text className="text-xs font-medium uppercase tracking-wider text-muted">
-            Demo accounts
+        <View className="mt-10 gap-3">
+          <Text className="text-[32px] font-semibold leading-[1.05] tracking-tight text-balance text-white">
+            Behavioural nudges for the students who need them.
           </Text>
-          <Text className="text-sm leading-5 text-muted">{demoAccounts.join("  •  ")}</Text>
+          <Text className="text-base leading-6 text-white/85">
+            Sign in with your UPSA account to access assignments, timetable, resources, and
+            behaviourally informed nudges.
+          </Text>
         </View>
       </View>
-    </Container>
+
+      <Container className="px-6 -mt-8">
+        <View className="gap-7">
+          <View
+            className="rounded-[24px] bg-surface p-6"
+            style={
+              {
+                borderCurve: "continuous",
+                ...shadows.elevated,
+              } as ViewStyle
+            }
+          >
+            <Text className="text-[11px] font-semibold uppercase tracking-wider text-muted">
+              Continue with
+            </Text>
+            <Text className="mt-1 text-2xl font-semibold tracking-tight text-foreground">
+              Your UPSA account
+            </Text>
+            <Text className="mt-1 text-sm text-muted">
+              Use your @upsamail.edu.gh Google account.
+            </Text>
+            <Button
+              size="lg"
+              className="mt-5 h-[52px] w-full"
+              isDisabled={isSigningIn}
+              onPress={handleSignIn}
+            >
+              <View className="flex-row items-center justify-center gap-3">
+                <SvgXml xml={googleLogoSvg} width={20} height={20} />
+                <Button.Label>
+                  {isSigningIn ? "Opening Google..." : "Continue with Google"}
+                </Button.Label>
+              </View>
+            </Button>
+            <Text className="mt-3 text-center text-xs text-muted">
+              Only @upsamail.edu.gh accounts are allowed.
+            </Text>
+          </View>
+
+          <View className="gap-4">
+            <Text className="px-1 text-[11px] font-semibold uppercase tracking-wider text-muted">
+              What you get
+            </Text>
+            <View className="gap-4">
+              {highlights.map((item) => (
+                <View key={item.title} className="flex-row items-start gap-3.5">
+                  <View
+                    className="h-10 w-10 items-center justify-center rounded-xl bg-accent-soft"
+                    style={{ borderCurve: "continuous" }}
+                  >
+                    <Icon
+                      icon={item.icon}
+                      size={18}
+                      strokeWidth={2}
+                      className="text-accent-soft-foreground"
+                    />
+                  </View>
+                  <View className="flex-1 gap-0.5">
+                    <Text className="text-base font-medium text-foreground">{item.title}</Text>
+                    <Text className="text-sm leading-5 text-muted">{item.description}</Text>
+                  </View>
+                </View>
+              ))}
+            </View>
+          </View>
+
+          <View className="gap-2">
+            <Text className="px-1 text-[11px] font-semibold uppercase tracking-wider text-muted">
+              Demo accounts
+            </Text>
+            <Text className="text-sm leading-5 text-muted">{demoAccounts.join("  ·  ")}</Text>
+          </View>
+        </View>
+      </Container>
+    </View>
   );
 }
