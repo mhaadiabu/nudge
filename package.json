@@ -23,7 +23,7 @@
   "devDependencies": {
     "@nudge/config": "workspace:*",
     "oxfmt": "^0.46.0",
-    "oxlint": "^1.68.0",
+    "oxlint": "^1.69.0",
     "turbo": "^2.9.16",
     "typescript": "^6.0.3"
   },

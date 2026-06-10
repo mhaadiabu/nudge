@@ -12,3 +12,4 @@ catalog:
   "@convex-dev/better-auth": ^0.12.1
 minimumReleaseAgeExclude:
   - '@mhaadi/svg@0.2.0'
+  - '@mhaadi/svg@0.2.1'
