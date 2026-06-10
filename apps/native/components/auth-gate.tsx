@@ -2,7 +2,7 @@ import { Button, useToast } from "heroui-native";
 import * as Haptics from "expo-haptics";
 import * as WebBrowser from "expo-web-browser";
 import { useRef, useState } from "react";
-import { SvgXml } from "react-native-svg";
+import { SVG } from "@mhaadi/svg/react-native";
 import { Text, View, type ViewStyle } from "react-native";
 
 import { Container } from "@/components/container";
@@ -151,7 +151,7 @@ export function AuthGate() {
               onPress={handleSignIn}
             >
               <View className="flex-row items-center justify-center gap-3">
-                <SvgXml xml={googleLogoSvg} width={20} height={20} />
+                <SVG src={googleLogoSvg} width={20} height={20} />
                 <Button.Label>
                   {isSigningIn ? "Opening Google..." : "Continue with Google"}
                 </Button.Label>
