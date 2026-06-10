@@ -1,7 +1,7 @@
 import { createAvatar } from "@usenavii/core";
+import { SVG } from "@mhaadi/svg/react-native";
 import { useMemo } from "react";
 import { View, type ViewStyle } from "react-native";
-import { SvgXml } from "react-native-svg";
 
 import { useAppTheme } from "@/contexts/app-theme-context";
 import { colors } from "@/lib/theme";
@@ -61,7 +61,7 @@ export function NaviiAvatar({
 
   return (
     <View className={className} style={containerStyle}>
-      <SvgXml xml={xml} width="100%" height="100%" accessible accessibilityLabel={title} />
+      <SVG src={xml} width={size} height={size} />
     </View>
   );
 }

@@ -10,3 +10,5 @@ catalog:
   better-auth: 1.6.9
   "@better-auth/expo": 1.6.9
   "@convex-dev/better-auth": ^0.12.1
+minimumReleaseAgeExclude:
+  - '@mhaadi/svg@0.2.0'
