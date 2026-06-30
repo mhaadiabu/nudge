@@ -44,7 +44,7 @@ const allItems: MoreItem[] = [
   },
   {
     label: "Management",
-    description: "Publish content, monitor pilot",
+    description: "Publish content, monitor engagement",
     icon: Briefcase01Icon,
     route: "/more/management",
     managerOnly: true,

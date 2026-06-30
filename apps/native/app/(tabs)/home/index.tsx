@@ -310,7 +310,7 @@ function ManagerDashboard() {
   const heroCopy = config.hero;
 
   if (!managerOverview || !dashboardSummary || !readiness) {
-    return <LoadingScreen message="Loading management intelligence..." />;
+    return <LoadingScreen message="Loading management..." />;
   }
 
   return (
@@ -362,11 +362,11 @@ function ManagerDashboard() {
       />
 
       <SectionCard
-        title="Pilot readiness"
+        title="Data sources"
         description={
           readiness.isReady
-            ? "All core data feeds confirmed."
-            : "Some data feeds still need confirmation."
+            ? "All data sources are connected."
+            : "Some data sources still need to be connected."
         }
         icon={Database01Icon}
         flat
@@ -397,11 +397,11 @@ function ManagerDashboard() {
             const result = await seedDemoData({});
             toast.show({
               variant: result.seeded ? "success" : "danger",
-              label: result.seeded ? "Pilot data seeded" : result.message,
+              label: result.seeded ? "Demo data seeded" : result.message,
             });
           }}
         >
-          <Button.Label>Seed pilot data</Button.Label>
+          <Button.Label>Seed demo data</Button.Label>
         </Button>
       </SectionCard>
 

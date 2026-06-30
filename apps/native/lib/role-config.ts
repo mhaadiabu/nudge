@@ -42,7 +42,7 @@ export type RoleConfig = {
   noun: string;
   /** Plural noun used in copy. */
   plural: string;
-  /** True if the role can manage content / run the pilot. */
+  /** True if the role can manage content and other users. */
   isManager: boolean;
   /** Hero copy shown on the home screen. */
   hero: {
@@ -126,7 +126,7 @@ export const ROLE_CONFIGS: Record<RoleId, RoleConfig> = {
     plural: "students",
     isManager: false,
     hero: {
-      eyebrow: "Pilot workspace",
+      eyebrow: "Today",
       title: (firstName) => `Hi, ${firstName}`,
       subtitle: "Your assignments, classes, and nudges at a glance.",
       decoration: BellIcon,
@@ -173,7 +173,7 @@ export const ROLE_CONFIGS: Record<RoleId, RoleConfig> = {
     hero: {
       eyebrow: "Department workspace",
       title: (firstName) => `Welcome back, ${firstName}`,
-      subtitle: "Run the pilot: publish content, monitor engagement, and seed data.",
+      subtitle: "Publish content, monitor engagement, and seed demo data.",
       decoration: ChartLineData01Icon,
     },
     tabs: managerTabs,

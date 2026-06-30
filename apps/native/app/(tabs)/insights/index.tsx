@@ -53,7 +53,7 @@ export default function InsightsScreen() {
           <EmptyState
             icon={ChartLineData01Icon}
             title="Insights are for managers"
-            message="Sign in with a manager account to view pilot performance."
+            message="Sign in with a manager account to view performance."
             tone="info"
           />
         </SectionCard>
@@ -62,7 +62,7 @@ export default function InsightsScreen() {
   }
 
   if (!summary || !timeline || !readiness || !experiments || !activityLog) {
-    return <LoadingScreen message="Crunching pilot numbers..." />;
+    return <LoadingScreen message="Crunching numbers..." />;
   }
 
   const { submissionMetrics, nudgeMetrics, studentCount } = summary;
@@ -103,11 +103,11 @@ export default function InsightsScreen() {
       />
 
       <SectionCard
-        title="Pilot readiness"
+        title="Data sources"
         description={
           readiness.isReady
-            ? "All data feeds confirmed."
-            : "Some data feeds still need confirmation."
+            ? "All data sources are connected."
+            : "Some data sources still need to be connected."
         }
         icon={Database01Icon}
         flat
