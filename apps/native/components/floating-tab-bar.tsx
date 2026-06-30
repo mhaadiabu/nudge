@@ -22,9 +22,12 @@ export const BAR_INNER_PADDING = 6;
 export const PILL_VERTICAL_INSET = 6;
 export const PILL_HEIGHT = BAR_HEIGHT - PILL_VERTICAL_INSET * 2;
 export const PILL_RADIUS = PILL_HEIGHT / 2 - 4;
-export const PILL_MIN_WIDTH = 48;
+export const PILL_MIN_WIDTH = 44;
 export const TAB_CONTENT_HEIGHT = 28;
 export const TAB_ICON_SIZE = 20;
+export const TAB_LABEL_HORIZONTAL_PADDING = 8;
+export const TAB_LABEL_ICON_GAP = 6;
+export const TAB_LABEL_MIN_FONT_SCALE = 0.65;
 
 type TabButtonProps = {
   tab: TabDefinition;
@@ -78,8 +81,8 @@ export function TabButton({ tab, accentColor }: TabButtonProps): ReactNode {
             alignItems: "center",
             justifyContent: "center",
             height: TAB_CONTENT_HEIGHT,
-            gap: 6,
-            paddingHorizontal: 10,
+            gap: TAB_LABEL_ICON_GAP,
+            paddingHorizontal: TAB_LABEL_HORIZONTAL_PADDING,
           }}
         >
           <View
@@ -101,8 +104,14 @@ export function TabButton({ tab, accentColor }: TabButtonProps): ReactNode {
           {isFocused ? (
             <Text
               numberOfLines={1}
+              adjustsFontSizeToFit
+              minimumFontScale={TAB_LABEL_MIN_FONT_SCALE}
               className="text-[12px] font-semibold tracking-tight"
-              style={{ color: accentColor, lineHeight: TAB_ICON_SIZE, includeFontPadding: false }}
+              style={{
+                color: accentColor,
+                lineHeight: TAB_ICON_SIZE,
+                includeFontPadding: false,
+              }}
             >
               {tab.label}
             </Text>
