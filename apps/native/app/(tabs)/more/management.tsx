@@ -14,6 +14,7 @@ import {
 import { useState } from "react";
 import { Text, View } from "react-native";
 
+import { DateTimeField } from "@/components/datetime-field";
 import { Icon } from "@/components/icon";
 import { LoadingScreen } from "@/components/loading-screen";
 import { MetricGrid } from "@/components/metric-card";
@@ -40,11 +41,25 @@ type FormState = {
   eventTitle: string;
   eventCourseCode: string;
   eventVenue: string;
-  eventHoursFromNow: string;
+  eventStartsAt: number;
   assignmentTitle: string;
   assignmentCourseCode: string;
-  assignmentDueHours: string;
+  assignmentDueAt: number;
 };
+
+const HOUR_MS = 60 * 60 * 1000;
+const DAY_MS = 24 * HOUR_MS;
+
+function nextRoundHour(): number {
+  const date = new Date();
+  date.setMinutes(0, 0, 0);
+  date.setHours(date.getHours() + 1);
+  return date.getTime();
+}
+
+function defaultDueAt(): number {
+  return Date.now() + 2 * DAY_MS;
+}
 
 const emptyForm: FormState = {
   announcementTitle: "",
@@ -56,10 +71,10 @@ const emptyForm: FormState = {
   eventTitle: "",
   eventCourseCode: "",
   eventVenue: "",
-  eventHoursFromNow: "24",
+  eventStartsAt: nextRoundHour(),
   assignmentTitle: "",
   assignmentCourseCode: "",
-  assignmentDueHours: "48",
+  assignmentDueAt: defaultDueAt(),
 };
 
 function FormField({ label, children }: { label: string; children: React.ReactNode }) {
@@ -170,11 +185,11 @@ export default function ManagementScreen() {
       />
 
       <SectionCard
-        title="Pilot readiness"
+        title="Data sources"
         description={
           readiness.isReady
-            ? "All core data feeds confirmed."
-            : "Some data feeds still need confirmation."
+            ? "All data sources are connected."
+            : "Some data sources still need to be connected."
         }
         icon={Database01Icon}
         flat
@@ -205,11 +220,11 @@ export default function ManagementScreen() {
             const result = await seedDemoData({});
             toast.show({
               variant: result.seeded ? "success" : "danger",
-              label: result.seeded ? "Pilot data seeded" : result.message,
+              label: result.seeded ? "Demo data seeded" : result.message,
             });
           }}
         >
-          <Button.Label>Seed pilot data</Button.Label>
+          <Button.Label>Seed demo data</Button.Label>
         </Button>
       </SectionCard>
 
@@ -345,25 +360,22 @@ export default function ManagementScreen() {
               placeholder="e.g. Lecture Hall 2"
             />
           </FormField>
-          <FormField label="Hours from now">
-            <Input
-              value={form.eventHoursFromNow}
-              onChangeText={updateField("eventHoursFromNow")}
-              placeholder="24"
-              keyboardType="number-pad"
-            />
-          </FormField>
+          <DateTimeField
+            label="Starts"
+            value={form.eventStartsAt}
+            onChange={updateField("eventStartsAt")}
+            minValue={Date.now()}
+          />
           <Button
             className="self-start"
             onPress={async () => {
-              const hours = Number(form.eventHoursFromNow || "24");
-              const startsAt = Date.now() + hours * 60 * 60 * 1000;
+              const startsAt = form.eventStartsAt;
               await createTimetableEvent({
                 courseCode: form.eventCourseCode || undefined,
                 title: form.eventTitle,
                 description: "Added from the management console.",
                 startsAt,
-                endsAt: startsAt + 2 * 60 * 60 * 1000,
+                endsAt: startsAt + 2 * HOUR_MS,
                 venue: form.eventVenue,
                 kind: "event",
                 audienceRoles: [...sharedAudience],
@@ -375,7 +387,7 @@ export default function ManagementScreen() {
                 eventTitle: "",
                 eventCourseCode: "",
                 eventVenue: "",
-                eventHoursFromNow: "24",
+                eventStartsAt: nextRoundHour(),
               }));
               toast.show({ variant: "success", label: "Event scheduled" });
             }}
@@ -403,23 +415,20 @@ export default function ManagementScreen() {
               autoCorrect={false}
             />
           </FormField>
-          <FormField label="Hours until due">
-            <Input
-              value={form.assignmentDueHours}
-              onChangeText={updateField("assignmentDueHours")}
-              placeholder="48"
-              keyboardType="number-pad"
-            />
-          </FormField>
+          <DateTimeField
+            label="Due"
+            value={form.assignmentDueAt}
+            onChange={updateField("assignmentDueAt")}
+            minValue={Date.now()}
+          />
           <Button
             className="self-start"
             onPress={async () => {
-              const hours = Number(form.assignmentDueHours || "48");
               await createAssignment({
                 courseCode: form.assignmentCourseCode,
                 title: form.assignmentTitle,
                 description: "Created from the management console.",
-                dueAt: Date.now() + hours * 60 * 60 * 1000,
+                dueAt: form.assignmentDueAt,
                 weight: 10,
                 linkUrl: undefined,
               });
@@ -427,7 +436,7 @@ export default function ManagementScreen() {
                 ...current,
                 assignmentTitle: "",
                 assignmentCourseCode: "",
-                assignmentDueHours: "48",
+                assignmentDueAt: defaultDueAt(),
               }));
               toast.show({ variant: "success", label: "Assignment created" });
             }}
