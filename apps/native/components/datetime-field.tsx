@@ -5,20 +5,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Icon } from "@/components/icon";
 import { Calendar01Icon, Clock01Icon } from "@hugeicons/core-free-icons";
 
-const MONTHS = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 const MONTHS_LONG = [
   "January",
@@ -63,7 +50,11 @@ function daysInMonth(year: number, monthIndex: number) {
 
 function formatDisplay(timestamp: number, mode: Mode) {
   if (!timestamp || Number.isNaN(timestamp)) {
-    return mode === "time" ? "Pick a time" : mode === "date" ? "Pick a date" : "Pick a date and time";
+    return mode === "time"
+      ? "Pick a time"
+      : mode === "date"
+        ? "Pick a date"
+        : "Pick a date and time";
   }
   const date = new Date(timestamp);
   if (mode === "time") {
@@ -184,11 +175,19 @@ function dateToDraft(timestamp: number): PickerDraft {
 }
 
 function draftToTimestamp(draft: PickerDraft): number {
-  const hours24 = draft.isPM ? (draft.hour === 12 ? 12 : draft.hour + 12) : draft.hour === 12 ? 0 : draft.hour;
+  const hours24 = draft.isPM
+    ? draft.hour === 12
+      ? 12
+      : draft.hour + 12
+    : draft.hour === 12
+      ? 0
+      : draft.hour;
   return new Date(draft.year, draft.month, draft.day, hours24, draft.minute, 0, 0).getTime();
 }
 
-function calendarGrid(draft: PickerDraft): Array<{ key: string; day: number | null; isSelected: boolean }> {
+function calendarGrid(
+  draft: PickerDraft,
+): Array<{ key: string; day: number | null; isSelected: boolean }> {
   const totalDays = daysInMonth(draft.year, draft.month);
   const firstWeekday = new Date(draft.year, draft.month, 1).getDay();
   const cells: Array<{ key: string; day: number | null; isSelected: boolean }> = [];
@@ -262,9 +261,7 @@ export function DateTimeField({
         className="flex-row items-center justify-between gap-2 rounded-xl border border-border bg-surface px-3.5 py-3 active:opacity-70"
         style={{ borderCurve: "continuous" }}
       >
-        <Text
-          className={`flex-1 text-base ${value ? "text-foreground" : "text-muted"}`}
-        >
+        <Text className={`flex-1 text-base ${value ? "text-foreground" : "text-muted"}`}>
           {formatDisplay(value, mode)}
         </Text>
         <Icon
@@ -332,14 +329,20 @@ export function DateTimeField({
                       value={MONTHS[draft.month] ?? ""}
                       onDecrement={() => {
                         if (draft.month === 0) {
-                          updateDraft({ month: 11, year: clamp(draft.year - 1, minYear ?? 1970, currentYear + 5) });
+                          updateDraft({
+                            month: 11,
+                            year: clamp(draft.year - 1, minYear ?? 1970, currentYear + 5),
+                          });
                         } else {
                           updateDraft({ month: draft.month - 1 });
                         }
                       }}
                       onIncrement={() => {
                         if (draft.month === 11) {
-                          updateDraft({ month: 0, year: clamp(draft.year + 1, minYear ?? 1970, currentYear + 5) });
+                          updateDraft({
+                            month: 0,
+                            year: clamp(draft.year + 1, minYear ?? 1970, currentYear + 5),
+                          });
                         } else {
                           updateDraft({ month: draft.month + 1 });
                         }
@@ -365,7 +368,9 @@ export function DateTimeField({
                         return <View key={cell.key} className="h-10 w-[14.2857%]" />;
                       }
                       const cellDate = new Date(draft.year, draft.month, cell.day).getTime();
-                      const isDisabled = minDraftTimestamp ? cellDate < startOfDay(minDraftTimestamp) : false;
+                      const isDisabled = minDraftTimestamp
+                        ? cellDate < startOfDay(minDraftTimestamp)
+                        : false;
                       return (
                         <View key={cell.key} className="w-[14.2857%] items-center py-0.5">
                           <Pressable
