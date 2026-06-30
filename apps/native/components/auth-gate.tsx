@@ -1,9 +1,10 @@
-import { Button, useToast } from "heroui-native";
+import { Button, Surface, useToast } from "heroui-native";
 import * as Haptics from "expo-haptics";
 import * as WebBrowser from "expo-web-browser";
 import { useRef, useState } from "react";
 import { SVG } from "@mhaadi/svg/react-native";
 import { Text, View, type ViewStyle } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Container } from "@/components/container";
 import { Icon } from "@/components/icon";
@@ -48,6 +49,7 @@ const highlights = [
 
 export function AuthGate() {
   const { toast } = useToast();
+  const insets = useSafeAreaInsets();
   const [isSigningIn, setIsSigningIn] = useState(false);
   const inFlightRef = useRef(false);
 
@@ -101,9 +103,16 @@ export function AuthGate() {
     }
   };
 
+  // Hero top padding doesn't clip the status bar on notched devices. 12 is
+  // a buffer above the safe-area inset so the logo never sits flush to it.
+  const heroPaddingTop = insets.top + 12;
+
   return (
     <View className="flex-1 bg-background">
-      <View className="accent-mesh overflow-hidden px-6 pb-14 pt-16">
+      <View
+        className="accent-mesh overflow-hidden px-5 pb-14"
+        style={{ paddingTop: heroPaddingTop }}
+      >
         <View className="flex-row items-center gap-3">
           <View
             className="h-12 w-12 items-center justify-center rounded-2xl"
@@ -113,8 +122,11 @@ export function AuthGate() {
           </View>
           <Text className="text-3xl font-semibold tracking-tight text-white">Nudge</Text>
         </View>
-        <View className="mt-10 gap-3">
-          <Text className="text-[32px] font-semibold leading-[1.05] tracking-tight text-balance text-white">
+        <View className="mt-8 gap-3">
+          <Text
+            className="text-[30px] font-semibold leading-[1.1] tracking-tight text-balance text-white"
+            numberOfLines={4}
+          >
             Behavioural nudges for the students who need them.
           </Text>
           <Text className="text-base leading-6 text-white/85">
@@ -124,10 +136,11 @@ export function AuthGate() {
         </View>
       </View>
 
-      <Container className="px-6 -mt-8">
+      <Container className="px-5 -mt-6">
         <View className="gap-7">
-          <View
-            className="rounded-[24px] bg-surface p-6"
+          <Surface
+            variant="default"
+            className="p-6"
             style={
               {
                 borderCurve: "continuous",
@@ -160,7 +173,7 @@ export function AuthGate() {
             <Text className="mt-3 text-center text-xs text-muted">
               Only @upsamail.edu.gh accounts are allowed.
             </Text>
-          </View>
+          </Surface>
 
           <View className="gap-4">
             <Text className="px-1 text-[11px] font-semibold uppercase tracking-wider text-muted">
@@ -189,11 +202,17 @@ export function AuthGate() {
             </View>
           </View>
 
-          <View className="gap-2">
+          <View className="gap-1.5">
             <Text className="px-1 text-[11px] font-semibold uppercase tracking-wider text-muted">
               Demo accounts
             </Text>
-            <Text className="text-sm leading-5 text-muted">{demoAccounts.join("  ·  ")}</Text>
+            <Text
+              className="px-1 text-sm leading-5 text-muted"
+              numberOfLines={2}
+              ellipsizeMode="middle"
+            >
+              {demoAccounts.join("  ·  ")}
+            </Text>
           </View>
         </View>
       </Container>
