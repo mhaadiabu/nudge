@@ -33,7 +33,16 @@ function buildGradient(palette: AccentPalette): string {
   return `linear-gradient(135deg, ${palette.accentDeep} 0%, ${palette.accent} 60%, ${palette.accentDeep} 100%)`;
 }
 
-export function Hero({ eyebrow, title, subtitle, meta, badge, decoration, className, accent }: HeroProps) {
+export function Hero({
+  eyebrow,
+  title,
+  subtitle,
+  meta,
+  badge,
+  decoration,
+  className,
+  accent,
+}: HeroProps) {
   const palette = accent ?? FALLBACK_PALETTE;
   const containerStyle: ViewStyle = {
     borderCurve: "continuous",
@@ -43,7 +52,7 @@ export function Hero({ eyebrow, title, subtitle, meta, badge, decoration, classN
 
   return (
     <View
-      className={cn("relative overflow-hidden rounded-[28px] p-6", className)}
+      className={cn("relative overflow-hidden rounded-3xl p-6", className)}
       style={[containerStyle, shadows.hero as ViewStyle]}
     >
       {decoration ? (
