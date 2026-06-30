@@ -351,7 +351,7 @@ export const seedDemoData = mutation({
       },
       {
         courseCode: "IS305",
-        title: "Pilot evaluation rubric",
+        title: "Evaluation rubric",
         description: "Rubric for the usability evaluation report.",
         kind: "lecture-note" as const,
         url: "https://example.com/resources/evaluation-rubric",
@@ -406,7 +406,7 @@ export const seedDemoData = mutation({
     const assignments = [
       {
         title: "Prototype Evaluation Report",
-        description: "Submit your usability evaluation report for the Nudge pilot.",
+        description: "Submit your usability evaluation report for Nudge.",
         courseCode: "IS305",
         dueAt: now + 14 * HOUR_MS,
       },
@@ -694,7 +694,7 @@ export const seedDemoData = mutation({
         sentAt: now - (index + 1) * HOUR_MS,
         openedAt: index % 2 === 0 ? now - index * 30 * 60 * 1000 : undefined,
         deliveryStatus: index % 2 === 0 ? "opened" : "sent",
-        adaptationReason: "Seeded for pilot demonstration.",
+        adaptationReason: "Seeded for demo.",
         metadata: { seeded: true },
         createdAt: now,
         updatedAt: now,
