@@ -97,9 +97,6 @@ export default function MoreScreen() {
       </SectionCard>
 
       <SectionCard title="Appearance" icon={Settings01Icon} flat>
-        <Text className="text-sm leading-5 text-muted">
-          Pick how Nudge should look. You can switch any time.
-        </Text>
         <ThemeSwitcher />
       </SectionCard>
 

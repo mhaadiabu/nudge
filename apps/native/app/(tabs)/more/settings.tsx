@@ -240,12 +240,7 @@ export default function SettingsScreen() {
         )}
       </SectionCard>
 
-      <SectionCard
-        title="Consent"
-        description="Decide whether Nudge can reach you with nudges."
-        icon={Shield01Icon}
-        flat
-      >
+      <SectionCard title="Consent" icon={Shield01Icon} flat>
         <View className="flex-row gap-3">
           <Button
             className="flex-1"
@@ -269,12 +264,7 @@ export default function SettingsScreen() {
         </View>
       </SectionCard>
 
-      <SectionCard
-        title="Delivery"
-        description="Where nudges can reach you"
-        icon={Settings01Icon}
-        flat
-      >
+      <SectionCard title="Delivery" icon={Settings01Icon} flat>
         {deliveryPreferences.map((item) => (
           <SwitchRow
             key={item.key}
@@ -286,12 +276,7 @@ export default function SettingsScreen() {
         ))}
       </SectionCard>
 
-      <SectionCard
-        title="Content"
-        description="What kinds of nudges you receive"
-        icon={SparklesIcon}
-        flat
-      >
+      <SectionCard title="Content" icon={SparklesIcon} flat>
         {contentPreferences.map((item) => (
           <SwitchRow
             key={item.key}
@@ -303,12 +288,7 @@ export default function SettingsScreen() {
         ))}
       </SectionCard>
 
-      <SectionCard
-        title="Quiet hours"
-        description="No nudges will be sent in this window"
-        icon={Settings01Icon}
-        flat
-      >
+      <SectionCard title="Quiet hours" icon={Settings01Icon} flat>
         <View className="flex-row gap-3">
           <TextField className="flex-1">
             <Label>Start</Label>
