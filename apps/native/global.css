@@ -44,29 +44,6 @@
     0 0 0 1px rgba(0, 0, 0, 0.04);
 }
 
-@layer theme {
-  :root {
-    @variant dark {
-      /* Push the canvas darker and lift surfaces so cards read as cards.
-         Hex values are used (not oklch) so RN's style processor can
-         resolve them at runtime. */
-      --background: #0a0a0c;
-      --surface: #232328;
-      --surface-secondary: #33333a;
-      --surface-tertiary: #3f3f47;
-      --overlay: #232328;
-
-      /* Brighter secondary text + hairlines for legibility on dark */
-      --muted: #d4d4d8;
-      --border: #52525b;
-      --separator: #71717a;
-
-      /* Give the canvas a tiny tint so it doesn't read as pure black */
-      --backdrop: rgba(0, 0, 0, 0.35);
-    }
-  }
-}
-
 @layer utilities {
   /* Brand surfaces */
   .accent-gradient {
@@ -110,13 +87,5 @@
 
   .text-balance {
     text-wrap: balance;
-  }
-
-  /*
-   * In dark mode, brand SVGs that use currentColor need their parent
-   * text color flipped so the artwork reads correctly on a dark canvas.
-   */
-  .dark\:invert-0 svg {
-    filter: none;
   }
 }

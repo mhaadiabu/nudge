@@ -3,7 +3,6 @@ import { SVG } from "@mhaadi/svg/react-native";
 import { useMemo } from "react";
 import { View, type ViewStyle } from "react-native";
 
-import { useAppTheme } from "@/contexts/app-theme-context";
 import { colors } from "@/lib/theme";
 
 type NaviiAvatarProps = {
@@ -25,32 +24,30 @@ export function NaviiAvatar({
   ringless = false,
   title,
 }: NaviiAvatarProps) {
-  const { isDark } = useAppTheme();
-
   const xml = useMemo(() => {
     try {
       return createAvatar(seed, {
         size,
         title,
-        background: isDark ? "solid" : "none",
+        background: "none",
       });
     } catch {
       return null;
     }
-  }, [seed, size, title, isDark]);
+  }, [seed, size, title]);
 
   const containerStyle: ViewStyle = {
     width: size,
     height: size,
     borderRadius: size / 2,
     borderCurve: "continuous",
-    backgroundColor: isDark ? colors.accentSoftDark : colors.accentSoftLight,
+    backgroundColor: colors.accentSoftLight,
     overflow: "hidden",
     ...(ringless
       ? null
       : {
           borderWidth: 1,
-          borderColor: isDark ? "rgba(255, 255, 255, 0.08)" : "rgba(15, 23, 42, 0.06)",
+          borderColor: "rgba(15, 23, 42, 0.06)",
         }),
     ...style,
   };

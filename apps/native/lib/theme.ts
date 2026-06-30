@@ -7,23 +7,8 @@ import { Platform, type ViewStyle } from "react-native";
  */
 
 export const colors = {
-  // Brand
-  accent: "#E5463A",
-  accentDeep: "#8E2A23",
-  accentGlow: "#F0A39A",
-
-  // Soft surfaces (used as semi-transparent backdrops)
+  // Soft surface used as a semi-transparent backdrop for avatars
   accentSoftLight: "rgba(229, 70, 58, 0.12)",
-  accentSoftDark: "rgba(229, 70, 58, 0.22)",
-
-  // White on brand surfaces
-  white12: "rgba(255, 255, 255, 0.12)",
-  white15: "rgba(255, 255, 255, 0.15)",
-  white18: "rgba(255, 255, 255, 0.18)",
-
-  // Hairlines + dividers
-  hairlineLight: "rgba(127, 127, 127, 0.18)",
-  hairlineDark: "rgba(127, 127, 127, 0.28)",
 } as const;
 
 type Shadow = Pick<

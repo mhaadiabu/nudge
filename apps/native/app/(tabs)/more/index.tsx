@@ -4,7 +4,6 @@ import { Pressable, Text, View } from "react-native";
 import { Icon } from "@/components/icon";
 import { ScreenShell } from "@/components/screen-shell";
 import { SectionCard } from "@/components/section-card";
-import { ThemeSwitcher } from "@/components/theme-switcher";
 import {
   ArrowRight01Icon,
   Briefcase01Icon,
@@ -94,10 +93,6 @@ export default function MoreScreen() {
             <Icon icon={ArrowRight01Icon} size={16} strokeWidth={2} className="text-muted" />
           </Pressable>
         ))}
-      </SectionCard>
-
-      <SectionCard title="Appearance" icon={Settings01Icon} flat>
-        <ThemeSwitcher />
       </SectionCard>
 
       <View className="items-center pt-2">

@@ -8,8 +8,8 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Text, View } from "react-native";
 import { useEffect, useRef } from "react";
 import { useConvexAuth, useMutation, useQuery } from "convex/react";
+import { Uniwind } from "uniwind";
 
-import { AppThemeProvider } from "@/contexts/app-theme-context";
 import { authClient } from "@/lib/auth-client";
 import { api } from "@nudge/backend/convex/_generated/api";
 import { AuthGate } from "@/components/auth-gate";
@@ -51,6 +51,10 @@ function AppNavigator() {
   const hasBootstrapped = useRef(false);
 
   useEffect(() => {
+    Uniwind.setTheme("light");
+  }, []);
+
+  useEffect(() => {
     if (!isAuthenticated || viewer !== null || hasBootstrapped.current) {
       return;
     }
@@ -85,11 +89,9 @@ export default function Layout() {
   return (
     <ConvexBetterAuthProvider client={convex} authClient={authClient}>
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <AppThemeProvider>
-          <HeroUINativeProvider>
-            <AppNavigator />
-          </HeroUINativeProvider>
-        </AppThemeProvider>
+        <HeroUINativeProvider>
+          <AppNavigator />
+        </HeroUINativeProvider>
       </GestureHandlerRootView>
     </ConvexBetterAuthProvider>
   );
