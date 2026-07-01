@@ -67,7 +67,11 @@ export function InitialsAvatar({ name, email, size = "md", className }: Initials
     >
       <Text
         className="font-semibold tracking-tight text-accent-soft-foreground"
-        style={{ fontSize: Math.max(11, Math.round(dimension * 0.38)) }}
+        style={{
+          fontSize: Math.max(11, Math.round(dimension * 0.38)),
+          includeFontPadding: false,
+          textAlignVertical: "center",
+        }}
       >
         {getInitials(name, email)}
       </Text>

@@ -28,8 +28,18 @@ export function EmptyState({ icon, title, message, tone = "accent", action }: Em
         <Icon icon={icon} size={24} strokeWidth={1.75} />
       </View>
       <View className="items-center gap-1">
-        <Text className="text-base font-semibold text-foreground">{title}</Text>
-        <Text className="max-w-[260px] text-center text-sm leading-5 text-muted">{message}</Text>
+        <Text
+          className="text-base font-semibold text-foreground"
+          style={{ includeFontPadding: false }}
+        >
+          {title}
+        </Text>
+        <Text
+          className="max-w-[260px] text-center text-sm leading-5 text-muted"
+          style={{ includeFontPadding: false }}
+        >
+          {message}
+        </Text>
       </View>
       {action}
     </View>

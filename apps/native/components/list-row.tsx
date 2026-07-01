@@ -28,9 +28,18 @@ export function ListRow({ title, description, icon, trailing, showChevron = true
         <Icon icon={icon} size={18} strokeWidth={2} className="text-accent-soft-foreground" />
       </View>
       <View className="flex-1 gap-0.5">
-        <Text className="text-base font-medium text-foreground">{title}</Text>
+        <Text
+          className="text-base font-medium text-foreground"
+          style={{ includeFontPadding: false }}
+        >
+          {title}
+        </Text>
         {description ? (
-          <Text className="text-sm leading-5 text-muted" numberOfLines={2}>
+          <Text
+            className="text-sm leading-5 text-muted"
+            numberOfLines={2}
+            style={{ includeFontPadding: false }}
+          >
             {description}
           </Text>
         ) : null}
