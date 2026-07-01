@@ -80,12 +80,6 @@ export function AuthGate() {
               label: `${message}${hint}`,
             });
           },
-          onSuccess() {
-            toast.show({
-              variant: "success",
-              label: "Signed in successfully",
-            });
-          },
         },
       );
     } catch (error) {
