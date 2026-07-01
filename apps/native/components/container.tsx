@@ -10,6 +10,12 @@ type Props = AnimatedProps<ViewProps> & {
   className?: string;
   isScrollable?: boolean;
   scrollViewProps?: ScrollViewProps;
+  /**
+   * Apply the bottom safe-area inset as padding. Defaults to true so tab
+   * screens don't tuck content under the home indicator / navigation bar.
+   * Disable for non-tab screens that manage their own bottom inset.
+   */
+  applyBottomInset?: boolean;
 };
 
 export function Container({
@@ -17,6 +23,7 @@ export function Container({
   className,
   isScrollable = true,
   scrollViewProps,
+  applyBottomInset = true,
   ...props
 }: PropsWithChildren<Props>) {
   const insets = useSafeAreaInsets();
@@ -25,7 +32,7 @@ export function Container({
     <AnimatedView
       className={cn("flex-1 bg-background", className)}
       style={{
-        paddingBottom: insets.bottom,
+        paddingBottom: applyBottomInset ? insets.bottom : 0,
       }}
       {...props}
     >

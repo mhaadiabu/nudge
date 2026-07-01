@@ -111,6 +111,7 @@ export function TabButton({ tab, accentColor }: TabButtonProps): ReactNode {
                 color: accentColor,
                 lineHeight: TAB_ICON_SIZE,
                 includeFontPadding: false,
+                textAlignVertical: "center",
               }}
             >
               {tab.label}

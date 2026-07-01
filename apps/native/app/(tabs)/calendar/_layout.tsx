@@ -1,13 +1,14 @@
 import { Stack } from "expo-router/stack";
 
 import { HeaderActions } from "@/components/header-actions";
-import { tabHeaderScreenOptions } from "@/lib/header-options";
+import { useTabHeaderScreenOptions } from "@/lib/header-options";
 
 export default function CalendarLayout() {
+  const screenOptions = useTabHeaderScreenOptions();
   return (
     <Stack
       screenOptions={{
-        ...tabHeaderScreenOptions(),
+        ...screenOptions,
         headerRight: () => <HeaderActions />,
       }}
     >

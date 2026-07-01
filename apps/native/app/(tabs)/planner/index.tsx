@@ -112,25 +112,31 @@ export default function PlannerScreen() {
           <View className="items-end gap-1.5">
             <View className="flex-row gap-3">
               <View className="items-end">
-                <Text className="text-[11px] font-semibold uppercase tracking-wider text-muted">
+                <Text
+                  className="text-[11px] font-semibold uppercase tracking-wider text-muted"
+                  style={{ includeFontPadding: false }}
+                >
                   Due soon
                 </Text>
                 <Text
                   className="text-lg font-bold tabular-nums text-foreground"
-                  style={{ fontVariant: ["tabular-nums"] }}
+                  style={{ fontVariant: ["tabular-nums"], includeFontPadding: false }}
                 >
                   {progress.assignmentStateCounts.dueSoon}
                 </Text>
               </View>
               <View className="items-end">
-                <Text className="text-[11px] font-semibold uppercase tracking-wider text-muted">
+                <Text
+                  className="text-[11px] font-semibold uppercase tracking-wider text-muted"
+                  style={{ includeFontPadding: false }}
+                >
                   Overdue
                 </Text>
                 <Text
                   className={`text-lg font-bold tabular-nums ${
                     progress.assignmentStateCounts.overdue > 0 ? "text-warning" : "text-foreground"
                   }`}
-                  style={{ fontVariant: ["tabular-nums"] }}
+                  style={{ fontVariant: ["tabular-nums"], includeFontPadding: false }}
                 >
                   {progress.assignmentStateCounts.overdue}
                 </Text>
