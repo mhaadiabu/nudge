@@ -38,7 +38,7 @@ export function MetricGrid({ metrics }: MetricGridProps) {
     surfaceStyle.push(shadows.soft as ViewStyle);
   }
   return (
-    <Surface variant="secondary" style={surfaceStyle}>
+    <Surface variant="secondary" className="rounded-xl" style={surfaceStyle}>
       <View className="flex-row flex-wrap">
         {metrics.map((metric, index) => {
           const emphasis = metric.emphasis ?? "default";
