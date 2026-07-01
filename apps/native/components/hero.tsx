@@ -62,7 +62,7 @@ export function Hero({
 
   return (
     <View
-      className={cn("relative overflow-hidden rounded-3xl p-6", className)}
+      className={cn("relative overflow-hidden rounded-xl p-6", className)}
       style={containerStyle}
     >
       {decoration ? (

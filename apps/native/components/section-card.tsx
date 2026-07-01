@@ -72,6 +72,7 @@ export function SectionCard({
       )}
       <Surface
         variant={flat ? "tertiary" : "secondary"}
+        className="rounded-xl"
         style={[styles.card as ViewStyle, elevatedStyle]}
       >
         {children}

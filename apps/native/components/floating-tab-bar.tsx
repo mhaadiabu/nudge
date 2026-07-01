@@ -17,17 +17,17 @@ export type TabDefinition = {
   icon: IconSvgElement;
 };
 
-export const BAR_HEIGHT = 72;
+export const BAR_HEIGHT = 56;
 export const BAR_INNER_PADDING = 6;
 export const PILL_VERTICAL_INSET = 6;
 export const PILL_HEIGHT = BAR_HEIGHT - PILL_VERTICAL_INSET * 2;
+export const PILL_RADIUS = 12;
 export const PILL_MIN_WIDTH = 56;
-export const TAB_CONTENT_GAP = 4;
-export const TAB_ICON_SIZE = 22;
-export const TAB_LABEL_FONT_SIZE = 10;
-export const TAB_LABEL_LINE_HEIGHT = 12;
-export const TAB_LABEL_HORIZONTAL_PADDING = 8;
-export const TAB_LABEL_MAX_WIDTH = 76;
+export const TAB_CONTENT_HEIGHT = 28;
+export const TAB_ICON_SIZE = 20;
+export const TAB_LABEL_HORIZONTAL_PADDING = 10;
+export const TAB_LABEL_ICON_GAP = 6;
+export const TAB_LABEL_MIN_FONT_SCALE = 0.7;
 
 type TabButtonProps = {
   tab: TabDefinition;
@@ -77,9 +77,11 @@ export function TabButton({ tab, accentColor }: TabButtonProps): ReactNode {
             setLayout(tab.name, { contentWidth: width });
           }}
           style={{
+            flexDirection: "row",
             alignItems: "center",
             justifyContent: "center",
-            gap: TAB_CONTENT_GAP,
+            height: TAB_CONTENT_HEIGHT,
+            gap: TAB_LABEL_ICON_GAP,
             paddingHorizontal: TAB_LABEL_HORIZONTAL_PADDING,
           }}
         >
@@ -101,14 +103,13 @@ export function TabButton({ tab, accentColor }: TabButtonProps): ReactNode {
           </View>
           {isFocused ? (
             <Text
-              allowFontScaling={false}
-              className="text-center font-semibold tracking-tight"
-              numberOfLines={2}
+              numberOfLines={1}
+              adjustsFontSizeToFit
+              minimumFontScale={TAB_LABEL_MIN_FONT_SCALE}
+              className="text-[12px] font-semibold tracking-tight"
               style={{
                 color: accentColor,
-                fontSize: TAB_LABEL_FONT_SIZE,
-                lineHeight: TAB_LABEL_LINE_HEIGHT,
-                maxWidth: TAB_LABEL_MAX_WIDTH,
+                lineHeight: TAB_ICON_SIZE,
                 includeFontPadding: false,
                 textAlignVertical: "center",
               }}
@@ -163,7 +164,7 @@ export function ActivePill({ backgroundColor }: ActivePillProps) {
           top: PILL_VERTICAL_INSET,
           left: 0,
           height: PILL_HEIGHT,
-          borderRadius: PILL_HEIGHT / 2,
+          borderRadius: PILL_RADIUS,
           backgroundColor,
         },
         pillStyle,

@@ -16,7 +16,7 @@ export function LoadingScreen({
     <Container>
       <View className="flex-1 items-center justify-center gap-5 px-6">
         <View
-          className="h-14 w-14 items-center justify-center rounded-2xl bg-accent-soft"
+          className="h-14 w-14 items-center justify-center rounded-xl bg-accent-soft"
           style={{ borderCurve: "continuous" }}
         >
           <Spinner size="md" />
