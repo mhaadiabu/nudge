@@ -443,3 +443,41 @@ export const createForCourse = mutation({
     return await ctx.db.get(assignmentId);
   },
 });
+
+export const deleteForCourse = mutation({
+  args: { assignmentId: v.id("assignments") },
+  handler: async (ctx, args) => {
+    await ensureManagementAccess(ctx);
+    const assignment = await ctx.db.get(args.assignmentId);
+    if (!assignment) {
+      throw new Error("Assignment not found.");
+    }
+
+    const recipients = await ctx.db
+      .query("assignmentRecipients")
+      .withIndex("by_assignment", (query) => query.eq("assignmentId", args.assignmentId))
+      .collect();
+    for (const recipient of recipients) {
+      await ctx.db.delete(recipient._id);
+    }
+
+    const submissions = await ctx.db
+      .query("submissions")
+      .withIndex("by_assignment", (query) => query.eq("assignmentId", args.assignmentId))
+      .collect();
+    for (const submission of submissions) {
+      await ctx.db.delete(submission._id);
+    }
+
+    const nudgeEvents = await ctx.db
+      .query("nudgeEvents")
+      .withIndex("by_assignment", (query) => query.eq("assignmentId", args.assignmentId))
+      .collect();
+    for (const nudge of nudgeEvents) {
+      await ctx.db.delete(nudge._id);
+    }
+
+    await ctx.db.delete(args.assignmentId);
+    return { deletedId: args.assignmentId };
+  },
+});

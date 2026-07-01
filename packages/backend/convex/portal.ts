@@ -526,6 +526,19 @@ export const createTimetableEvent = mutation({
   },
 });
 
+export const deleteTimetableEvent = mutation({
+  args: { eventId: v.id("timetableEvents") },
+  handler: async (ctx, args) => {
+    await ensureManagementAccess(ctx);
+    const event = await ctx.db.get(args.eventId);
+    if (!event) {
+      throw new Error("Timetable event not found.");
+    }
+    await ctx.db.delete(args.eventId);
+    return { deletedId: args.eventId };
+  },
+});
+
 export const getLiveSurvey = query({
   args: {},
   handler: async (ctx) => {
