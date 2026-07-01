@@ -200,10 +200,16 @@ export const listResources = query({
       resources
         .filter((resource) => matchesAudience(resource.audienceRoles, viewer.roles))
         .filter((resource) => (resource.courseId ? courseIds.includes(resource.courseId) : true))
-        .map(async (resource) => ({
-          ...resource,
-          course: resource.courseId ? await ctx.db.get(resource.courseId) : null,
-        })),
+        .map(async (resource) => {
+          const resolvedUrl = resource.storageId
+            ? await ctx.storage.getUrl(resource.storageId)
+            : (resource.url ?? null);
+          return {
+            ...resource,
+            url: resolvedUrl,
+            course: resource.courseId ? await ctx.db.get(resource.courseId) : null,
+          };
+        }),
     );
 
     return rows.sort(
@@ -338,6 +344,19 @@ export const createAnnouncement = mutation({
   },
 });
 
+export const deleteAnnouncement = mutation({
+  args: { announcementId: v.id("announcements") },
+  handler: async (ctx, args) => {
+    await ensureManagementAccess(ctx);
+    const announcement = await ctx.db.get(args.announcementId);
+    if (!announcement) {
+      throw new Error("Announcement not found.");
+    }
+    await ctx.db.delete(args.announcementId);
+    return { deletedId: args.announcementId };
+  },
+});
+
 export const createResource = mutation({
   args: {
     courseCode: v.optional(v.string()),
@@ -352,7 +371,11 @@ export const createResource = mutation({
       v.literal("template"),
       v.literal("form"),
     ),
-    url: v.string(),
+    url: v.optional(v.string()),
+    storageId: v.optional(v.id("_storage")),
+    fileName: v.optional(v.string()),
+    fileSize: v.optional(v.number()),
+    mimeType: v.optional(v.string()),
     audienceRoles: v.array(
       v.union(
         v.literal("student"),
@@ -366,6 +389,9 @@ export const createResource = mutation({
   },
   handler: async (ctx, args) => {
     const actor = await ensureManagementAccess(ctx);
+    if (!args.url && !args.storageId) {
+      throw new Error("Resource must include either a URL or an uploaded file.");
+    }
     const now = Date.now();
     const course = args.courseCode
       ? await ctx.db
@@ -380,6 +406,10 @@ export const createResource = mutation({
       description: args.description,
       kind: args.kind,
       url: args.url,
+      storageId: args.storageId,
+      fileName: args.fileName,
+      fileSize: args.fileSize,
+      mimeType: args.mimeType,
       isPinned: args.isPinned,
       audienceRoles: args.audienceRoles,
       uploadedByProfileId: actor._id,
@@ -398,6 +428,30 @@ export const createResource = mutation({
     });
 
     return await ctx.db.get(resourceId);
+  },
+});
+
+export const deleteResource = mutation({
+  args: { resourceId: v.id("resources") },
+  handler: async (ctx, args) => {
+    await ensureManagementAccess(ctx);
+    const resource = await ctx.db.get(args.resourceId);
+    if (!resource) {
+      throw new Error("Resource not found.");
+    }
+    if (resource.storageId) {
+      await ctx.storage.delete(resource.storageId);
+    }
+    await ctx.db.delete(args.resourceId);
+    return { deletedId: args.resourceId };
+  },
+});
+
+export const generateResourceUploadUrl = mutation({
+  args: {},
+  handler: async (ctx) => {
+    await ensureManagementAccess(ctx);
+    return await ctx.storage.generateUploadUrl();
   },
 });
 
