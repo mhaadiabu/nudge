@@ -38,10 +38,7 @@ export default function NudgesScreen() {
     api.nudges.listForViewer,
     isManager ? "skip" : { includeScheduled: true },
   );
-  const summary = useQuery(
-    api.nudges.getViewerNudgeSummary,
-    isManager ? "skip" : {},
-  );
+  const summary = useQuery(api.nudges.getViewerNudgeSummary, isManager ? "skip" : {});
   const generate = useMutation(api.nudges.generateForViewer);
   const dispatch = useMutation(api.nudges.dispatchDueNudges);
   const markOpened = useMutation(api.nudges.markOpened);

@@ -52,15 +52,14 @@ export default function PlannerScreen() {
   const [search, setSearch] = useState("");
   const assignments = useQuery(
     api.assignments.listForViewer,
-    isManager ? "skip" : {
-      status: filter === "all" ? undefined : filter,
-      search,
-    },
+    isManager
+      ? "skip"
+      : {
+          status: filter === "all" ? undefined : filter,
+          search,
+        },
   );
-  const progress = useQuery(
-    api.assignments.getViewerProgress,
-    isManager ? "skip" : {},
-  );
+  const progress = useQuery(api.assignments.getViewerProgress, isManager ? "skip" : {});
   const markViewed = useMutation(api.assignments.markViewed);
   const recordSubmission = useMutation(api.assignments.recordSubmission);
 

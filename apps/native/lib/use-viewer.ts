@@ -1,12 +1,7 @@
 import { api } from "@nudge/backend/convex/_generated/api";
 import { useQuery } from "convex/react";
 
-import {
-  DEFAULT_ROLE,
-  resolveRoleConfig,
-  type RoleConfig,
-  type RoleId,
-} from "@/lib/role-config";
+import { DEFAULT_ROLE, resolveRoleConfig, type RoleConfig, type RoleId } from "@/lib/role-config";
 
 type ViewerProfile = {
   _id: string;

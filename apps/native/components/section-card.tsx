@@ -30,12 +30,8 @@ export function SectionCard({
   flat = false,
   accent,
 }: SectionCardProps) {
-  const iconBackgroundStyle = accent
-    ? { backgroundColor: accent.accentSoft }
-    : null;
-  const iconForegroundStyle = accent
-    ? { color: accent.accentForeground }
-    : null;
+  const iconBackgroundStyle = accent ? { backgroundColor: accent.accentSoft } : null;
+  const iconForegroundStyle = accent ? { color: accent.accentForeground } : null;
 
   return (
     <View className="gap-2.5">

@@ -1,9 +1,6 @@
 import { api } from "@nudge/backend/convex/_generated/api";
 import { useQuery } from "convex/react";
-import {
-  Search01Icon,
-  UserMultipleIcon,
-} from "@hugeicons/core-free-icons";
+import { Search01Icon, UserMultipleIcon } from "@hugeicons/core-free-icons";
 import { useState } from "react";
 import { Text, View } from "react-native";
 
@@ -38,14 +35,8 @@ export default function TeamScreen() {
   const { isManager } = useViewer();
   const [filter, setFilter] = useState<Filter>("all");
   const [search, setSearch] = useState("");
-  const people = useQuery(
-    api.profiles.listPeople,
-    isManager ? {} : "skip",
-  );
-  const experiments = useQuery(
-    api.experiments.listExperiments,
-    isManager ? {} : "skip",
-  );
+  const people = useQuery(api.profiles.listPeople, isManager ? {} : "skip");
+  const experiments = useQuery(api.experiments.listExperiments, isManager ? {} : "skip");
 
   if (!isManager) {
     return (
@@ -76,7 +67,11 @@ export default function TeamScreen() {
     return true;
   };
 
-  const matchesSearch = (person: { fullName?: string | null; email: string; studentId?: string | null }) => {
+  const matchesSearch = (person: {
+    fullName?: string | null;
+    email: string;
+    studentId?: string | null;
+  }) => {
     if (!search.trim()) return true;
     const needle = search.trim().toLowerCase();
     return (
@@ -141,11 +136,7 @@ export default function TeamScreen() {
           />
         </SectionCard>
       ) : (
-        <SectionCard
-          title={`People (${filtered.length})`}
-          icon={UserMultipleIcon}
-          flat
-        >
+        <SectionCard title={`People (${filtered.length})`} icon={UserMultipleIcon} flat>
           {filtered.map((person, index) => (
             <View key={person._id}>
               {index > 0 ? <View className="h-px bg-separator" /> : null}
@@ -170,10 +161,7 @@ export default function TeamScreen() {
                       {formatRole(person.roles)} · {person.studentId ?? person.email}
                     </Text>
                   </View>
-                  <StatusPill
-                    label={person.primaryRole}
-                    tone={toneForRole(person.primaryRole)}
-                  />
+                  <StatusPill label={person.primaryRole} tone={toneForRole(person.primaryRole)} />
                 </View>
               </View>
             </View>

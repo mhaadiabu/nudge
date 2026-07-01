@@ -50,10 +50,7 @@ function groupByDay(items: CalendarItem[]) {
 
 export default function CalendarScreen() {
   const { config, isLoading: isViewerLoading, isMissing } = useViewer();
-  const items = useQuery(
-    api.portal.listCalendarFeed,
-    isViewerLoading || isMissing ? "skip" : {},
-  );
+  const items = useQuery(api.portal.listCalendarFeed, isViewerLoading || isMissing ? "skip" : {});
 
   if (isViewerLoading || isMissing || !items) {
     return <LoadingScreen message="Building your calendar feed..." />;

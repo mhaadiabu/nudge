@@ -37,14 +37,8 @@ export default function InsightsScreen() {
   const summary = useQuery(api.analytics.getDashboardSummary, isManager ? {} : "skip");
   const timeline = useQuery(api.analytics.getBehaviorTimeline, isManager ? {} : "skip");
   const readiness = useQuery(api.sources.getPhaseZeroReadiness, isManager ? {} : "skip");
-  const experiments = useQuery(
-    api.experiments.listExperiments,
-    isManager ? {} : "skip",
-  );
-  const activityLog = useQuery(
-    api.analytics.listActivityLog,
-    isManager ? { limit: 8 } : "skip",
-  );
+  const experiments = useQuery(api.experiments.listExperiments, isManager ? {} : "skip");
+  const activityLog = useQuery(api.analytics.listActivityLog, isManager ? { limit: 8 } : "skip");
 
   if (!isManager) {
     return (
@@ -183,11 +177,7 @@ export default function InsightsScreen() {
       ) : null}
 
       {runningExperiments.length > 0 || draftExperiments.length > 0 ? (
-        <SectionCard
-          title={`Experiments (${experiments.length})`}
-          icon={FlaskConicalIcon}
-          flat
-        >
+        <SectionCard title={`Experiments (${experiments.length})`} icon={FlaskConicalIcon} flat>
           <View className="gap-3.5">
             {experiments.slice(0, 5).map((experiment, index) => (
               <View
@@ -285,9 +275,7 @@ export default function InsightsScreen() {
                   <Text className="text-sm font-medium text-foreground">
                     {event.eventType.replace(/_/g, " ")}
                   </Text>
-                  <Text className="text-xs text-muted">
-                    {formatShortDate(event.eventAt)}
-                  </Text>
+                  <Text className="text-xs text-muted">{formatShortDate(event.eventAt)}</Text>
                 </View>
               </View>
             ))}
