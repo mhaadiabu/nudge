@@ -70,10 +70,28 @@ export const seedDemoData = mutation({
     const actor = await ensureManagementAccess(ctx);
     const now = Date.now();
 
-    const currentStudentCount = await ctx.db.query("profiles").collect();
+    const existingSeedAssignment = await ctx.db
+      .query("assignments")
+      .withIndex("by_source", (query) =>
+        query.eq("sourceSystem", "UPSA LMS Pilot Feed").eq("sourceId", "seed-assignment-1"),
+      )
+      .first();
 
-    if (currentStudentCount.length > 0) {
+    if (existingSeedAssignment) {
       return { seeded: false, message: "Demo data already exists. Skipping reseed." };
+    }
+
+    const existingSeedCourse = await ctx.db
+      .query("courses")
+      .withIndex("by_code", (query) => query.eq("code", "CS301"))
+      .first();
+
+    if (existingSeedCourse) {
+      return {
+        seeded: false,
+        message:
+          "Demo courses already exist. Clear CS301/CS330/IS305 in Convex to reseed.",
+      };
     }
 
     const departmentAdminId = await upsertProfileByEmail(
