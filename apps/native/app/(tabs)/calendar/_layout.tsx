@@ -1,18 +1,13 @@
 import { Stack } from "expo-router/stack";
 
 import { HeaderActions } from "@/components/header-actions";
+import { tabHeaderScreenOptions } from "@/lib/header-options";
 
 export default function CalendarLayout() {
   return (
     <Stack
       screenOptions={{
-        headerLargeTitle: true,
-        headerTransparent: true,
-        headerShadowVisible: false,
-        headerLargeStyle: { backgroundColor: "transparent" },
-        headerLargeTitleShadowVisible: false,
-        headerBackButtonDisplayMode: "minimal",
-        headerBlurEffect: "systemMaterial",
+        ...tabHeaderScreenOptions(),
         headerRight: () => <HeaderActions />,
       }}
     >

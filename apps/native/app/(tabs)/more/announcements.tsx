@@ -1,5 +1,5 @@
 import { api } from "@nudge/backend/convex/_generated/api";
-import { useMutation } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { Button, useToast } from "heroui-native";
 import { ArrowRight01Icon, Megaphone01Icon, SearchRemoveIcon } from "@hugeicons/core-free-icons";
 import { Alert, Linking, Pressable, Text, View } from "react-native";
