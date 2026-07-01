@@ -1,6 +1,6 @@
 import { Surface } from "heroui-native";
 import type { IconSvgElement } from "@hugeicons/react-native";
-import { StyleSheet, Text, View, type ViewStyle } from "react-native";
+import { Platform, StyleSheet, Text, View, type ViewStyle } from "react-native";
 
 import { Icon } from "@/components/icon";
 import { shadows } from "@/lib/theme";
@@ -30,8 +30,15 @@ const emphasisColor: Record<NonNullable<Metric["emphasis"]>, string> = {
 };
 
 export function MetricGrid({ metrics }: MetricGridProps) {
+  const isAndroid = Platform.OS === "android";
+  const surfaceStyle: ViewStyle[] = [styles.surface];
+  if (isAndroid) {
+    surfaceStyle.push({ elevation: 2, shadowColor: "transparent" });
+  } else {
+    surfaceStyle.push(shadows.soft as ViewStyle);
+  }
   return (
-    <Surface variant="secondary" style={[styles.surface, shadows.soft as ViewStyle]}>
+    <Surface variant="secondary" style={surfaceStyle}>
       <View className="flex-row flex-wrap">
         {metrics.map((metric, index) => {
           const emphasis = metric.emphasis ?? "default";
@@ -48,7 +55,10 @@ export function MetricGrid({ metrics }: MetricGridProps) {
                 {metric.icon ? (
                   <Icon icon={metric.icon} size={13} strokeWidth={2.5} className="text-muted" />
                 ) : null}
-                <Text className="text-[11px] font-semibold uppercase tracking-wider text-muted">
+                <Text
+                  className="text-[11px] font-semibold uppercase tracking-wider text-muted"
+                  style={styles.label}
+                >
                   {metric.label}
                 </Text>
               </View>
@@ -59,7 +69,11 @@ export function MetricGrid({ metrics }: MetricGridProps) {
               >
                 {metric.value}
               </Text>
-              {metric.detail ? <Text className="text-xs text-muted">{metric.detail}</Text> : null}
+              {metric.detail ? (
+                <Text className="text-xs text-muted" style={styles.detail}>
+                  {metric.detail}
+                </Text>
+              ) : null}
             </View>
           );
         })}
@@ -91,5 +105,12 @@ const styles = StyleSheet.create({
   },
   value: {
     fontVariant: ["tabular-nums"],
+    includeFontPadding: false,
+  },
+  label: {
+    includeFontPadding: false,
+  },
+  detail: {
+    includeFontPadding: false,
   },
 });

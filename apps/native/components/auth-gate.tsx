@@ -3,7 +3,7 @@ import * as Haptics from "expo-haptics";
 import * as WebBrowser from "expo-web-browser";
 import { useRef, useState } from "react";
 import { SVG } from "@mhaadi/svg/react-native";
-import { Text, View, type ViewStyle } from "react-native";
+import { Platform, Text, View, type ViewStyle } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Container } from "@/components/container";
@@ -107,29 +107,43 @@ export function AuthGate() {
   // a buffer above the safe-area inset so the logo never sits flush to it.
   const heroPaddingTop = insets.top + 12;
 
+  const isAndroid = Platform.OS === "android";
+  const heroBackground = isAndroid ? { backgroundColor: "#8E2A23" } : {};
+  const surfaceStyle: ViewStyle = isAndroid
+    ? { borderCurve: "continuous", elevation: 6, shadowColor: "transparent" }
+    : ({ borderCurve: "continuous", ...shadows.elevated } as ViewStyle);
+
   return (
     <View className="flex-1 bg-background">
       <View
         className="accent-mesh overflow-hidden px-5 pb-14"
-        style={{ paddingTop: heroPaddingTop }}
+        style={[heroBackground, { paddingTop: heroPaddingTop }]}
       >
         <View className="flex-row items-center gap-3">
           <View
             className="h-12 w-12 items-center justify-center rounded-2xl"
             style={{ backgroundColor: "rgba(255,255,255,0.18)", borderCurve: "continuous" }}
           >
-            <Text className="text-2xl font-bold text-white">N</Text>
+            <Text className="text-2xl font-bold text-white" style={{ includeFontPadding: false }}>
+              N
+            </Text>
           </View>
-          <Text className="text-3xl font-semibold tracking-tight text-white">Nudge</Text>
+          <Text
+            className="text-3xl font-semibold tracking-tight text-white"
+            style={{ includeFontPadding: false }}
+          >
+            Nudge
+          </Text>
         </View>
         <View className="mt-8 gap-3">
           <Text
             className="text-[30px] font-semibold leading-[1.1] tracking-tight text-balance text-white"
             numberOfLines={4}
+            style={{ includeFontPadding: false }}
           >
             Behavioural nudges for the students who need them.
           </Text>
-          <Text className="text-base leading-6 text-white/85">
+          <Text className="text-base leading-6 text-white/85" style={{ includeFontPadding: false }}>
             Sign in with your UPSA account to access assignments, timetable, resources, and
             behaviourally informed nudges.
           </Text>
@@ -138,23 +152,20 @@ export function AuthGate() {
 
       <Container className="px-5 -mt-6">
         <View className="gap-7">
-          <Surface
-            variant="default"
-            className="p-6"
-            style={
-              {
-                borderCurve: "continuous",
-                ...shadows.elevated,
-              } as ViewStyle
-            }
-          >
-            <Text className="text-[11px] font-semibold uppercase tracking-wider text-muted">
+          <Surface variant="default" className="p-6" style={surfaceStyle}>
+            <Text
+              className="text-[11px] font-semibold uppercase tracking-wider text-muted"
+              style={{ includeFontPadding: false }}
+            >
               Continue with
             </Text>
-            <Text className="mt-1 text-2xl font-semibold tracking-tight text-foreground">
+            <Text
+              className="mt-1 text-2xl font-semibold tracking-tight text-foreground"
+              style={{ includeFontPadding: false }}
+            >
               Your UPSA account
             </Text>
-            <Text className="mt-1 text-sm text-muted">
+            <Text className="mt-1 text-sm text-muted" style={{ includeFontPadding: false }}>
               Use your @upsamail.edu.gh Google account.
             </Text>
             <Button
@@ -170,13 +181,19 @@ export function AuthGate() {
                 </Button.Label>
               </View>
             </Button>
-            <Text className="mt-3 text-center text-xs text-muted">
+            <Text
+              className="mt-3 text-center text-xs text-muted"
+              style={{ includeFontPadding: false }}
+            >
               Only @upsamail.edu.gh accounts are allowed.
             </Text>
           </Surface>
 
           <View className="gap-4">
-            <Text className="px-1 text-[11px] font-semibold uppercase tracking-wider text-muted">
+            <Text
+              className="px-1 text-[11px] font-semibold uppercase tracking-wider text-muted"
+              style={{ includeFontPadding: false }}
+            >
               What you get
             </Text>
             <View className="gap-4">
@@ -194,8 +211,18 @@ export function AuthGate() {
                     />
                   </View>
                   <View className="flex-1 gap-0.5">
-                    <Text className="text-base font-medium text-foreground">{item.title}</Text>
-                    <Text className="text-sm leading-5 text-muted">{item.description}</Text>
+                    <Text
+                      className="text-base font-medium text-foreground"
+                      style={{ includeFontPadding: false }}
+                    >
+                      {item.title}
+                    </Text>
+                    <Text
+                      className="text-sm leading-5 text-muted"
+                      style={{ includeFontPadding: false }}
+                    >
+                      {item.description}
+                    </Text>
                   </View>
                 </View>
               ))}
@@ -203,13 +230,17 @@ export function AuthGate() {
           </View>
 
           <View className="gap-1.5">
-            <Text className="px-1 text-[11px] font-semibold uppercase tracking-wider text-muted">
+            <Text
+              className="px-1 text-[11px] font-semibold uppercase tracking-wider text-muted"
+              style={{ includeFontPadding: false }}
+            >
               Demo accounts
             </Text>
             <Text
               className="px-1 text-sm leading-5 text-muted"
               numberOfLines={2}
               ellipsizeMode="middle"
+              style={{ includeFontPadding: false }}
             >
               {demoAccounts.join("  ·  ")}
             </Text>

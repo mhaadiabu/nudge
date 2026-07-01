@@ -24,7 +24,10 @@ export function StatusPill({ label, tone = "muted", style }: StatusPillProps) {
       className={cn("h-6 flex-row items-center rounded-md px-2.5", styles.bg)}
       style={[{ borderCurve: "continuous" }, style]}
     >
-      <Text className={cn("text-[11px] font-semibold uppercase tracking-wider", styles.text)}>
+      <Text
+        className={cn("text-[11px] font-semibold uppercase tracking-wider", styles.text)}
+        style={{ includeFontPadding: false, textAlignVertical: "center" }}
+      >
         {label}
       </Text>
     </View>

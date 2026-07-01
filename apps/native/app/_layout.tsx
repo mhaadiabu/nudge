@@ -4,6 +4,7 @@ import { env, envValidationError } from "@nudge/env/native";
 import { ConvexReactClient } from "convex/react";
 import { Stack } from "expo-router";
 import { HeroUINativeProvider } from "heroui-native";
+import { StatusBar } from "expo-status-bar";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Text, View } from "react-native";
 import { useEffect, useRef } from "react";
@@ -75,9 +76,12 @@ function AppNavigator() {
   }
 
   return (
-    <Stack screenOptions={{ headerShown: false, animation: "fade" }}>
-      <Stack.Screen name="(tabs)" />
-    </Stack>
+    <>
+      <StatusBar style="dark" translucent={false} />
+      <Stack screenOptions={{ headerShown: false, animation: "fade" }}>
+        <Stack.Screen name="(tabs)" />
+      </Stack>
+    </>
   );
 }
 

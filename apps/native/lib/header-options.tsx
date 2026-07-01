@@ -9,11 +9,7 @@ const ANDROID_HEADER_BACKGROUND = "rgba(255, 255, 255, 0.96)";
 function AndroidHeaderBackground({ style }: HeaderBackgroundProps) {
   return (
     <View
-      style={[
-        StyleSheet.absoluteFill,
-        style,
-        { backgroundColor: ANDROID_HEADER_BACKGROUND },
-      ]}
+      style={[StyleSheet.absoluteFill, style, { backgroundColor: ANDROID_HEADER_BACKGROUND }]}
     />
   );
 }

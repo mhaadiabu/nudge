@@ -253,7 +253,9 @@ export function DateTimeField({
 
   return (
     <View className="gap-1.5">
-      <Text className="text-sm font-medium text-muted">{label}</Text>
+      <Text className="text-sm font-medium text-muted" style={{ includeFontPadding: false }}>
+        {label}
+      </Text>
       <Pressable
         accessibilityRole="button"
         accessibilityLabel={`${label}, currently ${formatDisplay(value, mode)}`}
@@ -261,7 +263,10 @@ export function DateTimeField({
         className="flex-row items-center justify-between gap-2 rounded-xl border border-border bg-surface px-3.5 py-3 active:opacity-70"
         style={{ borderCurve: "continuous" }}
       >
-        <Text className={`flex-1 text-base ${value ? "text-foreground" : "text-muted"}`}>
+        <Text
+          className={`flex-1 text-base ${value ? "text-foreground" : "text-muted"}`}
+          style={{ includeFontPadding: false, textAlignVertical: "center" }}
+        >
           {formatDisplay(value, mode)}
         </Text>
         <Icon

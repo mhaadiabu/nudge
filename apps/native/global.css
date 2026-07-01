@@ -4,13 +4,7 @@
 
 @source './node_modules/heroui-native/lib';
 
-/*
- * Override HeroUI's default neutral-blue accent with our warm coral.
- * All values are real hex/rgba (no oklch / color-mix) so React Native's
- * style processor can resolve them at runtime.
- */
 @theme inline static {
-  /* Brand */
   --color-accent: #e5463a;
   --color-accent-foreground: #ffffff;
   --color-accent-soft: rgba(229, 70, 58, 0.12);
@@ -20,7 +14,6 @@
   --color-accent-deep: #8e2a23;
   --color-accent-glow: #f0a39a;
 
-  /* Positive / warning / info */
   --color-success: #2faa6c;
   --color-success-foreground: #ffffff;
   --color-success-soft: rgba(47, 170, 108, 0.14);
@@ -44,8 +37,19 @@
     0 0 0 1px rgba(0, 0, 0, 0.04);
 }
 
+@layer base {
+  /*
+   * Android renders Text with extra top/bottom padding by default which
+   * throws off vertical centering in pills, buttons, and the tab bar.
+   * Force a flat font metrics so the layout looks the same as iOS.
+   */
+  [data-platform="android"] Text,
+  [data-platform="android"] text {
+    include-font-padding: false;
+  }
+}
+
 @layer utilities {
-  /* Brand surfaces */
   .accent-gradient {
     background-image: linear-gradient(135deg, #8e2a23 0%, #e5463a 55%, #f0a39a 100%);
   }
@@ -62,12 +66,6 @@
     color: transparent;
   }
 
-  /*
-   * Soft mesh used as the hero card backdrop. A diagonal warm gradient
-   * does the heavy lifting; the radial orb above is a separate overlay.
-   * We avoid multi-stop radial gradients + color-mix() because uniwind
-   * cannot safely tokenize them, which triggers RN color-parser warnings.
-   */
   .accent-mesh {
     background-color: #8e2a23;
     background-image: linear-gradient(135deg, #8e2a23 0%, #e5463a 60%, #8e2a23 100%);

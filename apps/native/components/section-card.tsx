@@ -1,7 +1,7 @@
 import { Surface } from "heroui-native";
 import type { IconSvgElement } from "@hugeicons/react-native";
 import { type PropsWithChildren } from "react";
-import { StyleSheet, Text, View, type ViewStyle } from "react-native";
+import { Platform, StyleSheet, Text, View, type ViewStyle } from "react-native";
 
 import { Icon } from "@/components/icon";
 import { shadows } from "@/lib/theme";
@@ -12,12 +12,7 @@ type SectionCardProps = PropsWithChildren<{
   description?: string;
   trailing?: React.ReactNode;
   icon?: IconSvgElement;
-  /** Use a flat surface (no shadow) — useful for cards inside a list */
   flat?: boolean;
-  /**
-   * Optional accent palette used to recolour the header icon badge.
-   * Falls back to the default brand colour when omitted.
-   */
   accent?: AccentPalette;
 }>;
 
@@ -32,6 +27,13 @@ export function SectionCard({
 }: SectionCardProps) {
   const iconBackgroundStyle = accent ? { backgroundColor: accent.accentSoft } : null;
   const iconForegroundStyle = accent ? { color: accent.accentForeground } : null;
+
+  const isAndroid = Platform.OS === "android";
+  const elevatedStyle: ViewStyle | undefined = flat
+    ? undefined
+    : isAndroid
+      ? { elevation: 2, shadowColor: "transparent" }
+      : (shadows.soft as ViewStyle);
 
   return (
     <View className="gap-2.5">
@@ -70,7 +72,7 @@ export function SectionCard({
       )}
       <Surface
         variant={flat ? "tertiary" : "secondary"}
-        style={[styles.card as ViewStyle, flat ? styles.flat : (shadows.soft as ViewStyle)]}
+        style={[styles.card as ViewStyle, elevatedStyle]}
       >
         {children}
       </Surface>
@@ -81,9 +83,6 @@ export function SectionCard({
 const styles = StyleSheet.create({
   card: {
     borderCurve: "continuous",
-  },
-  flat: {
-    boxShadow: "none",
   },
   header: {
     flexDirection: "row",

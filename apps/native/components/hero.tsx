@@ -1,5 +1,5 @@
 import { cn } from "heroui-native";
-import { Text, View, type ViewStyle } from "react-native";
+import { Platform, Text, View, type ViewStyle } from "react-native";
 
 import { StatusPill } from "@/components/status-pill";
 import type { IconSvgElement } from "@hugeicons/react-native";
@@ -13,10 +13,8 @@ type HeroProps = {
   subtitle: string;
   meta: { label: string; value: string }[];
   badge?: { label: string; tone?: "accent" | "success" | "warning" | "info" };
-  /** Decorative icon shown as a soft watermark in the hero */
   decoration?: IconSvgElement;
   className?: string;
-  /** Optional palette to override the default brand colour. */
   accent?: AccentPalette;
 };
 
@@ -44,16 +42,28 @@ export function Hero({
   accent,
 }: HeroProps) {
   const palette = accent ?? FALLBACK_PALETTE;
-  const containerStyle: ViewStyle = {
-    borderCurve: "continuous",
-    backgroundColor: palette.accentDeep,
-    backgroundImage: buildGradient(palette),
-  };
+  const isAndroid = Platform.OS === "android";
+  const containerStyle: ViewStyle = isAndroid
+    ? {
+        borderCurve: "continuous",
+        backgroundColor: palette.accentDeep,
+        elevation: 6,
+        shadowColor: palette.accentDeep,
+        shadowOffset: { width: 0, height: 6 },
+        shadowOpacity: 0.35,
+        shadowRadius: 14,
+      }
+    : {
+        borderCurve: "continuous",
+        backgroundColor: palette.accentDeep,
+        backgroundImage: buildGradient(palette),
+        ...(shadows.hero as ViewStyle),
+      };
 
   return (
     <View
       className={cn("relative overflow-hidden rounded-3xl p-6", className)}
-      style={[containerStyle, shadows.hero as ViewStyle]}
+      style={containerStyle}
     >
       {decoration ? (
         <View style={styles.decoration} pointerEvents="none">
@@ -67,7 +77,10 @@ export function Hero({
             className="h-6 items-center justify-center rounded-md bg-white/15 px-2.5"
             style={{ borderCurve: "continuous" }}
           >
-            <Text className="text-[11px] font-semibold uppercase tracking-wider text-white">
+            <Text
+              className="text-[11px] font-semibold uppercase tracking-wider text-white"
+              style={{ includeFontPadding: false }}
+            >
               {eyebrow}
             </Text>
           </View>
@@ -75,10 +88,17 @@ export function Hero({
         </View>
 
         <View className="gap-1.5">
-          <Text className="text-[28px] font-semibold leading-[1.1] tracking-tight text-white">
+          <Text
+            className="text-[28px] font-semibold leading-[1.1] tracking-tight text-white"
+            style={{ includeFontPadding: false }}
+          >
             {title}
           </Text>
-          <Text className="text-[15px] leading-6 text-white/85" numberOfLines={3}>
+          <Text
+            className="text-[15px] leading-6 text-white/85"
+            numberOfLines={3}
+            style={{ includeFontPadding: false }}
+          >
             {subtitle}
           </Text>
         </View>
@@ -90,10 +110,18 @@ export function Hero({
               className="flex-row items-center gap-2 rounded-xl bg-white/12 px-3 py-2"
               style={{ borderCurve: "continuous" }}
             >
-              <Text className="text-[11px] font-semibold uppercase tracking-wider text-white/70">
+              <Text
+                className="text-[11px] font-semibold uppercase tracking-wider text-white/70"
+                style={{ includeFontPadding: false }}
+              >
                 {item.label}
               </Text>
-              <Text className="text-sm font-semibold text-white">{item.value}</Text>
+              <Text
+                className="text-sm font-semibold text-white"
+                style={{ includeFontPadding: false }}
+              >
+                {item.value}
+              </Text>
             </View>
           ))}
         </View>
