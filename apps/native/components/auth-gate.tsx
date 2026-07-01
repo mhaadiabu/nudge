@@ -1,51 +1,15 @@
-import { Button, Surface, useToast } from "heroui-native";
+import { Button, useToast } from "heroui-native";
 import * as Haptics from "expo-haptics";
 import * as WebBrowser from "expo-web-browser";
 import { useRef, useState } from "react";
 import { SVG } from "@mhaadi/svg/react-native";
-import { Platform, Text, View, type ViewStyle } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { Container } from "@/components/container";
-import { Icon } from "@/components/icon";
 import { googleLogoSvg } from "@/assets/google-logo";
 import { authClient } from "@/lib/auth-client";
-import { shadows } from "@/lib/theme";
-import {
-  BookOpen01Icon,
-  Calendar01Icon,
-  CheckListIcon,
-  SparklesIcon,
-} from "@hugeicons/core-free-icons";
 
-const demoAccounts = [
-  "department.admin@upsa.edu.gh",
-  "lecturer.johnson@upsa.edu.gh",
-  "ama.ofori@upsa.edu.gh",
-];
-
-const highlights = [
-  {
-    icon: CheckListIcon,
-    title: "Plan your work",
-    description: "Assignments and deadlines, surfaced in one place.",
-  },
-  {
-    icon: Calendar01Icon,
-    title: "Stay on schedule",
-    description: "Live timetable with timely reminders before each class.",
-  },
-  {
-    icon: BookOpen01Icon,
-    title: "Find your notes",
-    description: "Pinned resources and course material, always within reach.",
-  },
-  {
-    icon: SparklesIcon,
-    title: "Nudges that adapt",
-    description: "Behaviourally informed prompts tailored to your week.",
-  },
-];
+const ALLOWED_DOMAIN = "upsamail.edu.gh";
 
 export function AuthGate() {
   const { toast } = useToast();
@@ -97,150 +61,77 @@ export function AuthGate() {
     }
   };
 
-  // Hero top padding doesn't clip the status bar on notched devices. 12 is
-  // a buffer above the safe-area inset so the logo never sits flush to it.
-  const heroPaddingTop = insets.top + 12;
-
-  const isAndroid = Platform.OS === "android";
-  const heroBackground = isAndroid ? { backgroundColor: "#8E2A23" } : {};
-  const surfaceStyle: ViewStyle = isAndroid
-    ? { borderCurve: "continuous", elevation: 6, shadowColor: "transparent" }
-    : ({ borderCurve: "continuous", ...shadows.elevated } as ViewStyle);
-
   return (
-    <View className="flex-1 bg-background">
-      <View
-        className="accent-mesh overflow-hidden px-5 pb-14"
-        style={[heroBackground, { paddingTop: heroPaddingTop }]}
-      >
-        <View className="flex-row items-center gap-3">
+    <View className="flex-1 bg-white" style={{ paddingTop: insets.top + 64 }}>
+      <View className="flex-1 px-7">
+        <View className="items-start gap-2.5">
           <View
-            className="h-12 w-12 items-center justify-center rounded-2xl"
-            style={{ backgroundColor: "rgba(255,255,255,0.18)", borderCurve: "continuous" }}
+            className="h-11 w-11 items-center justify-center rounded-xl bg-neutral-900"
+            style={{ borderCurve: "continuous" }}
           >
-            <Text className="text-2xl font-bold text-white" style={{ includeFontPadding: false }}>
+            <Text
+              className="text-lg font-semibold text-white"
+              style={{ includeFontPadding: false, lineHeight: 22 }}
+            >
               N
             </Text>
           </View>
           <Text
-            className="text-3xl font-semibold tracking-tight text-white"
+            className="text-[15px] font-medium tracking-tight text-neutral-900"
             style={{ includeFontPadding: false }}
           >
             Nudge
           </Text>
         </View>
-        <View className="mt-8 gap-3">
+
+        <View className="mt-16 gap-3">
           <Text
-            className="text-[30px] font-semibold leading-[1.1] tracking-tight text-balance text-white"
-            numberOfLines={4}
+            className="text-[34px] font-semibold leading-[1.1] tracking-tight text-neutral-900"
             style={{ includeFontPadding: false }}
           >
-            Behavioural nudges for the students who need them.
+            Sign in to continue.
           </Text>
-          <Text className="text-base leading-6 text-white/85" style={{ includeFontPadding: false }}>
-            Sign in with your UPSA account to access assignments, timetable, resources, and
-            behaviourally informed nudges.
+          <Text
+            className="text-[15px] leading-6 text-neutral-500"
+            style={{ includeFontPadding: false }}
+          >
+            Use your {ALLOWED_DOMAIN} Google account to access your assignments, timetable, and
+            nudges.
           </Text>
+        </View>
+
+        <View className="flex-1" />
+
+        <View className="gap-3" style={{ paddingBottom: insets.bottom + 32 }}>
+          <Button
+            size="lg"
+            className="h-[52px] w-full rounded-xl bg-neutral-900"
+            isDisabled={isSigningIn}
+            onPress={handleSignIn}
+          >
+            <View className="flex-row items-center justify-center gap-2.5">
+              <SVG src={googleLogoSvg} width={18} height={18} />
+              <Button.Label className="text-[15px] font-medium text-white">
+                {isSigningIn ? "Opening Google..." : "Continue with Google"}
+              </Button.Label>
+            </View>
+          </Button>
+
+          <View className="items-center pt-2">
+            <Pressable
+              accessibilityRole="link"
+              accessibilityLabel="Only @upsamail.edu.gh accounts are allowed"
+              hitSlop={8}
+              disabled
+              className="rounded-md px-2 py-1"
+            >
+              <Text className="text-[12px] text-neutral-400" style={{ includeFontPadding: false }}>
+                Only @{ALLOWED_DOMAIN} accounts are allowed
+              </Text>
+            </Pressable>
+          </View>
         </View>
       </View>
-
-      <Container className="px-5 -mt-6">
-        <View className="gap-7">
-          <Surface variant="default" className="p-6" style={surfaceStyle}>
-            <Text
-              className="text-[11px] font-semibold uppercase tracking-wider text-muted"
-              style={{ includeFontPadding: false }}
-            >
-              Continue with
-            </Text>
-            <Text
-              className="mt-1 text-2xl font-semibold tracking-tight text-foreground"
-              style={{ includeFontPadding: false }}
-            >
-              Your UPSA account
-            </Text>
-            <Text className="mt-1 text-sm text-muted" style={{ includeFontPadding: false }}>
-              Use your @upsamail.edu.gh Google account.
-            </Text>
-            <Button
-              size="lg"
-              className="mt-5 h-[52px] w-full"
-              isDisabled={isSigningIn}
-              onPress={handleSignIn}
-            >
-              <View className="flex-row items-center justify-center gap-3">
-                <SVG src={googleLogoSvg} width={20} height={20} />
-                <Button.Label>
-                  {isSigningIn ? "Opening Google..." : "Continue with Google"}
-                </Button.Label>
-              </View>
-            </Button>
-            <Text
-              className="mt-3 text-center text-xs text-muted"
-              style={{ includeFontPadding: false }}
-            >
-              Only @upsamail.edu.gh accounts are allowed.
-            </Text>
-          </Surface>
-
-          <View className="gap-4">
-            <Text
-              className="px-1 text-[11px] font-semibold uppercase tracking-wider text-muted"
-              style={{ includeFontPadding: false }}
-            >
-              What you get
-            </Text>
-            <View className="gap-4">
-              {highlights.map((item) => (
-                <View key={item.title} className="flex-row items-start gap-3.5">
-                  <View
-                    className="h-10 w-10 items-center justify-center rounded-xl bg-accent-soft"
-                    style={{ borderCurve: "continuous" }}
-                  >
-                    <Icon
-                      icon={item.icon}
-                      size={18}
-                      strokeWidth={2}
-                      className="text-accent-soft-foreground"
-                    />
-                  </View>
-                  <View className="flex-1 gap-0.5">
-                    <Text
-                      className="text-base font-medium text-foreground"
-                      style={{ includeFontPadding: false }}
-                    >
-                      {item.title}
-                    </Text>
-                    <Text
-                      className="text-sm leading-5 text-muted"
-                      style={{ includeFontPadding: false }}
-                    >
-                      {item.description}
-                    </Text>
-                  </View>
-                </View>
-              ))}
-            </View>
-          </View>
-
-          <View className="gap-1.5">
-            <Text
-              className="px-1 text-[11px] font-semibold uppercase tracking-wider text-muted"
-              style={{ includeFontPadding: false }}
-            >
-              Demo accounts
-            </Text>
-            <Text
-              className="px-1 text-sm leading-5 text-muted"
-              numberOfLines={2}
-              ellipsizeMode="middle"
-              style={{ includeFontPadding: false }}
-            >
-              {demoAccounts.join("  ·  ")}
-            </Text>
-          </View>
-        </View>
-      </Container>
     </View>
   );
 }
