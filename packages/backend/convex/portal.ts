@@ -173,6 +173,7 @@ export const listCalendarFeed = query({
             }
             return {
               id: recipient._id,
+              assignmentId: assignment._id,
               kind: "assignment" as const,
               title: assignment.title,
               startsAt: assignment.dueAt,

@@ -1,7 +1,13 @@
 import { api } from "@nudge/backend/convex/_generated/api";
-import { useQuery } from "convex/react";
-import { Calendar01Icon, Calendar03Icon, Clock01Icon } from "@hugeicons/core-free-icons";
-import { Text, View } from "react-native";
+import { useMutation, useQuery } from "convex/react";
+import { useToast } from "heroui-native";
+import {
+  Calendar01Icon,
+  Calendar03Icon,
+  Clock01Icon,
+  SearchRemoveIcon,
+} from "@hugeicons/core-free-icons";
+import { Alert, Pressable, Text, View } from "react-native";
 
 import { EmptyState } from "@/components/empty-state";
 import { Icon } from "@/components/icon";
@@ -16,15 +22,16 @@ type IconTone = "accent" | "info" | "success" | "warning";
 
 type CalendarItem = {
   id: string;
+  assignmentId?: string;
   title: string;
   detail: string;
-  kind: string;
+  kind: "timetable" | "assignment";
   startsAt: number;
   endsAt: number;
 };
 
 function itemTone(kind: string): IconTone {
-  if (kind === "event") return "accent";
+  if (kind === "event" || kind === "deadline") return "accent";
   if (kind === "assignment") return "warning";
   return "info";
 }
@@ -49,11 +56,44 @@ function groupByDay(items: CalendarItem[]) {
 }
 
 export default function CalendarScreen() {
-  const { config, isLoading: isViewerLoading, isMissing } = useViewer();
+  const { toast } = useToast();
+  const { config, isLoading: isViewerLoading, isMissing, isManager } = useViewer();
   const items = useQuery(api.portal.listCalendarFeed, isViewerLoading || isMissing ? "skip" : {});
+  const deleteTimetableEvent = useMutation(api.portal.deleteTimetableEvent);
+  const deleteAssignment = useMutation(api.assignments.deleteForCourse);
 
   if (isViewerLoading || isMissing || !items) {
     return <LoadingScreen message="Building your calendar feed..." />;
+  }
+
+  function confirmDelete(item: CalendarItem) {
+    const isEvent = item.kind === "timetable";
+    Alert.alert(
+      `Delete ${isEvent ? "event" : "assignment"}`,
+      `Permanently remove "${item.title}"?`,
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Delete",
+          style: "destructive",
+          onPress: () => {
+            void (async () => {
+              try {
+                if (isEvent) {
+                  await deleteTimetableEvent({ eventId: item.id as never });
+                } else if (item.assignmentId) {
+                  await deleteAssignment({ assignmentId: item.assignmentId as never });
+                }
+                toast.show({ variant: "success", label: "Removed" });
+              } catch (error) {
+                const message = error instanceof Error ? error.message : "Could not delete.";
+                toast.show({ variant: "danger", label: message });
+              }
+            })();
+          },
+        },
+      ],
+    );
   }
 
   if (items.length === 0) {
@@ -115,7 +155,25 @@ export default function CalendarScreen() {
                       <Text className="flex-1 text-sm font-semibold text-foreground">
                         {item.title}
                       </Text>
-                      <StatusPill label={item.kind} tone={tone} />
+                      <View className="flex-row items-center gap-1.5">
+                        <StatusPill label={item.kind} tone={tone} />
+                        {isManager ? (
+                          <Pressable
+                            accessibilityRole="button"
+                            accessibilityLabel={`Delete ${item.title}`}
+                            hitSlop={6}
+                            onPress={() => confirmDelete(item)}
+                            className="rounded-md p-1 active:opacity-60"
+                          >
+                            <Icon
+                              icon={SearchRemoveIcon}
+                              size={16}
+                              strokeWidth={2}
+                              className="text-danger"
+                            />
+                          </Pressable>
+                        ) : null}
+                      </View>
                     </View>
                     <Text className="text-sm leading-5 text-foreground" numberOfLines={2}>
                       {item.detail}

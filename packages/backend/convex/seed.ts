@@ -89,8 +89,7 @@ export const seedDemoData = mutation({
     if (existingSeedCourse) {
       return {
         seeded: false,
-        message:
-          "Demo courses already exist. Clear CS301/CS330/IS305 in Convex to reseed.",
+        message: "Demo courses already exist. Clear CS301/CS330/IS305 in Convex to reseed.",
       };
     }
 
