@@ -63,7 +63,8 @@ export default function MoreScreen() {
         description={`Signed in as a ${config.label.toLowerCase()}`}
         flat
       >
-        {items.map((item, index) => (
+        <View className="divide-y divide-separator">
+          {items.map((item) => (
           <Pressable
             key={item.route}
             onPress={() => {
@@ -71,12 +72,10 @@ export default function MoreScreen() {
             }}
             accessibilityRole="button"
             accessibilityLabel={`Open ${item.label}`}
-            className={`flex-row items-center gap-3.5 py-3.5 active:opacity-60 ${
-              index > 0 ? "border-t border-separator" : ""
-            }`}
+            className="flex-row items-center gap-3.5 py-3.5 active:opacity-60 pt-3 first:pt-0"
           >
             <View
-              className="h-10 w-10 items-center justify-center rounded-xl bg-accent-soft"
+              className="h-10 w-10 items-center justify-center rounded-2xl bg-accent-soft"
               style={{ borderCurve: "continuous" }}
             >
               <Icon
@@ -93,6 +92,7 @@ export default function MoreScreen() {
             <Icon icon={ArrowRight01Icon} size={16} strokeWidth={2} className="text-muted" />
           </Pressable>
         ))}
+        </View>
       </SectionCard>
 
       <View className="items-center pt-2">

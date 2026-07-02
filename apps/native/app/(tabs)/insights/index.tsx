@@ -130,18 +130,16 @@ export default function InsightsScreen() {
 
       {timeline.length > 0 ? (
         <SectionCard title="Behaviour over time" icon={ChartLineData01Icon} flat>
-          <View className="gap-3.5">
-            {timeline.slice(-4).map((row, index) => {
+          <View className="gap-3.5 divide-y divide-separator">
+            {timeline.slice(-4).map((row) => {
               const onTimeTone = toneForPercent(row.onTimeRate);
               return (
                 <View
                   key={row.period}
-                  className={`flex-row items-center gap-3 ${
-                    index > 0 ? "pt-3.5 border-t border-separator" : ""
-                  }`}
+                  className="flex-row items-center gap-3 pt-3.5 first:pt-0"
                 >
                   <View
-                    className="h-9 w-9 items-center justify-center rounded-xl bg-info-soft"
+                    className="h-9 w-9 items-center justify-center rounded-2xl bg-info-soft"
                     style={{ borderCurve: "continuous" }}
                   >
                     <Icon
@@ -178,16 +176,14 @@ export default function InsightsScreen() {
 
       {runningExperiments.length > 0 || draftExperiments.length > 0 ? (
         <SectionCard title={`Experiments (${experiments.length})`} icon={FlaskConicalIcon} flat>
-          <View className="gap-3.5">
-            {experiments.slice(0, 5).map((experiment, index) => (
+          <View className="gap-3.5 divide-y divide-separator">
+            {experiments.slice(0, 5).map((experiment) => (
               <View
                 key={experiment._id}
-                className={`flex-row items-start gap-3 ${
-                  index > 0 ? "pt-3.5 border-t border-separator" : ""
-                }`}
+                className="flex-row items-start gap-3 pt-3.5 first:pt-0"
               >
                 <View
-                  className="h-9 w-9 items-center justify-center rounded-xl bg-accent-soft"
+                  className="h-9 w-9 items-center justify-center rounded-2xl bg-accent-soft"
                   style={{ borderCurve: "continuous" }}
                 >
                   <Icon
@@ -219,13 +215,11 @@ export default function InsightsScreen() {
 
       {nudgeMetrics.byType.length > 0 ? (
         <SectionCard title="Nudge performance" icon={SparklesIcon} flat>
-          <View className="gap-3">
-            {nudgeMetrics.byType.slice(0, 5).map((entry, index) => (
+          <View className="gap-3 divide-y divide-separator">
+            {nudgeMetrics.byType.slice(0, 5).map((entry) => (
               <View
                 key={entry.type}
-                className={`flex-row items-center gap-3 ${
-                  index > 0 ? "pt-3 border-t border-separator" : ""
-                }`}
+                className="flex-row items-center gap-3 pt-3 first:pt-0"
               >
                 <View className="flex-1 gap-0.5">
                   <Text className="text-sm font-medium text-foreground">
@@ -262,13 +256,11 @@ export default function InsightsScreen() {
             tone="info"
           />
         ) : (
-          <View className="gap-3">
-            {activityLog.map((event, index) => (
+          <View className="gap-3 divide-y divide-separator">
+            {activityLog.map((event) => (
               <View
                 key={event._id}
-                className={`flex-row items-start gap-3 ${
-                  index > 0 ? "pt-3 border-t border-separator" : ""
-                }`}
+                className="flex-row items-start gap-3 pt-3 first:pt-0"
               >
                 <View className="h-1.5 w-1.5 mt-2 rounded-full bg-muted" />
                 <View className="flex-1 gap-0.5">

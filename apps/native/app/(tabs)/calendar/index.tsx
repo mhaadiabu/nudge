@@ -122,8 +122,8 @@ export default function CalendarScreen() {
     <ScreenShell>
       {groups.map((group) => (
         <SectionCard key={group.key} title={group.label} icon={Calendar01Icon} flat>
-          <View className="gap-3.5">
-            {group.items.map((item, index) => {
+          <View className="gap-3.5 divide-y divide-separator">
+            {group.items.map((item) => {
               const tone = itemTone(item.kind);
               const toneBg = {
                 accent: "bg-accent-soft",
@@ -140,12 +140,10 @@ export default function CalendarScreen() {
               return (
                 <View
                   key={`${item.kind}-${item.id}`}
-                  className={`flex-row items-start gap-3 ${
-                    index > 0 ? "pt-3.5 border-t border-separator" : ""
-                  }`}
+                  className="flex-row items-start gap-3 pt-3.5 first:pt-0"
                 >
                   <View
-                    className={`h-9 w-9 items-center justify-center rounded-xl ${toneBg}`}
+                    className={`h-9 w-9 items-center justify-center rounded-2xl ${toneBg}`}
                     style={{ borderCurve: "continuous" }}
                   >
                     <Icon icon={Clock01Icon} size={16} strokeWidth={2} className={toneFg} />

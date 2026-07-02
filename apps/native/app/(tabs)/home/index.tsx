@@ -160,11 +160,11 @@ function StudentDashboard() {
           icon={CheckListIcon}
           flat
         >
-          <View className="gap-4">
-            {upcoming.map((assignment, index) => (
+          <View className="gap-4 divide-y divide-separator">
+            {upcoming.map((assignment) => (
               <View
                 key={assignment.assignmentId}
-                className={`gap-1.5 ${index > 0 ? "pt-4 border-t border-separator" : ""}`}
+                className="gap-1.5 pt-4 first:pt-0"
               >
                 <View className="flex-row items-start justify-between gap-2">
                   <Text className="flex-1 text-base font-semibold text-foreground">
@@ -210,16 +210,14 @@ function StudentDashboard() {
 
       {timetable.length > 0 ? (
         <SectionCard title="Today and next" icon={Calendar01Icon} flat>
-          <View className="gap-3.5">
-            {timetable.map((event, index) => (
+          <View className="gap-3.5 divide-y divide-separator">
+            {timetable.map((event) => (
               <View
                 key={event._id}
-                className={`flex-row items-start gap-3 ${
-                  index > 0 ? "pt-3.5 border-t border-separator" : ""
-                }`}
+                className="flex-row items-start gap-3 pt-3.5 first:pt-0"
               >
                 <View
-                  className="h-9 w-9 items-center justify-center rounded-xl bg-info-soft"
+                  className="h-9 w-9 items-center justify-center rounded-2xl bg-info-soft"
                   style={{ borderCurve: "continuous" }}
                 >
                   <Icon
@@ -255,11 +253,11 @@ function StudentDashboard() {
             </Link>
           }
         >
-          <View className="gap-4">
-            {announcements.slice(0, 3).map((announcement, index) => (
+          <View className="gap-4 divide-y divide-separator">
+            {announcements.slice(0, 3).map((announcement) => (
               <View
                 key={announcement._id}
-                className={`gap-1.5 ${index > 0 ? "pt-4 border-t border-separator" : ""}`}
+                className="gap-1.5 pt-4 first:pt-0"
               >
                 <Text className="text-base font-semibold text-foreground">
                   {announcement.title}
@@ -278,11 +276,11 @@ function StudentDashboard() {
 
       {resources.length > 0 ? (
         <SectionCard title="Pinned resources" icon={BookOpen01Icon} flat>
-          <View className="gap-4">
-            {resources.slice(0, 3).map((resource, index) => (
+          <View className="gap-4 divide-y divide-separator">
+            {resources.slice(0, 3).map((resource) => (
               <View
                 key={resource._id}
-                className={`gap-1.5 ${index > 0 ? "pt-4 border-t border-separator" : ""}`}
+                className="gap-1.5 pt-4 first:pt-0"
               >
                 <Text className="text-base font-semibold text-foreground">{resource.title}</Text>
                 <Text className="text-xs text-muted">{resource.kind}</Text>
@@ -438,11 +436,11 @@ function ManagerDashboard() {
             </Link>
           }
         >
-          <View className="gap-4">
-            {managerOverview.latestAnnouncements.map((announcement, index) => (
+          <View className="gap-4 divide-y divide-separator">
+            {managerOverview.latestAnnouncements.map((announcement) => (
               <View
                 key={announcement._id}
-                className={`gap-1 ${index > 0 ? "pt-4 border-t border-separator" : ""}`}
+                className="gap-1 pt-4 first:pt-0"
               >
                 <Text className="text-base font-semibold text-foreground">
                   {announcement.title}
@@ -458,16 +456,14 @@ function ManagerDashboard() {
 
       {managerOverview.upcomingEvents.length > 0 ? (
         <SectionCard title="Upcoming academic events" icon={Calendar01Icon} flat>
-          <View className="gap-3.5">
-            {managerOverview.upcomingEvents.map((event, index) => (
+          <View className="gap-3.5 divide-y divide-separator">
+            {managerOverview.upcomingEvents.map((event) => (
               <View
                 key={event._id}
-                className={`flex-row items-start gap-3 ${
-                  index > 0 ? "pt-3.5 border-t border-separator" : ""
-                }`}
+                className="flex-row items-start gap-3 pt-3.5 first:pt-0"
               >
                 <View
-                  className="h-9 w-9 items-center justify-center rounded-xl bg-info-soft"
+                  className="h-9 w-9 items-center justify-center rounded-2xl bg-info-soft"
                   style={{ borderCurve: "continuous" }}
                 >
                   <Icon

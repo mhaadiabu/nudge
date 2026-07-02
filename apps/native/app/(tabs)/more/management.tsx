@@ -583,13 +583,11 @@ export default function ManagementScreen() {
           icon={Megaphone01Icon}
           flat
         >
-          <View className="gap-3">
-            {announcements.slice(0, 5).map((announcement, index) => (
+          <View className="gap-3 divide-y divide-separator">
+            {announcements.slice(0, 5).map((announcement) => (
               <View
                 key={announcement._id}
-                className={`flex-row items-start justify-between gap-3 ${
-                  index > 0 ? "pt-3 border-t border-separator" : ""
-                }`}
+                className="flex-row items-start justify-between gap-3 pt-3 first:pt-0"
               >
                 <View className="flex-1 gap-0.5">
                   <Text className="text-sm font-semibold text-foreground" numberOfLines={1}>
@@ -744,13 +742,11 @@ export default function ManagementScreen() {
               tone="info"
             />
           ) : (
-            <View className="gap-3">
-              {resources.slice(0, 5).map((resource, index) => (
+            <View className="gap-3 divide-y divide-separator">
+              {resources.slice(0, 5).map((resource) => (
                 <View
                   key={resource._id}
-                  className={`flex-row items-start justify-between gap-3 ${
-                    index > 0 ? "pt-3 border-t border-separator" : ""
-                  }`}
+                  className="flex-row items-start justify-between gap-3 pt-3 first:pt-0"
                 >
                   <View className="flex-1 gap-0.5">
                     <Text className="text-sm font-semibold text-foreground" numberOfLines={1}>
@@ -880,16 +876,14 @@ export default function ManagementScreen() {
         icon={UserMultipleIcon}
         flat
       >
-        <View className="gap-3.5">
-          {people.slice(0, 8).map((person, index) => (
+        <View className="gap-3.5 divide-y divide-separator">
+          {people.slice(0, 8).map((person) => (
             <View
               key={person._id}
-              className={`flex-row items-center gap-3 ${
-                index > 0 ? "pt-3.5 border-t border-separator" : ""
-              }`}
+              className="flex-row items-center gap-3 pt-3.5 first:pt-0"
             >
               <View
-                className="h-9 w-9 items-center justify-center rounded-xl bg-accent-soft"
+                className="h-9 w-9 items-center justify-center rounded-2xl bg-accent-soft"
                 style={{ borderCurve: "continuous" }}
               >
                 <Icon
@@ -919,16 +913,14 @@ export default function ManagementScreen() {
         icon={FlaskConicalIcon}
         flat
       >
-        <View className="gap-3.5">
-          {experiments.slice(0, 4).map((experiment, index) => (
+        <View className="gap-3.5 divide-y divide-separator">
+          {experiments.slice(0, 4).map((experiment) => (
             <View
               key={experiment._id}
-              className={`flex-row items-start gap-3 ${
-                index > 0 ? "pt-3.5 border-t border-separator" : ""
-              }`}
+              className="flex-row items-start gap-3 pt-3.5 first:pt-0"
             >
               <View
-                className="h-9 w-9 items-center justify-center rounded-xl bg-info-soft"
+                className="h-9 w-9 items-center justify-center rounded-2xl bg-info-soft"
                 style={{ borderCurve: "continuous" }}
               >
                 <Icon
@@ -958,13 +950,11 @@ export default function ManagementScreen() {
       </SectionCard>
 
       <SectionCard title="Recent activity" icon={Activity01Icon} flat>
-        <View className="gap-3">
-          {activityLog.map((event, index) => (
+        <View className="gap-3 divide-y divide-separator">
+          {activityLog.map((event) => (
             <View
               key={event._id}
-              className={`flex-row items-start gap-3 ${
-                index > 0 ? "pt-3 border-t border-separator" : ""
-              }`}
+              className="flex-row items-start gap-3 pt-3 first:pt-0"
             >
               <View className="h-1.5 w-1.5 mt-2 rounded-full bg-muted" />
               <View className="flex-1 gap-0.5">

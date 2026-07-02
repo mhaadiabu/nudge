@@ -143,7 +143,7 @@ export default function TeamScreen() {
               <View className="py-3.5">
                 <View className="flex-row items-center gap-3.5">
                   <View
-                    className="h-10 w-10 items-center justify-center rounded-xl bg-accent-soft"
+                    className="h-10 w-10 items-center justify-center rounded-2xl bg-accent-soft"
                     style={{ borderCurve: "continuous" }}
                   >
                     <Icon
