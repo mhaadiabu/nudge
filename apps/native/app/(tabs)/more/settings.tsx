@@ -90,7 +90,7 @@ function SwitchRow({
   onChange: (value: boolean) => void;
 }) {
   return (
-    <View className="flex-row items-center gap-3 py-3 border-t border-separator first:border-t-0">
+    <View className="flex-row items-center gap-3 py-3 pt-3 first:pt-0">
       <View className="flex-1 gap-0.5">
         <Text className="text-base text-foreground">{label}</Text>
         <Text className="text-sm leading-5 text-muted">{description}</Text>
@@ -265,7 +265,8 @@ export default function SettingsScreen() {
       </SectionCard>
 
       <SectionCard title="Delivery" icon={Settings01Icon} flat>
-        {deliveryPreferences.map((item) => (
+        <View className="divide-y divide-separator">
+          {deliveryPreferences.map((item) => (
           <SwitchRow
             key={item.key}
             label={item.label}
@@ -274,10 +275,12 @@ export default function SettingsScreen() {
             onChange={(value) => setPreferences((current) => ({ ...current, [item.key]: value }))}
           />
         ))}
+        </View>
       </SectionCard>
 
       <SectionCard title="Content" icon={SparklesIcon} flat>
-        {contentPreferences.map((item) => (
+        <View className="divide-y divide-separator">
+          {contentPreferences.map((item) => (
           <SwitchRow
             key={item.key}
             label={item.label}
@@ -286,6 +289,7 @@ export default function SettingsScreen() {
             onChange={(value) => setPreferences((current) => ({ ...current, [item.key]: value }))}
           />
         ))}
+        </View>
       </SectionCard>
 
       <SectionCard title="Quiet hours" icon={Settings01Icon} flat>

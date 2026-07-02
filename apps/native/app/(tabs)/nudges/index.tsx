@@ -127,11 +127,11 @@ export default function NudgesScreen() {
         </SectionCard>
       ) : (
         <SectionCard title="History" icon={BellIcon} flat>
-          <View className="gap-4">
-            {nudges.map((nudge, index) => (
+          <View className="gap-4 divide-y divide-separator">
+            {nudges.map((nudge) => (
               <View
                 key={nudge._id}
-                className={`gap-2 ${index > 0 ? "pt-4 border-t border-separator" : ""}`}
+                className="gap-2 pt-4 first:pt-0"
               >
                 <View className="flex-row items-start justify-between gap-2">
                   <Text className="flex-1 text-base font-semibold text-foreground">
