@@ -62,7 +62,7 @@ export function Hero({
 
   return (
     <View
-      className={cn("relative overflow-hidden rounded-xl p-6", className)}
+      className={cn("relative overflow-hidden rounded-2xl p-6", className)}
       style={containerStyle}
     >
       {decoration ? (
@@ -107,7 +107,7 @@ export function Hero({
           {meta.map((item) => (
             <View
               key={item.label}
-              className="flex-row items-center gap-2 rounded-xl bg-white/12 px-3 py-2"
+              className="flex-row items-center gap-2 rounded-2xl bg-white/12 px-3 py-2"
               style={{ borderCurve: "continuous" }}
             >
               <Text

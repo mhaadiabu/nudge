@@ -66,7 +66,7 @@ export function AuthGate() {
       <View className="flex-1 px-7">
         <View className="items-start gap-2.5">
           <View
-            className="h-11 w-11 items-center justify-center rounded-xl bg-neutral-900"
+            className="h-11 w-11 items-center justify-center rounded-2xl bg-neutral-900"
             style={{ borderCurve: "continuous" }}
           >
             <Text
@@ -105,7 +105,7 @@ export function AuthGate() {
         <View className="gap-3" style={{ paddingBottom: insets.bottom + 32 }}>
           <Button
             size="lg"
-            className="h-[52px] w-full rounded-xl bg-neutral-900"
+            className="h-[52px] w-full rounded-2xl bg-neutral-900"
             isDisabled={isSigningIn}
             onPress={handleSignIn}
           >

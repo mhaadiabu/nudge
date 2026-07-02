@@ -22,7 +22,7 @@ export function EmptyState({ icon, title, message, tone = "accent", action }: Em
   return (
     <View className="items-center gap-3 px-2 py-8">
       <View
-        className={`h-14 w-14 items-center justify-center rounded-xl ${toneStyles[tone]}`}
+        className={`h-14 w-14 items-center justify-center rounded-2xl ${toneStyles[tone]}`}
         style={{ borderCurve: "continuous" }}
       >
         <Icon icon={icon} size={24} strokeWidth={1.75} />
