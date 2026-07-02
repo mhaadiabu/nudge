@@ -79,8 +79,8 @@ importers:
         specifier: ^1.0.13
         version: 1.0.13(react-native-svg@15.12.1(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       '@mhaadi/svg':
-        specifier: ^0.2.1
-        version: 0.2.1(react-dom@19.1.0(react@19.1.0))(react-native-svg@15.12.1(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
+        specifier: ^0.2.3
+        version: 0.2.3(react-dom@19.1.0(react@19.1.0))(react-native-svg@15.12.1(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)
       '@nudge/backend':
         specifier: workspace:*
         version: link:../../packages/backend
@@ -1268,8 +1268,9 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@mhaadi/svg@0.2.1':
-    resolution: {integrity: sha512-IHbMI8wWXcrjOSvvmHBDzyVkPDRDRKLmvjIb6osjfZrSxEAw2kPJa1Jn9DXPtmsTdBERJTlMjUckuD+OvtvjNQ==}
+  '@mhaadi/svg@0.2.3':
+    resolution: {integrity: sha512-Fk2v38MaOSiNEQvEulY3zJw49ns5AtyAuYm5Sl7ueRgea/19hsVI6ZCokxa7gjSK0cmjpkDEa3Ge0B0ym92nMQ==}
+    engines: {node: '>=18'}
     peerDependencies:
       react: '>=18'
       react-dom: '>=18'
@@ -5882,7 +5883,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@mhaadi/svg@0.2.1(react-dom@19.1.0(react@19.1.0))(react-native-svg@15.12.1(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)':
+  '@mhaadi/svg@0.2.3(react-dom@19.1.0(react@19.1.0))(react-native-svg@15.12.1(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0))(react-native@0.81.5(@babel/core@7.29.7)(@types/react@19.1.17)(react@19.1.0))(react@19.1.0)':
     dependencies:
       react: 19.1.0
     optionalDependencies:
