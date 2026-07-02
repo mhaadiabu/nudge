@@ -1,4 +1,5 @@
 import { Icon, Label, NativeTabs } from "expo-router/unstable-native-tabs";
+import { View } from "react-native";
 
 import { useViewer } from "@/lib/use-viewer";
 
@@ -15,8 +16,12 @@ const TAB_ICON_SOURCES = {
 type TabIconName = keyof typeof TAB_ICON_SOURCES;
 
 export default function TabsLayout() {
-  const { config } = useViewer();
+  const { config, isLoading, isMissing } = useViewer();
   const { tabs, palette } = config;
+
+  if (isLoading || isMissing) {
+    return <View className="flex-1 bg-background" />;
+  }
 
   return (
     <NativeTabs
