@@ -1,6 +1,7 @@
 {
   "expo": {
     "scheme": "nudge",
+    "owner": "mhaadiabu",
     "userInterfaceStyle": "automatic",
     "orientation": "default",
     "web": {
